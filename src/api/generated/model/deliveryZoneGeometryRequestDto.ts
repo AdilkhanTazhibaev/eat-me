@@ -6,14 +6,14 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { DeliveryZoneGeometryRequestDtoType } from './deliveryZoneGeometryRequestDtoType'
+import type { DeliveryZoneGeometryRequestDtoType } from './deliveryZoneGeometryRequestDtoType';
 
 export interface DeliveryZoneGeometryRequestDto {
   /** Тип геометрии */
-  type: DeliveryZoneGeometryRequestDtoType
+  type: DeliveryZoneGeometryRequestDtoType;
   /**
    * Координаты в формате geo json: массив колец; каждое кольцо — массив точек [lon, lat]
    * @minItems 1
    */
-  coordinates: number[][][]
+  coordinates: number[][][];
 }

@@ -6,31 +6,31 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { RegistrationRequestDtoDeliveryMethod } from './registrationRequestDtoDeliveryMethod'
-import type { RegistrationRequestDtoLocale } from './registrationRequestDtoLocale'
+import type { RegistrationRequestDtoLocale } from './registrationRequestDtoLocale';
+import type { RegistrationRequestDtoDeliveryMethod } from './registrationRequestDtoDeliveryMethod';
 
 /**
  * Запрос для регистрации клиентов
  */
 export interface RegistrationRequestDto {
   /**
-   * Номер телефон клиента
+   * Номер телефона клиента
    * @minLength 1
    * @maxLength 24
    */
-  phoneNumber: string
+  phoneNumber: string;
   /**
    * ФИО Клиента
    * @minLength 3
    * @maxLength 64
    */
-  fullName: string
+  fullName: string;
   /** Язык интерфейса клиента */
-  locale: RegistrationRequestDtoLocale
+  locale: RegistrationRequestDtoLocale;
   /** Идентификатор компании */
-  companyId: number
+  companyId: number;
   /** Идентификатор филиала */
-  branchId: number
+  branchId: number;
   /** Метод доставки отп кода */
-  deliveryMethod: RegistrationRequestDtoDeliveryMethod
+  deliveryMethod: RegistrationRequestDtoDeliveryMethod;
 }

@@ -6,22 +6,22 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { DictionaryEditRequestDtoMetadata } from './dictionaryEditRequestDtoMetadata'
-import type { DictionaryEditRequestDtoProperties } from './dictionaryEditRequestDtoProperties'
+import type { DictionaryEditRequestDtoMetadata } from './dictionaryEditRequestDtoMetadata';
+import type { DictionaryEditRequestDtoProperties } from './dictionaryEditRequestDtoProperties';
 
 /**
  * Запрос для редактирования справочника
  */
 export interface DictionaryEditRequestDto {
   /** Идентификатор справочника */
-  id: number
+  id: number;
   /**
    * Код справочника
    * @minLength 1
    */
-  code: string
+  code: string;
   /** Метаданные справочника */
-  metadata: DictionaryEditRequestDtoMetadata
+  metadata: DictionaryEditRequestDtoMetadata;
   /** Поля справочника */
-  properties: DictionaryEditRequestDtoProperties
+  properties: DictionaryEditRequestDtoProperties;
 }

@@ -6,7 +6,7 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { PromoCodeRequestDtoDiscountType } from './promoCodeRequestDtoDiscountType'
+import type { PromoCodeRequestDtoDiscountType } from './promoCodeRequestDtoDiscountType';
 
 /**
  * Запрос на создание или редактирование промокода
@@ -17,63 +17,63 @@ export interface PromoCodeRequestDto {
    * @minLength 0
    * @maxLength 50
    */
-  code: string
+  code: string;
   /**
    * Описание на казахском языке
    * @minLength 0
    * @maxLength 60
    */
-  descriptionKk?: string
+  descriptionKk?: string;
   /**
    * Описание на английском языке
    * @minLength 0
    * @maxLength 60
    */
-  descriptionEn?: string
+  descriptionEn?: string;
   /**
    * Описание на узбекском языке
    * @minLength 0
    * @maxLength 60
    */
-  descriptionUz?: string
+  descriptionUz?: string;
   /**
    * Описание на русском языке
    * @minLength 0
    * @maxLength 60
    */
-  descriptionRu?: string
-  /** Дата начала действия (timestamp) */
-  startDate: number
-  /** Дата окончания действия (timestamp), null = бессрочный */
-  endDate?: number
+  descriptionRu?: string;
+  /** Дата начала действия */
+  startDate: string;
+  /** Дата окончания действия, null = бессрочный */
+  endDate?: string;
   /** Показывать ли промокод всем пользователям */
-  isPublic: boolean
+  isPublic: boolean;
   /** Список пользователей (ID), которым доступен промокод, пустой список = доступен всем пользователям */
-  usersId?: number[]
+  usersId?: number[];
   /** Тип скидки (PERCENT или AMOUNT) */
-  discountType: PromoCodeRequestDtoDiscountType
+  discountType: PromoCodeRequestDtoDiscountType;
   /**
    * Значение скидки (в процентах или деньгах)
    * @minimum 0
    */
-  discountValue: number
+  discountValue: number;
   /**
    * Максимальная сумма скидки (только для фиксированной)
    * @maximum 10000000
    */
-  maxDiscountAmount?: number
+  maxDiscountAmount?: number;
   /** Программы питания (id), пустой список = все программы */
-  nutritionProgramsId?: number[]
+  nutritionProgramsId?: number[];
   /** Действует ли только для первого заказа */
-  firstOrderOnly: boolean
+  firstOrderOnly: boolean;
   /**
    * Минимальная сумма заказа
    * @minimum 0
    */
-  minOrderAmount?: number
+  minOrderAmount?: number;
   /**
    * Максимальная сумма заказа
    * @minimum 0
    */
-  maxOrderAmount?: number
+  maxOrderAmount?: number;
 }

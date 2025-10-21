@@ -6,54 +6,36 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { PromoCodeResponseDtoCurrencyCode } from './promoCodeResponseDtoCurrencyCode'
-import type { PromoCodeResponseDtoDiscountType } from './promoCodeResponseDtoDiscountType'
-import type { PromoCodeResponseDtoStatus } from './promoCodeResponseDtoStatus'
+import type { PromoCodeResponseDtoStatus } from './promoCodeResponseDtoStatus';
+import type { PromoCodeResponseDtoDiscountType } from './promoCodeResponseDtoDiscountType';
+import type { PromoCodeResponseDtoCurrencyCode } from './promoCodeResponseDtoCurrencyCode';
 
 /**
  * Модель ответа для промокодов
  */
 export interface PromoCodeResponseDto {
+  /** Идентификатор промокода */
+  id?: number;
   /** Код промокода */
-  code?: string
+  code?: string;
   /** Статус промокода */
-  status?: PromoCodeResponseDtoStatus
-  /** Описание на казахском языке */
-  descriptionKk?: string
-  /** Описание на английском языке */
-  descriptionEn?: string
-  /** Описание на узбекском языке */
-  descriptionUz?: string
-  /** Описание на русском языке */
-  descriptionRu?: string
-  /** Дата начала действия (timestamp) */
-  startDate?: number
-  /** Дата окончания действия (timestamp), null или 0 = бессрочный */
-  endDate?: number
-  /** Показывать ли промокод всем пользователям */
-  isPublic?: boolean
+  status?: PromoCodeResponseDtoStatus;
+  /** Дата начала действия */
+  startDate?: string;
+  /** Дата окончания действия, null = бессрочный */
+  endDate?: string;
   /** Дата начала приостановления промокода */
-  suspendStartDate?: number
+  suspendStartDate?: string;
   /** Дата окончания приостановления промокода */
-  suspendEndDate?: number
-  /** Список пользователей (ID), которым доступен промокод */
-  usersId?: number[]
+  suspendEndDate?: string;
   /** Тип скидки (PERCENT или AMOUNT) */
-  discountType?: PromoCodeResponseDtoDiscountType
+  discountType?: PromoCodeResponseDtoDiscountType;
   /** Значение скидки (в процентах или деньгах) */
-  discountValue?: number
+  discountValue?: number;
   /** Код валюты */
-  currencyCode?: PromoCodeResponseDtoCurrencyCode
+  currencyCode?: PromoCodeResponseDtoCurrencyCode;
   /** Максимальная сумма скидки (только для фиксированной) */
-  maxDiscountAmount?: number
-  /** Программы питания (ID), пустой список = все программы */
-  nutritionProgramsId?: number[]
-  /** Действует ли только для первого заказа */
-  firstOrderOnly?: boolean
-  /** Минимальная сумма заказа */
-  minOrderAmount?: number
-  /** Максимальная сумма заказа */
-  maxOrderAmount?: number
+  maxDiscountAmount?: number;
   /** Количество использований промокода */
-  usageCount?: number
+  usageCount?: number;
 }

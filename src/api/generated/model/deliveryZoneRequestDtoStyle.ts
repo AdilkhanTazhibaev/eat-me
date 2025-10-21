@@ -10,4 +10,4 @@
 /**
  * Доп свойства для карты
  */
-export type DeliveryZoneRequestDtoStyle = { [key: string]: unknown }
+export type DeliveryZoneRequestDtoStyle = {[key: string]: unknown};

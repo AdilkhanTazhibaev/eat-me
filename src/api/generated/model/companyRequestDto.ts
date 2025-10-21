@@ -6,8 +6,8 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { CompanyRequestDtoCurrenciesItem } from './companyRequestDtoCurrenciesItem'
-import type { CompanyRequestDtoLocalesItem } from './companyRequestDtoLocalesItem'
+import type { CompanyRequestDtoCurrenciesItem } from './companyRequestDtoCurrenciesItem';
+import type { CompanyRequestDtoLocalesItem } from './companyRequestDtoLocalesItem';
 
 /**
  * Компания
@@ -18,9 +18,9 @@ export interface CompanyRequestDto {
    * @minLength 1
    * @maxLength 256
    */
-  name: string
+  name: string;
   /** Валюты */
-  currencies: CompanyRequestDtoCurrenciesItem[]
+  currencies: CompanyRequestDtoCurrenciesItem[];
   /** Языки */
-  locales: CompanyRequestDtoLocalesItem[]
+  locales: CompanyRequestDtoLocalesItem[];
 }

@@ -10,16 +10,9 @@
 /**
  * Пара калорийность–цена
  */
-export interface CaloriePriceOptionRequestDto {
-  /**
-   * Количество калорий
-   * @minimum 900
-   * @maximum 3000
-   */
-  calories: number
-  /**
-   * Цена
-   * @minimum 0
-   */
-  price: number
+export interface CaloriePriceOptionPlatformResponseDto {
+  /** Количество калорий */
+  calories?: number;
+  /** Цена */
+  price?: number;
 }

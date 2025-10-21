@@ -159,6 +159,7 @@ const Trailing = styled.div`
 
 export interface RadioOption<T extends string | number = string> {
   value: T
+  caption?: React.ReactNode
   title: React.ReactNode
   description?: React.ReactNode
   addon?: React.ReactNode
@@ -187,6 +188,7 @@ export function RadioItem({
   size = 64,
   withWrapper,
   disabled,
+  caption,
   controlPosition = 'left',
 }: RadioItemProps) {
   const id = useId()
@@ -201,6 +203,13 @@ export function RadioItem({
       {addon && <Addon>{addon}</Addon>}
 
       <TitleWrap $size={size}>
+        {caption && (
+          <Row>
+            <Text size={12} weight="medium" as="div" color="#565658">
+              {caption}
+            </Text>
+          </Row>
+        )}
         <Row>
           <Text size={16} weight="medium" as="div" color="inherit">
             {title}
@@ -270,6 +279,7 @@ export function RadioGroup<T extends string | number = string>({
           name={name}
           value={o.value}
           title={o.title}
+          caption={o.caption}
           description={o.description}
           addon={o.addon}
           trailing={o.trailing}

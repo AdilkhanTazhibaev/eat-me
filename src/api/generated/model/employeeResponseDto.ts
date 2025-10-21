@@ -6,29 +6,29 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { EmployeeResponseDtoLocale } from './employeeResponseDtoLocale'
-import type { RoleResponseDto } from './roleResponseDto'
+import type { EmployeeResponseDtoLocale } from './employeeResponseDtoLocale';
+import type { RoleResponseDto } from './roleResponseDto';
 
 /**
  * Модель ответа для сотрудника
  */
 export interface EmployeeResponseDto {
   /** Идентификатор сотрудника */
-  id?: number
+  id?: number;
   /** Почта сотрудника */
-  email?: string
+  email?: string;
   /** ФИО сотрудника */
-  fullName?: string
+  fullName?: string;
   /** Номер телефона сотрудника */
-  phoneNumber?: string
+  phoneNumber?: string;
   /** Локаль сотрудника */
-  locale?: EmployeeResponseDtoLocale
+  locale?: EmployeeResponseDtoLocale;
   /** Идентификатор филиала, к которому привязан сотрудник */
-  branchId?: number
+  branchId?: number;
   /** Активен ли сотрудник */
-  isActive?: boolean
+  isActive?: boolean;
   /** Верифицирован ли сотрудник */
-  isVerified?: boolean
+  isVerified?: boolean;
   /** Роль сотрудника */
-  role?: RoleResponseDto
+  role?: RoleResponseDto;
 }

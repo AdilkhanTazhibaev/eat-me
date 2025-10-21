@@ -6,23 +6,23 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { CompanyResponseDtoCurrenciesItem } from './companyResponseDtoCurrenciesItem'
-import type { CompanyResponseDtoLocalesItem } from './companyResponseDtoLocalesItem'
+import type { CompanyResponseDtoCurrenciesItem } from './companyResponseDtoCurrenciesItem';
+import type { CompanyResponseDtoLocalesItem } from './companyResponseDtoLocalesItem';
 
 /**
  * Компания
  */
 export interface CompanyResponseDto {
   /** Идентификатор компании */
-  id?: number
+  id?: number;
   /** Наименование компании */
-  name?: string
+  name?: string;
   /** Валюты */
-  currencies?: CompanyResponseDtoCurrenciesItem[]
+  currencies?: CompanyResponseDtoCurrenciesItem[];
   /** Языки */
-  locales?: CompanyResponseDtoLocalesItem[]
+  locales?: CompanyResponseDtoLocalesItem[];
   /** Статус активности */
-  isActive?: boolean
+  isActive?: boolean;
   /** Дата и время создания */
-  created?: number
+  created?: number;
 }

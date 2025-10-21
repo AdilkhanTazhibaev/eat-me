@@ -6,34 +6,34 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { MealPlanResponseDtoStatus } from './mealPlanResponseDtoStatus'
+import type { MealPlanResponseDtoStatus } from './mealPlanResponseDtoStatus';
 
 /**
  * Модель ответа для планировщика питания
  */
 export interface MealPlanResponseDto {
   /** Идентификатор программы питания */
-  id?: number
+  id?: number;
   /** Наименование (kk) */
-  nameKk?: string
+  nameKk?: string;
   /** Наименование (en) */
-  nameEn?: string
+  nameEn?: string;
   /** Наименование (uz) */
-  nameUz?: string
+  nameUz?: string;
   /** Наименование (ru) */
-  nameRu?: string
+  nameRu?: string;
   /** Количество приемов пищи */
-  dailyMealCount?: number
+  dailyMealCount?: number;
   /** Ссылка на изображение */
-  fileId?: string
+  fileId?: string;
   /** Минимальное количество калорий */
-  minCalories?: number
+  minCalories?: number;
   /** Максимальное количество калорий */
-  maxCalories?: number
+  maxCalories?: number;
   /** Дата, до которой программа питания запланирована */
-  plannedUntil?: string
+  plannedUntil?: string;
   /** Количество оставшихся дней */
-  daysLeft?: number
+  daysLeft?: number;
   /** Статус планирования программы питания */
-  status?: MealPlanResponseDtoStatus
+  status?: MealPlanResponseDtoStatus;
 }

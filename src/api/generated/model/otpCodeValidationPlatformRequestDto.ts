@@ -12,15 +12,15 @@
  */
 export interface OtpCodeValidationPlatformRequestDto {
   /**
-   * Номер телефон клиента
+   * Номер телефона клиента
    * @minLength 1
    * @maxLength 24
    */
-  phoneNumber: string
+  phoneNumber: string;
   /**
    * Otp код
    * @minLength 1
    * @maxLength 4
    */
-  code: string
+  code: string;
 }

@@ -12,9 +12,9 @@
  */
 export interface LoginResponseDto {
   /** access токен (jwt) */
-  accessToken?: string
+  accessToken?: string;
   /** refresh токен */
-  refreshToken?: string
+  refreshToken?: string;
   /** Время жизни access‑токена (секунды) */
-  expires?: number
+  expires?: number;
 }

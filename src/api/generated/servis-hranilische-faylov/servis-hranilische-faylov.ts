@@ -6,6 +6,10 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   QueryFunction,
@@ -13,222 +17,278 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from '@tanstack/vue-query'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import type { MaybeRef } from 'vue'
-import { computed, unref } from 'vue'
+import {
+  computed,
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
-import type { ApiError, FileResponseDto, UploadFileBody } from '.././model'
+import type {
+  ApiError,
+  FileResponseDto,
+  UploadFileBody
+} from '.././model';
 
-import { customAxios } from '../../custom-axios'
+import { customAxios } from '../../custom-axios';
 
-/**
- * @summary Загрузка файла
- */
-export const uploadFile = (uploadFileBody: MaybeRef<UploadFileBody>, signal?: AbortSignal) => {
-  uploadFileBody = unref(uploadFileBody)
-  const formData = new FormData()
-  formData.append(`file`, uploadFileBody.file)
 
-  return customAxios<FileResponseDto>({
-    url: `/api/v1/storage`,
-    method: 'POST',
-    headers: { 'Content-Type': 'multipart/form-data' },
-    data: formData,
-    signal,
-  })
-}
 
-export const getUploadFileMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof uploadFile>>,
-    TError,
-    { data: UploadFileBody },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof uploadFile>>,
-  TError,
-  { data: UploadFileBody },
-  TContext
-> => {
-  const mutationKey = ['uploadFile']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof uploadFile>>,
-    { data: UploadFileBody }
-  > = (props) => {
-    const { data } = props ?? {}
-
-    return uploadFile(data)
-  }
-
-  return { mutationFn, ...mutationOptions }
-}
-
-export type UploadFileMutationResult = NonNullable<Awaited<ReturnType<typeof uploadFile>>>
-export type UploadFileMutationBody = UploadFileBody
-export type UploadFileMutationError = ApiError | ApiError | ApiError
 
 /**
  * @summary Загрузка файла
  */
-export const useUploadFile = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof uploadFile>>,
-    TError,
-    { data: UploadFileBody },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof uploadFile>>,
-  TError,
-  { data: UploadFileBody },
-  TContext
-> => {
-  const mutationOptions = getUploadFileMutationOptions(options)
+export const uploadFile = (
+    uploadFileBody: MaybeRef<UploadFileBody>,
+ signal?: AbortSignal
+) => {
+      uploadFileBody = unref(uploadFileBody);
+      const formData = new FormData();
+formData.append(`file`, uploadFileBody.file)
 
-  return useMutation(mutationOptions)
-}
-/**
+      return customAxios<FileResponseDto | FileResponseDto>(
+      {url: `/api/v1/storage`, method: 'POST',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData, signal
+    },
+      );
+    }
+  
+
+
+export const getUploadFileMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadFile>>, TError,{data: UploadFileBody}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof uploadFile>>, TError,{data: UploadFileBody}, TContext> => {
+
+const mutationKey = ['uploadFile'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadFile>>, {data: UploadFileBody}> = (props) => {
+          const {data} = props ?? {};
+
+          return  uploadFile(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UploadFileMutationResult = NonNullable<Awaited<ReturnType<typeof uploadFile>>>
+    export type UploadFileMutationBody = UploadFileBody
+    export type UploadFileMutationError = ApiError | ApiError | ApiError
+
+    /**
+ * @summary Загрузка файла
+ */
+export const useUploadFile = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadFile>>, TError,{data: UploadFileBody}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof uploadFile>>,
+        TError,
+        {data: UploadFileBody},
+        TContext
+      > => {
+
+      const mutationOptions = getUploadFileMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Скачивание файла
  */
-export const downloadFile = (filename: MaybeRef<string>, signal?: AbortSignal) => {
-  filename = unref(filename)
-
-  return customAxios<unknown>({ url: `/api/v1/storage/${filename}`, method: 'GET', signal })
-}
-
-export const getDownloadFileQueryKey = (filename?: MaybeRef<string>) => {
-  return ['api', 'v1', 'storage', filename] as const
-}
-
-export const getDownloadFileQueryOptions = <
-  TData = Awaited<ReturnType<typeof downloadFile>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  filename: MaybeRef<string>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof downloadFile>>, TError, TData> },
+export const downloadFile = (
+    filename: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      filename = unref(filename);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/storage/${filename}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getDownloadFileQueryKey(filename)
+export const getDownloadFileQueryKey = (filename?: MaybeRef<string>,) => {
+    return ['api','v1','storage',filename] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof downloadFile>>> = ({ signal }) =>
-    downloadFile(filename, signal)
+    
+export const getDownloadFileQueryOptions = <TData = Awaited<ReturnType<typeof downloadFile>>, TError = ApiError | ApiError | ApiError | ApiError>(filename: MaybeRef<string>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof downloadFile>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(filename)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof downloadFile>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getDownloadFileQueryKey(filename);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof downloadFile>>> = ({ signal }) => downloadFile(filename, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(filename))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof downloadFile>>, TError, TData> 
 }
 
 export type DownloadFileQueryResult = NonNullable<Awaited<ReturnType<typeof downloadFile>>>
 export type DownloadFileQueryError = ApiError | ApiError | ApiError | ApiError
 
+
 /**
  * @summary Скачивание файла
  */
 
-export function useDownloadFile<
-  TData = Awaited<ReturnType<typeof downloadFile>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  filename: MaybeRef<string>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof downloadFile>>, TError, TData> },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getDownloadFileQueryOptions(filename, options)
+export function useDownloadFile<TData = Awaited<ReturnType<typeof downloadFile>>, TError = ApiError | ApiError | ApiError | ApiError>(
+ filename: MaybeRef<string>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof downloadFile>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getDownloadFileQueryOptions(filename,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
 
 /**
  * @summary Удаление файла
  */
-export const deleteFile = (filename: MaybeRef<string>) => {
-  filename = unref(filename)
+export const deleteFile = (
+    filename: MaybeRef<string>,
+ ) => {
+      filename = unref(filename);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/storage/${filename}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({ url: `/api/v1/storage/${filename}`, method: 'DELETE' })
-}
 
-export const getDeleteFileMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteFile>>,
-    TError,
-    { filename: string },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteFile>>,
-  TError,
-  { filename: string },
-  TContext
-> => {
-  const mutationKey = ['deleteFile']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getDeleteFileMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFile>>, TError,{filename: string}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteFile>>, TError,{filename: string}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteFile>>,
-    { filename: string }
-  > = (props) => {
-    const { filename } = props ?? {}
+const mutationKey = ['deleteFile'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return deleteFile(filename)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type DeleteFileMutationResult = NonNullable<Awaited<ReturnType<typeof deleteFile>>>
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteFile>>, {filename: string}> = (props) => {
+          const {filename} = props ?? {};
 
-export type DeleteFileMutationError = ApiError | ApiError | ApiError | ApiError
+          return  deleteFile(filename,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteFileMutationResult = NonNullable<Awaited<ReturnType<typeof deleteFile>>>
+    
+    export type DeleteFileMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Удаление файла
  */
-export const useDeleteFile = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteFile>>,
-    TError,
-    { filename: string },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof deleteFile>>,
-  TError,
-  { filename: string },
-  TContext
-> => {
-  const mutationOptions = getDeleteFileMutationOptions(options)
+export const useDeleteFile = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteFile>>, TError,{filename: string}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof deleteFile>>,
+        TError,
+        {filename: string},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
+      const mutationOptions = getDeleteFileMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
+ * @summary Скачивание сжатого файла
+ */
+export const downloadThumbnailFile = (
+    fileName: MaybeRef<string>,
+ signal?: AbortSignal
+) => {
+      fileName = unref(fileName);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/storage/thumbnail/${fileName}`, method: 'GET', signal
+    },
+      );
+    }
+  
+
+export const getDownloadThumbnailFileQueryKey = (fileName?: MaybeRef<string>,) => {
+    return ['api','v1','storage','thumbnail',fileName] as const;
+    }
+
+    
+export const getDownloadThumbnailFileQueryOptions = <TData = Awaited<ReturnType<typeof downloadThumbnailFile>>, TError = ApiError | ApiError | ApiError | ApiError>(fileName: MaybeRef<string>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof downloadThumbnailFile>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getDownloadThumbnailFileQueryKey(fileName);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof downloadThumbnailFile>>> = ({ signal }) => downloadThumbnailFile(fileName, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(fileName))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof downloadThumbnailFile>>, TError, TData> 
 }
+
+export type DownloadThumbnailFileQueryResult = NonNullable<Awaited<ReturnType<typeof downloadThumbnailFile>>>
+export type DownloadThumbnailFileQueryError = ApiError | ApiError | ApiError | ApiError
+
+
+/**
+ * @summary Скачивание сжатого файла
+ */
+
+export function useDownloadThumbnailFile<TData = Awaited<ReturnType<typeof downloadThumbnailFile>>, TError = ApiError | ApiError | ApiError | ApiError>(
+ fileName: MaybeRef<string>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof downloadThumbnailFile>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getDownloadThumbnailFileQueryOptions(fileName,options)
+
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
+}
+
+
+

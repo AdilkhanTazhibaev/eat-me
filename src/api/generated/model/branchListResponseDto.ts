@@ -6,12 +6,12 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { BranchResponseDto } from './branchResponseDto'
+import type { BranchResponseDto } from './branchResponseDto';
 
 /**
  * Модель ответа для списка филиалов
  */
 export interface BranchListResponseDto {
   /** Список филиалов */
-  branches?: BranchResponseDto[]
+  branches?: BranchResponseDto[];
 }

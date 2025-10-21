@@ -16,27 +16,27 @@ export interface MealTypeRequestDto {
    * @minLength 0
    * @maxLength 255
    */
-  nameKk?: string
+  nameKk?: string;
   /**
    * Название приема пищи на английском языке
    * @minLength 0
    * @maxLength 255
    */
-  nameEn?: string
+  nameEn?: string;
   /**
    * Название приема пищи на узбекском языке
    * @minLength 0
    * @maxLength 255
    */
-  nameUz?: string
+  nameUz?: string;
   /**
    * Название приема пищи на русском языке
    * @minLength 0
    * @maxLength 255
    */
-  nameRu?: string
+  nameRu?: string;
   /** Время начала приема пищи */
-  startTime: string
+  startTime: string;
   /** Время конца приема пищи */
-  endTime: string
+  endTime: string;
 }

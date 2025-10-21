@@ -12,11 +12,11 @@
  */
 export interface MealTypeNameRequestDto {
   /** Название приема пищи на казахском языке */
-  nameKk?: string
+  nameKk?: string;
   /** Название приема пищи на английском языке */
-  nameEn?: string
+  nameEn?: string;
   /** Название приема пищи на узбекском языке */
-  nameUz?: string
+  nameUz?: string;
   /** Название приема пищи на русском языке */
-  nameRu?: string
+  nameRu?: string;
 }

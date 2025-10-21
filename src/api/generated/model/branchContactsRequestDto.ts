@@ -16,29 +16,29 @@ export interface BranchContactsRequestDto {
    * @minLength 1
    * @maxLength 24
    */
-  support?: string
+  support?: string;
   /**
    * Номер WhatsApp
    * @minLength 1
    * @maxLength 64
    */
-  whatsApp?: string
+  whatsApp?: string;
   /**
    * Номер Telegram
    * @minLength 1
    * @maxLength 64
    */
-  telegram?: string
+  telegram?: string;
   /**
    * Ссылка на Instagram
    * @minLength 1
    * @maxLength 128
    */
-  instagram?: string
+  instagram?: string;
   /**
    * Ссылка на TikTok
    * @minLength 1
    * @maxLength 128
    */
-  tikTok?: string
+  tikTok?: string;
 }

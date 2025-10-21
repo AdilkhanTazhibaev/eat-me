@@ -12,7 +12,7 @@
  */
 export interface CaloriePriceOptionResponseDto {
   /** Количество калорий */
-  calories?: number
+  calories?: number;
   /** Цена */
-  price?: number
+  price?: number;
 }

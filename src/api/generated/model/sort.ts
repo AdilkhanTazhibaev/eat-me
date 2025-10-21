@@ -6,7 +6,7 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { SortDirection } from './sortDirection'
+import type { SortDirection } from './sortDirection';
 
 /**
  * Сортировка
@@ -17,7 +17,7 @@ export interface Sort {
    * @minLength 0
    * @maxLength 50
    */
-  field: string
+  field: string;
   /** Направление сортировки */
-  direction: SortDirection
+  direction: SortDirection;
 }

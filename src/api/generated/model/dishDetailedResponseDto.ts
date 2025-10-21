@@ -6,40 +6,40 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { MealTypeResponseDto } from './mealTypeResponseDto'
+import type { MealTypeResponseDto } from './mealTypeResponseDto';
 
 /**
  * Модель ответа для блюд
  */
 export interface DishDetailedResponseDto {
   /** Идентификатор блюда */
-  id?: number
+  id?: number;
   /** Наименование (kk) */
-  nameKk?: string
+  nameKk?: string;
   /** Наименование (en) */
-  nameEn?: string
+  nameEn?: string;
   /** Наименование (uz) */
-  nameUz?: string
+  nameUz?: string;
   /** Наименование (ru) */
-  nameRu?: string
+  nameRu?: string;
   /** Описание (kk) */
-  descriptionKk?: string
+  descriptionKk?: string;
   /** Описание (en) */
-  descriptionEn?: string
+  descriptionEn?: string;
   /** Описание (uz) */
-  descriptionUz?: string
+  descriptionUz?: string;
   /** Описание (ru) */
-  descriptionRu?: string
+  descriptionRu?: string;
   /** Количество калорий */
-  calories?: number
+  calories?: number;
   /** Количество белков */
-  proteins?: number
+  proteins?: number;
   /** Количество жиров */
-  fats?: number
+  fats?: number;
   /** Количество углеводов */
-  carbohydrates?: number
+  carbohydrates?: number;
   /** Типы приемов пищи */
-  mealTypes?: MealTypeResponseDto[]
+  mealTypes?: MealTypeResponseDto[];
   /** Ссылка на изображение для обложки программы питания */
-  fileId?: string
+  fileId?: string;
 }

@@ -12,23 +12,23 @@
  */
 export interface DishInfoResponseDto {
   /** Идентификатор блюда */
-  id?: number
+  id?: number;
   /** Наименование (kk) */
-  nameKk?: string
+  nameKk?: string;
   /** Наименование (en) */
-  nameEn?: string
+  nameEn?: string;
   /** Наименование (uz) */
-  nameUz?: string
+  nameUz?: string;
   /** Наименование (ru) */
-  nameRu?: string
+  nameRu?: string;
   /** Описание (kk) */
-  descriptionKk?: string
+  descriptionKk?: string;
   /** Описание (en) */
-  descriptionEn?: string
+  descriptionEn?: string;
   /** Описание (uz) */
-  descriptionUz?: string
+  descriptionUz?: string;
   /** Описание (ru) */
-  descriptionRu?: string
+  descriptionRu?: string;
   /** Ссылка на изображение для обложки программы питания */
-  fileId?: string
+  fileId?: string;
 }

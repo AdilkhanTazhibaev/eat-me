@@ -6,28 +6,28 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { DictionaryDtoMetadata } from './dictionaryDtoMetadata'
-import type { DictionaryDtoProperties } from './dictionaryDtoProperties'
-import type { DictionaryDtoScheme } from './dictionaryDtoScheme'
+import type { DictionaryDtoMetadata } from './dictionaryDtoMetadata';
+import type { DictionaryDtoProperties } from './dictionaryDtoProperties';
+import type { DictionaryDtoScheme } from './dictionaryDtoScheme';
 
 /**
  * Модель ответа для справочников
  */
 export interface DictionaryDto {
   /** Идентификатор справочника */
-  id?: number
+  id?: number;
   /** Код справочника */
-  code?: string
+  code?: string;
   /** Метаданные справочника */
-  metadata?: DictionaryDtoMetadata
+  metadata?: DictionaryDtoMetadata;
   /** Дополнительные свойства справочника */
-  properties?: DictionaryDtoProperties
+  properties?: DictionaryDtoProperties;
   /** JSON схема справочника */
-  scheme?: DictionaryDtoScheme
+  scheme?: DictionaryDtoScheme;
   /** Время создания записи */
-  created?: number
+  created?: number;
   /** Время последнего обновления записи */
-  updated?: number
+  updated?: number;
   /** Время удаления записи */
-  deleted?: number
+  deleted?: number;
 }

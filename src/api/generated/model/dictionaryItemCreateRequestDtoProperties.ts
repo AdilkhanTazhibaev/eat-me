@@ -10,4 +10,4 @@
 /**
  * Поля справочного элемента
  */
-export type DictionaryItemCreateRequestDtoProperties = { [key: string]: unknown }
+export type DictionaryItemCreateRequestDtoProperties = {[key: string]: unknown};

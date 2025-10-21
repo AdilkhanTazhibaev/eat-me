@@ -6,15 +6,15 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { CeoRequestDto } from './ceoRequestDto'
-import type { CompanyRequestDto } from './companyRequestDto'
+import type { CompanyRequestDto } from './companyRequestDto';
+import type { CeoRequestDto } from './ceoRequestDto';
 
 /**
  * Запрос на создание/редактировании бизнес юнита
  */
 export interface BusinessUnitRequestDto {
   /** Компания */
-  company: CompanyRequestDto
+  company: CompanyRequestDto;
   /** Руководитель */
-  ceo: CeoRequestDto
+  ceo: CeoRequestDto;
 }

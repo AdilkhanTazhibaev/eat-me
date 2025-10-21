@@ -6,36 +6,36 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { BranchDetailsDto } from './branchDetailsDto'
-import type { BranchResponseDtoCurrency } from './branchResponseDtoCurrency'
-import type { BranchResponseDtoLocalesItem } from './branchResponseDtoLocalesItem'
-import type { BranchResponseDtoPhoneNumberCode } from './branchResponseDtoPhoneNumberCode'
-import type { HeadResponseDto } from './headResponseDto'
+import type { BranchResponseDtoLocalesItem } from './branchResponseDtoLocalesItem';
+import type { BranchResponseDtoCurrency } from './branchResponseDtoCurrency';
+import type { BranchResponseDtoPhoneNumberCode } from './branchResponseDtoPhoneNumberCode';
+import type { HeadResponseDto } from './headResponseDto';
+import type { BranchDetailsDto } from './branchDetailsDto';
 
 /**
  * Модель ответа для филиалов
  */
 export interface BranchResponseDto {
   /** Идентификатор филиала */
-  id?: number
+  id?: number;
   /** Наименование (kk) */
-  nameKk?: string
+  nameKk?: string;
   /** Наименование (en) */
-  nameEn?: string
+  nameEn?: string;
   /** Наименование (uz) */
-  nameUz?: string
+  nameUz?: string;
   /** Наименование (ru) */
-  nameRu?: string
+  nameRu?: string;
   /** Поддерживаемые языки интерфейса филиала */
-  locales?: BranchResponseDtoLocalesItem[]
+  locales?: BranchResponseDtoLocalesItem[];
   /** Валюта филиала */
-  currency?: BranchResponseDtoCurrency
+  currency?: BranchResponseDtoCurrency;
   /** Код телефонного номера филиала */
-  phoneNumberCode?: BranchResponseDtoPhoneNumberCode
+  phoneNumberCode?: BranchResponseDtoPhoneNumberCode;
   /** Активен ли филиал */
-  isActive?: boolean
+  isActive?: boolean;
   /** Руководитель */
-  head?: HeadResponseDto
+  head?: HeadResponseDto;
   /** Детали филиала */
-  details?: BranchDetailsDto
+  details?: BranchDetailsDto;
 }

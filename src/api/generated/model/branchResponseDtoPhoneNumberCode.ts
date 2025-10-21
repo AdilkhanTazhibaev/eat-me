@@ -10,12 +10,12 @@
 /**
  * Код телефонного номера филиала
  */
-export type BranchResponseDtoPhoneNumberCode =
-  (typeof BranchResponseDtoPhoneNumberCode)[keyof typeof BranchResponseDtoPhoneNumberCode]
+export type BranchResponseDtoPhoneNumberCode = typeof BranchResponseDtoPhoneNumberCode[keyof typeof BranchResponseDtoPhoneNumberCode];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BranchResponseDtoPhoneNumberCode = {
   KZ: 'KZ',
   UZ: 'UZ',
   UAE: 'UAE',
-} as const
+} as const;

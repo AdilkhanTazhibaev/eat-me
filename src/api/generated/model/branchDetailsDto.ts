@@ -6,15 +6,15 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { ContactsDto } from './contactsDto'
-import type { TimezoneDictionaryItemDto } from './timezoneDictionaryItemDto'
+import type { TimezoneDictionaryItemDto } from './timezoneDictionaryItemDto';
+import type { ContactsDto } from './contactsDto';
 
 /**
  * Детали филиала
  */
 export interface BranchDetailsDto {
   /** Информация о временной зоне филиала */
-  timezone?: TimezoneDictionaryItemDto
+  timezone?: TimezoneDictionaryItemDto;
   /** Информация о контактах филиала */
-  contacts?: ContactsDto
+  contacts?: ContactsDto;
 }

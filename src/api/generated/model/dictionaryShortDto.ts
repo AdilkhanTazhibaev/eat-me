@@ -6,22 +6,22 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { DictionaryShortDtoMetadata } from './dictionaryShortDtoMetadata'
+import type { DictionaryShortDtoMetadata } from './dictionaryShortDtoMetadata';
 
 /**
  * Модель ответа для справочников
  */
 export interface DictionaryShortDto {
   /** Идентификатор справочника */
-  id?: number
+  id?: number;
   /** Код справочника */
-  code?: string
+  code?: string;
   /** Метаданные справочника */
-  metadata?: DictionaryShortDtoMetadata
+  metadata?: DictionaryShortDtoMetadata;
   /** Время создания записи */
-  created?: number
+  created?: number;
   /** Время последнего обновления записи */
-  updated?: number
+  updated?: number;
   /** Время удаления записи */
-  deleted?: number
+  deleted?: number;
 }

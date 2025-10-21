@@ -10,11 +10,11 @@
 /**
  * Пол
  */
-export type CaloriesCalculationRequestDtoGender =
-  (typeof CaloriesCalculationRequestDtoGender)[keyof typeof CaloriesCalculationRequestDtoGender]
+export type CaloriesCalculationRequestDtoGender = typeof CaloriesCalculationRequestDtoGender[keyof typeof CaloriesCalculationRequestDtoGender];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CaloriesCalculationRequestDtoGender = {
   MALE: 'MALE',
   FEMALE: 'FEMALE',
-} as const
+} as const;

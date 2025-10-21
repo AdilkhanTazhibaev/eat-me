@@ -7,8 +7,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type BranchResponseDtoLocalesItem =
-  (typeof BranchResponseDtoLocalesItem)[keyof typeof BranchResponseDtoLocalesItem]
+export type BranchResponseDtoLocalesItem = typeof BranchResponseDtoLocalesItem[keyof typeof BranchResponseDtoLocalesItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BranchResponseDtoLocalesItem = {
@@ -16,4 +16,4 @@ export const BranchResponseDtoLocalesItem = {
   RU: 'RU',
   UZ: 'UZ',
   EN: 'EN',
-} as const
+} as const;

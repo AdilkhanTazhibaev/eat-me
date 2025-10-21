@@ -6,7 +6,7 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { CaloriePriceOptionRequestDto } from './caloriePriceOptionRequestDto'
+import type { CaloriePriceOptionBackofficeRequestDto } from './caloriePriceOptionBackofficeRequestDto';
 
 /**
  * Запрос для создания программы питания
@@ -17,65 +17,65 @@ export interface NutritionProgramRequestDto {
    * @minLength 1
    * @maxLength 60
    */
-  nameKk?: string
+  nameKk?: string;
   /**
    * Наименование (en)
    * @minLength 1
    * @maxLength 60
    */
-  nameEn?: string
+  nameEn?: string;
   /**
    * Наименование (uz)
    * @minLength 1
    * @maxLength 60
    */
-  nameUz?: string
+  nameUz?: string;
   /**
    * Наименование (ru)
    * @minLength 1
    * @maxLength 60
    */
-  nameRu: string
+  nameRu: string;
   /**
    * Описание (kk)
    * @minLength 1
    * @maxLength 255
    */
-  descriptionKk?: string
+  descriptionKk?: string;
   /**
    * Описание (en)
    * @minLength 1
    * @maxLength 255
    */
-  descriptionEn?: string
+  descriptionEn?: string;
   /**
    * Описание (uz)
    * @minLength 1
    * @maxLength 255
    */
-  descriptionUz?: string
+  descriptionUz?: string;
   /**
    * Описание (ru)
    * @minLength 1
    * @maxLength 255
    */
-  descriptionRu: string
+  descriptionRu: string;
   /**
    * Количество приемов пищи
    * @minimum 1
    * @maximum 12
    */
-  dailyMealCount: number
+  dailyMealCount: number;
   /** Ссылка на изображение для обложки программы питания */
-  fileId?: string
+  fileId?: string;
   /**
    * Id типов приёмов пищи
    * @minItems 1
    */
-  mealTypeIds: number[]
+  mealTypeIds: number[];
   /**
    * Цены и калорийность
    * @minItems 1
    */
-  caloriePriceList: CaloriePriceOptionRequestDto[]
+  caloriePriceList: CaloriePriceOptionBackofficeRequestDto[];
 }

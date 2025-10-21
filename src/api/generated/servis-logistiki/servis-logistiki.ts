@@ -6,6 +6,10 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   QueryFunction,
@@ -13,733 +17,663 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from '@tanstack/vue-query'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import type { MaybeRef } from 'vue'
-import { computed, unref } from 'vue'
+import {
+  computed,
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   ApiError,
-  DeliveryManListResponseDto,
   DeliveryManRequestDto,
   DeliveryManResponseDto,
+  DeliveryZoneListResponseDto,
   DeliveryZoneRequestDto,
-} from '.././model'
+  DeliveryZoneResponseDto,
+  FilterRequestDto
+} from '.././model';
 
-import { customAxios } from '../../custom-axios'
+import { customAxios } from '../../custom-axios';
+
+
+
 
 /**
  * @summary Получение курьера по идентификатору
  */
-export const getDeliveryMan = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
-
-  return customAxios<DeliveryManResponseDto>({
-    url: `/api/v1/backoffice/deliveries/${id}`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getGetDeliveryManQueryKey = (id?: MaybeRef<number>) => {
-  return ['api', 'v1', 'backoffice', 'deliveries', id] as const
-}
-
-export const getGetDeliveryManQueryOptions = <
-  TData = Awaited<ReturnType<typeof getDeliveryMan>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getDeliveryMan>>, TError, TData> },
+export const getDeliveryMan = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      id = unref(id);
+      
+      return customAxios<DeliveryManResponseDto>(
+      {url: `/api/v1/backoffice/deliveries/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetDeliveryManQueryKey(id)
+export const getGetDeliveryManQueryKey = (id?: MaybeRef<number>,) => {
+    return ['api','v1','backoffice','deliveries',id] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeliveryMan>>> = ({ signal }) =>
-    getDeliveryMan(id, signal)
+    
+export const getGetDeliveryManQueryOptions = <TData = Awaited<ReturnType<typeof getDeliveryMan>>, TError = ApiError | ApiError | ApiError | ApiError>(id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeliveryMan>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(id)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getDeliveryMan>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetDeliveryManQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeliveryMan>>> = ({ signal }) => getDeliveryMan(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(id))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDeliveryMan>>, TError, TData> 
 }
 
 export type GetDeliveryManQueryResult = NonNullable<Awaited<ReturnType<typeof getDeliveryMan>>>
 export type GetDeliveryManQueryError = ApiError | ApiError | ApiError | ApiError
 
+
 /**
  * @summary Получение курьера по идентификатору
  */
 
-export function useGetDeliveryMan<
-  TData = Awaited<ReturnType<typeof getDeliveryMan>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getDeliveryMan>>, TError, TData> },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetDeliveryManQueryOptions(id, options)
+export function useGetDeliveryMan<TData = Awaited<ReturnType<typeof getDeliveryMan>>, TError = ApiError | ApiError | ApiError | ApiError>(
+ id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeliveryMan>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetDeliveryManQueryOptions(id,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
 
 /**
  * @summary Редактирование курьеров
  */
 export const editDeliveryMan = (
-  id: MaybeRef<number>,
-  deliveryManRequestDto: MaybeRef<DeliveryManRequestDto>,
-) => {
-  id = unref(id)
-  deliveryManRequestDto = unref(deliveryManRequestDto)
+    id: MaybeRef<number>,
+    deliveryManRequestDto: MaybeRef<DeliveryManRequestDto>,
+ ) => {
+      id = unref(id);
+deliveryManRequestDto = unref(deliveryManRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/deliveries/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: deliveryManRequestDto
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/deliveries/${id}`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: deliveryManRequestDto,
-  })
-}
 
-export const getEditDeliveryManMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editDeliveryMan>>,
-    TError,
-    { id: number; data: DeliveryManRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof editDeliveryMan>>,
-  TError,
-  { id: number; data: DeliveryManRequestDto },
-  TContext
-> => {
-  const mutationKey = ['editDeliveryMan']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getEditDeliveryManMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editDeliveryMan>>, TError,{id: number;data: DeliveryManRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof editDeliveryMan>>, TError,{id: number;data: DeliveryManRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof editDeliveryMan>>,
-    { id: number; data: DeliveryManRequestDto }
-  > = (props) => {
-    const { id, data } = props ?? {}
+const mutationKey = ['editDeliveryMan'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return editDeliveryMan(id, data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type EditDeliveryManMutationResult = NonNullable<Awaited<ReturnType<typeof editDeliveryMan>>>
-export type EditDeliveryManMutationBody = DeliveryManRequestDto
-export type EditDeliveryManMutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editDeliveryMan>>, {id: number;data: DeliveryManRequestDto}> = (props) => {
+          const {id,data} = props ?? {};
 
-/**
+          return  editDeliveryMan(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EditDeliveryManMutationResult = NonNullable<Awaited<ReturnType<typeof editDeliveryMan>>>
+    export type EditDeliveryManMutationBody = DeliveryManRequestDto
+    export type EditDeliveryManMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Редактирование курьеров
  */
-export const useEditDeliveryMan = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editDeliveryMan>>,
-    TError,
-    { id: number; data: DeliveryManRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof editDeliveryMan>>,
-  TError,
-  { id: number; data: DeliveryManRequestDto },
-  TContext
-> => {
-  const mutationOptions = getEditDeliveryManMutationOptions(options)
+export const useEditDeliveryMan = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editDeliveryMan>>, TError,{id: number;data: DeliveryManRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof editDeliveryMan>>,
+        TError,
+        {id: number;data: DeliveryManRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getEditDeliveryManMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Удалить курьера
  */
-export const deleteDeliveryMan = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const deleteDeliveryMan = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/deliveries/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({ url: `/api/v1/backoffice/deliveries/${id}`, method: 'DELETE' })
-}
 
-export const getDeleteDeliveryManMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteDeliveryMan>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteDeliveryMan>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['deleteDeliveryMan']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getDeleteDeliveryManMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDeliveryMan>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteDeliveryMan>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteDeliveryMan>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
+const mutationKey = ['deleteDeliveryMan'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return deleteDeliveryMan(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type DeleteDeliveryManMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteDeliveryMan>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteDeliveryMan>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type DeleteDeliveryManMutationError = ApiError | ApiError | ApiError
+          return  deleteDeliveryMan(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteDeliveryManMutationResult = NonNullable<Awaited<ReturnType<typeof deleteDeliveryMan>>>
+    
+    export type DeleteDeliveryManMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Удалить курьера
  */
-export const useDeleteDeliveryMan = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteDeliveryMan>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof deleteDeliveryMan>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getDeleteDeliveryManMutationOptions(options)
+export const useDeleteDeliveryMan = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDeliveryMan>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof deleteDeliveryMan>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getDeleteDeliveryManMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Получение зоны доставки по идентификатору
  */
-export const getDeliveryZone = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
-
-  return customAxios<DeliveryManResponseDto>({
-    url: `/api/v1/backoffice/deliveries/zones/${id}`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getGetDeliveryZoneQueryKey = (id?: MaybeRef<number>) => {
-  return ['api', 'v1', 'backoffice', 'deliveries', 'zones', id] as const
-}
-
-export const getGetDeliveryZoneQueryOptions = <
-  TData = Awaited<ReturnType<typeof getDeliveryZone>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getDeliveryZone>>, TError, TData> },
+export const getDeliveryZone = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      id = unref(id);
+      
+      return customAxios<DeliveryZoneResponseDto>(
+      {url: `/api/v1/backoffice/deliveries/zones/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetDeliveryZoneQueryKey(id)
+export const getGetDeliveryZoneQueryKey = (id?: MaybeRef<number>,) => {
+    return ['api','v1','backoffice','deliveries','zones',id] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeliveryZone>>> = ({ signal }) =>
-    getDeliveryZone(id, signal)
+    
+export const getGetDeliveryZoneQueryOptions = <TData = Awaited<ReturnType<typeof getDeliveryZone>>, TError = ApiError | ApiError | ApiError | ApiError>(id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeliveryZone>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(id)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getDeliveryZone>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetDeliveryZoneQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeliveryZone>>> = ({ signal }) => getDeliveryZone(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(id))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDeliveryZone>>, TError, TData> 
 }
 
 export type GetDeliveryZoneQueryResult = NonNullable<Awaited<ReturnType<typeof getDeliveryZone>>>
 export type GetDeliveryZoneQueryError = ApiError | ApiError | ApiError | ApiError
 
+
 /**
  * @summary Получение зоны доставки по идентификатору
  */
 
-export function useGetDeliveryZone<
-  TData = Awaited<ReturnType<typeof getDeliveryZone>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getDeliveryZone>>, TError, TData> },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetDeliveryZoneQueryOptions(id, options)
+export function useGetDeliveryZone<TData = Awaited<ReturnType<typeof getDeliveryZone>>, TError = ApiError | ApiError | ApiError | ApiError>(
+ id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeliveryZone>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetDeliveryZoneQueryOptions(id,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
 
 /**
  * @summary Редактирование зоны доставки
  */
 export const editDeliveryZone = (
-  id: MaybeRef<number>,
-  deliveryZoneRequestDto: MaybeRef<DeliveryZoneRequestDto>,
-) => {
-  id = unref(id)
-  deliveryZoneRequestDto = unref(deliveryZoneRequestDto)
+    id: MaybeRef<number>,
+    deliveryZoneRequestDto: MaybeRef<DeliveryZoneRequestDto>,
+ ) => {
+      id = unref(id);
+deliveryZoneRequestDto = unref(deliveryZoneRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/deliveries/zones/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: deliveryZoneRequestDto
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/deliveries/zones/${id}`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: deliveryZoneRequestDto,
-  })
-}
 
-export const getEditDeliveryZoneMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editDeliveryZone>>,
-    TError,
-    { id: number; data: DeliveryZoneRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof editDeliveryZone>>,
-  TError,
-  { id: number; data: DeliveryZoneRequestDto },
-  TContext
-> => {
-  const mutationKey = ['editDeliveryZone']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getEditDeliveryZoneMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editDeliveryZone>>, TError,{id: number;data: DeliveryZoneRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof editDeliveryZone>>, TError,{id: number;data: DeliveryZoneRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof editDeliveryZone>>,
-    { id: number; data: DeliveryZoneRequestDto }
-  > = (props) => {
-    const { id, data } = props ?? {}
+const mutationKey = ['editDeliveryZone'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return editDeliveryZone(id, data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type EditDeliveryZoneMutationResult = NonNullable<
-  Awaited<ReturnType<typeof editDeliveryZone>>
->
-export type EditDeliveryZoneMutationBody = DeliveryZoneRequestDto
-export type EditDeliveryZoneMutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editDeliveryZone>>, {id: number;data: DeliveryZoneRequestDto}> = (props) => {
+          const {id,data} = props ?? {};
 
-/**
+          return  editDeliveryZone(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EditDeliveryZoneMutationResult = NonNullable<Awaited<ReturnType<typeof editDeliveryZone>>>
+    export type EditDeliveryZoneMutationBody = DeliveryZoneRequestDto
+    export type EditDeliveryZoneMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Редактирование зоны доставки
  */
-export const useEditDeliveryZone = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editDeliveryZone>>,
-    TError,
-    { id: number; data: DeliveryZoneRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof editDeliveryZone>>,
-  TError,
-  { id: number; data: DeliveryZoneRequestDto },
-  TContext
-> => {
-  const mutationOptions = getEditDeliveryZoneMutationOptions(options)
+export const useEditDeliveryZone = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editDeliveryZone>>, TError,{id: number;data: DeliveryZoneRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof editDeliveryZone>>,
+        TError,
+        {id: number;data: DeliveryZoneRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getEditDeliveryZoneMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Удалить зону доставки
  */
-export const deleteDeliveryZone = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const deleteDeliveryZone = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/deliveries/zones/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/deliveries/zones/${id}`,
-    method: 'DELETE',
-  })
-}
 
-export const getDeleteDeliveryZoneMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteDeliveryZone>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteDeliveryZone>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['deleteDeliveryZone']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getDeleteDeliveryZoneMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDeliveryZone>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteDeliveryZone>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deleteDeliveryZone>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
+const mutationKey = ['deleteDeliveryZone'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return deleteDeliveryZone(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type DeleteDeliveryZoneMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deleteDeliveryZone>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteDeliveryZone>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type DeleteDeliveryZoneMutationError = ApiError | ApiError | ApiError
+          return  deleteDeliveryZone(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteDeliveryZoneMutationResult = NonNullable<Awaited<ReturnType<typeof deleteDeliveryZone>>>
+    
+    export type DeleteDeliveryZoneMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Удалить зону доставки
  */
-export const useDeleteDeliveryZone = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteDeliveryZone>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof deleteDeliveryZone>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getDeleteDeliveryZoneMutationOptions(options)
+export const useDeleteDeliveryZone = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDeliveryZone>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof deleteDeliveryZone>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
- * @summary Получение списка курьеров
- */
-export const getDeliveryMen = (signal?: AbortSignal) => {
-  return customAxios<DeliveryManListResponseDto>({
-    url: `/api/v1/backoffice/deliveries`,
-    method: 'GET',
-    signal,
-  })
-}
+      const mutationOptions = getDeleteDeliveryZoneMutationOptions(options);
 
-export const getGetDeliveryMenQueryKey = () => {
-  return ['api', 'v1', 'backoffice', 'deliveries'] as const
-}
-
-export const getGetDeliveryMenQueryOptions = <
-  TData = Awaited<ReturnType<typeof getDeliveryMen>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getDeliveryMen>>, TError, TData>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = getGetDeliveryMenQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeliveryMen>>> = ({ signal }) =>
-    getDeliveryMen(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getDeliveryMen>>,
-    TError,
-    TData
-  >
-}
-
-export type GetDeliveryMenQueryResult = NonNullable<Awaited<ReturnType<typeof getDeliveryMen>>>
-export type GetDeliveryMenQueryError = ApiError | ApiError
-
-/**
- * @summary Получение списка курьеров
- */
-
-export function useGetDeliveryMen<
-  TData = Awaited<ReturnType<typeof getDeliveryMen>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getDeliveryMen>>, TError, TData>
-}): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetDeliveryMenQueryOptions(options)
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
-
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
-
-  return query
-}
-
-/**
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Создание курьеров
  */
 export const createDeliveryMan = (
-  deliveryManRequestDto: MaybeRef<DeliveryManRequestDto>,
-  signal?: AbortSignal,
+    deliveryManRequestDto: MaybeRef<DeliveryManRequestDto>,
+ signal?: AbortSignal
 ) => {
-  deliveryManRequestDto = unref(deliveryManRequestDto)
+      deliveryManRequestDto = unref(deliveryManRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/deliveries`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: deliveryManRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/deliveries`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: deliveryManRequestDto,
-    signal,
-  })
-}
 
-export const getCreateDeliveryManMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createDeliveryMan>>,
-    TError,
-    { data: DeliveryManRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createDeliveryMan>>,
-  TError,
-  { data: DeliveryManRequestDto },
-  TContext
-> => {
-  const mutationKey = ['createDeliveryMan']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getCreateDeliveryManMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDeliveryMan>>, TError,{data: DeliveryManRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createDeliveryMan>>, TError,{data: DeliveryManRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createDeliveryMan>>,
-    { data: DeliveryManRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['createDeliveryMan'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return createDeliveryMan(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type CreateDeliveryManMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createDeliveryMan>>
->
-export type CreateDeliveryManMutationBody = DeliveryManRequestDto
-export type CreateDeliveryManMutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDeliveryMan>>, {data: DeliveryManRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  createDeliveryMan(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateDeliveryManMutationResult = NonNullable<Awaited<ReturnType<typeof createDeliveryMan>>>
+    export type CreateDeliveryManMutationBody = DeliveryManRequestDto
+    export type CreateDeliveryManMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Создание курьеров
  */
-export const useCreateDeliveryMan = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createDeliveryMan>>,
-    TError,
-    { data: DeliveryManRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createDeliveryMan>>,
-  TError,
-  { data: DeliveryManRequestDto },
-  TContext
-> => {
-  const mutationOptions = getCreateDeliveryManMutationOptions(options)
+export const useCreateDeliveryMan = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDeliveryMan>>, TError,{data: DeliveryManRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof createDeliveryMan>>,
+        TError,
+        {data: DeliveryManRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getCreateDeliveryManMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Получение списка зон доставок
  */
-export const getDeliveryZones = (signal?: AbortSignal) => {
-  return customAxios<DeliveryManListResponseDto>({
-    url: `/api/v1/backoffice/deliveries/zones`,
-    method: 'GET',
-    signal,
-  })
-}
+export const getDeliveryZones = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<DeliveryZoneListResponseDto>(
+      {url: `/api/v1/backoffice/deliveries/zones`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetDeliveryZonesQueryKey = () => {
-  return ['api', 'v1', 'backoffice', 'deliveries', 'zones'] as const
-}
+    return ['api','v1','backoffice','deliveries','zones'] as const;
+    }
 
-export const getGetDeliveryZonesQueryOptions = <
-  TData = Awaited<ReturnType<typeof getDeliveryZones>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getDeliveryZones>>, TError, TData>
-}) => {
-  const { query: queryOptions } = options ?? {}
+    
+export const getGetDeliveryZonesQueryOptions = <TData = Awaited<ReturnType<typeof getDeliveryZones>>, TError = ApiError | ApiError>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeliveryZones>>, TError, TData>, }
+) => {
 
-  const queryKey = getGetDeliveryZonesQueryKey()
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeliveryZones>>> = ({ signal }) =>
-    getDeliveryZones(signal)
+  const queryKey =  getGetDeliveryZonesQueryKey();
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getDeliveryZones>>,
-    TError,
-    TData
-  >
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDeliveryZones>>> = ({ signal }) => getDeliveryZones(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDeliveryZones>>, TError, TData> 
 }
 
 export type GetDeliveryZonesQueryResult = NonNullable<Awaited<ReturnType<typeof getDeliveryZones>>>
 export type GetDeliveryZonesQueryError = ApiError | ApiError
 
+
 /**
  * @summary Получение списка зон доставок
  */
 
-export function useGetDeliveryZones<
-  TData = Awaited<ReturnType<typeof getDeliveryZones>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getDeliveryZones>>, TError, TData>
-}): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+export function useGetDeliveryZones<TData = Awaited<ReturnType<typeof getDeliveryZones>>, TError = ApiError | ApiError>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDeliveryZones>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+
   const queryOptions = getGetDeliveryZonesQueryOptions(options)
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
 
-  return query
+  return query;
 }
+
+
 
 /**
  * @summary Создание зоны доставки
  */
 export const createDeliveryZone = (
-  deliveryZoneRequestDto: MaybeRef<DeliveryZoneRequestDto>,
-  signal?: AbortSignal,
+    deliveryZoneRequestDto: MaybeRef<DeliveryZoneRequestDto>,
+ signal?: AbortSignal
 ) => {
-  deliveryZoneRequestDto = unref(deliveryZoneRequestDto)
+      deliveryZoneRequestDto = unref(deliveryZoneRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/deliveries/zones`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: deliveryZoneRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/deliveries/zones`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: deliveryZoneRequestDto,
-    signal,
-  })
-}
 
-export const getCreateDeliveryZoneMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createDeliveryZone>>,
-    TError,
-    { data: DeliveryZoneRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createDeliveryZone>>,
-  TError,
-  { data: DeliveryZoneRequestDto },
-  TContext
-> => {
-  const mutationKey = ['createDeliveryZone']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getCreateDeliveryZoneMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDeliveryZone>>, TError,{data: DeliveryZoneRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createDeliveryZone>>, TError,{data: DeliveryZoneRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createDeliveryZone>>,
-    { data: DeliveryZoneRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['createDeliveryZone'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return createDeliveryZone(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type CreateDeliveryZoneMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createDeliveryZone>>
->
-export type CreateDeliveryZoneMutationBody = DeliveryZoneRequestDto
-export type CreateDeliveryZoneMutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDeliveryZone>>, {data: DeliveryZoneRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  createDeliveryZone(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateDeliveryZoneMutationResult = NonNullable<Awaited<ReturnType<typeof createDeliveryZone>>>
+    export type CreateDeliveryZoneMutationBody = DeliveryZoneRequestDto
+    export type CreateDeliveryZoneMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Создание зоны доставки
  */
-export const useCreateDeliveryZone = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createDeliveryZone>>,
-    TError,
-    { data: DeliveryZoneRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createDeliveryZone>>,
-  TError,
-  { data: DeliveryZoneRequestDto },
-  TContext
-> => {
-  const mutationOptions = getCreateDeliveryZoneMutationOptions(options)
+export const useCreateDeliveryZone = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDeliveryZone>>, TError,{data: DeliveryZoneRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof createDeliveryZone>>,
+        TError,
+        {data: DeliveryZoneRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
+      const mutationOptions = getCreateDeliveryZoneMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
+ * @summary Получение списка курьеров с пагинации
+ */
+export const getDeliveryMen = (
+    filterRequestDto: MaybeRef<FilterRequestDto>,
+ signal?: AbortSignal
+) => {
+      filterRequestDto = unref(filterRequestDto);
+      
+      return customAxios<DeliveryManResponseDto>(
+      {url: `/api/v1/backoffice/deliveries/all`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filterRequestDto, signal
+    },
+      );
+    }
+  
+
+
+export const getGetDeliveryMenMutationOptions = <TError = ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getDeliveryMen>>, TError,{data: FilterRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof getDeliveryMen>>, TError,{data: FilterRequestDto}, TContext> => {
+
+const mutationKey = ['getDeliveryMen'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof getDeliveryMen>>, {data: FilterRequestDto}> = (props) => {
+          const {data} = props ?? {};
+
+          return  getDeliveryMen(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GetDeliveryMenMutationResult = NonNullable<Awaited<ReturnType<typeof getDeliveryMen>>>
+    export type GetDeliveryMenMutationBody = FilterRequestDto
+    export type GetDeliveryMenMutationError = ApiError | ApiError
+
+    /**
+ * @summary Получение списка курьеров с пагинации
+ */
+export const useGetDeliveryMen = <TError = ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getDeliveryMen>>, TError,{data: FilterRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof getDeliveryMen>>,
+        TError,
+        {data: FilterRequestDto},
+        TContext
+      > => {
+
+      const mutationOptions = getGetDeliveryMenMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    

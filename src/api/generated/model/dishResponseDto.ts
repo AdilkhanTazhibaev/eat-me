@@ -6,17 +6,15 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { DishInfoResponseDto } from './dishInfoResponseDto'
-import type { MealTypeNameRequestDto } from './mealTypeNameRequestDto'
+import type { DishInfoResponseDto } from './dishInfoResponseDto';
+import type { MealTypeNameRequestDto } from './mealTypeNameRequestDto';
 
 /**
  * Модель ответа для блюд
  */
 export interface DishResponseDto {
-  /** Идентификатор блюда */
-  id?: number
   /** Названия типов приемов пищи */
-  dish?: DishInfoResponseDto
+  dish?: DishInfoResponseDto;
   /** Названия типов приемов пищи */
-  mealTypeNames?: MealTypeNameRequestDto[]
+  mealTypeNames?: MealTypeNameRequestDto[];
 }

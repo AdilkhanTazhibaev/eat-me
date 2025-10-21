@@ -6,37 +6,35 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { CaloriePriceOptionResponseDto } from './caloriePriceOptionResponseDto'
-import type { MealTypeRange } from './mealTypeRange'
 
 /**
  * Модель ответа для программы питания
  */
 export interface NutritionProgramResponseDto {
   /** Идентификатор программы питания */
-  id?: number
+  id?: number;
   /** Наименование (kk) */
-  nameKk?: string
+  nameKk?: string;
   /** Наименование (en) */
-  nameEn?: string
+  nameEn?: string;
   /** Наименование (uz) */
-  nameUz?: string
+  nameUz?: string;
   /** Наименование (ru) */
-  nameRu?: string
+  nameRu?: string;
   /** Описание (kk) */
-  descriptionKk?: string
+  descriptionKk?: string;
   /** Описание (en) */
-  descriptionEn?: string
+  descriptionEn?: string;
   /** Описание (uz) */
-  descriptionUz?: string
+  descriptionUz?: string;
   /** Описание (ru) */
-  descriptionRu?: string
+  descriptionRu?: string;
   /** Количество приемов пищи */
-  dailyMealCount?: number
+  dailyMealCount?: number;
   /** Ссылка на изображение */
-  fileId?: string
-  /** Периоды приемов пищи */
-  mealTypeRanges?: MealTypeRange[]
-  /** Цены и калорийность */
-  caloriePriceList?: CaloriePriceOptionResponseDto[]
+  fileId?: string;
+  /** Минимальное количество калорий */
+  minCalories?: number;
+  /** Максимальное количество калорий */
+  maxCalories?: number;
 }

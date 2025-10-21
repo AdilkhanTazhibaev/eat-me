@@ -10,4 +10,4 @@
 /**
  * Фильтры в формате ключ-значение
  */
-export type FilterRequestDtoFilters = { [key: string]: unknown }
+export type FilterRequestDtoFilters = {[key: string]: unknown};

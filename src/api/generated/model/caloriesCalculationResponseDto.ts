@@ -12,5 +12,5 @@
  */
 export interface CaloriesCalculationResponseDto {
   /** Количество калорий, необходимое в сутки */
-  calories?: number
+  calories?: number;
 }

@@ -6,7 +6,7 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { MealTypeRequestDto } from './mealTypeRequestDto'
+import type { MealTypeRequestDto } from './mealTypeRequestDto';
 
 /**
  * Модель запроса для создания типов приема пищи
@@ -16,5 +16,5 @@ export interface MealTypeListRequestDto {
    * Список типов приема пищи
    * @minItems 1
    */
-  mealTypes: MealTypeRequestDto[]
+  mealTypes: MealTypeRequestDto[];
 }

@@ -10,12 +10,12 @@
 /**
  * Метод доставки отп кода
  */
-export type RegistrationRequestDtoDeliveryMethod =
-  (typeof RegistrationRequestDtoDeliveryMethod)[keyof typeof RegistrationRequestDtoDeliveryMethod]
+export type RegistrationRequestDtoDeliveryMethod = typeof RegistrationRequestDtoDeliveryMethod[keyof typeof RegistrationRequestDtoDeliveryMethod];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RegistrationRequestDtoDeliveryMethod = {
   WHATSAPP: 'WHATSAPP',
   TELEGRAM: 'TELEGRAM',
   EMAIL: 'EMAIL',
-} as const
+} as const;

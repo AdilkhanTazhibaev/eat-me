@@ -11,8 +11,8 @@
  * Модель ответа для приостановления промокода
  */
 export interface PromoCodeSuspendRequestDto {
-  /** Дата начала приостановки промокода (timestamp) */
-  suspendStartDate: number
-  /** Дата окончания приостановки промокода (timestamp) */
-  suspendEndDate: number
+  /** Дата начала приостановки промокода */
+  suspendStartDate: string;
+  /** Дата окончания приостановки промокода */
+  suspendEndDate: string;
 }

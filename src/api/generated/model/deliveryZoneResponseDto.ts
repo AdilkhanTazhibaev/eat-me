@@ -6,13 +6,26 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import type { DeliveryManResponseDto } from './deliveryManResponseDto';
+import type { DeliveryZoneGeometryResponseDto } from './deliveryZoneGeometryResponseDto';
+import type { DeliveryZoneResponseDtoStyle } from './deliveryZoneResponseDtoStyle';
 
 /**
- * Зона доставки
+ * Модель ответа для курьера
  */
 export interface DeliveryZoneResponseDto {
   /** Идентификатор зоны доставки */
-  id?: number
+  id?: number;
   /** Наименование зоны доставки */
-  name?: string
+  name?: string;
+  /** Стоимость доставки в данной зоне */
+  price?: number;
+  /** Бесплатная ли доставка в данной зоне */
+  isFree?: boolean;
+  /** Курьеры которые привязаны к данной зоне доставки */
+  deliveryMen?: DeliveryManResponseDto[];
+  /** Геометрия зоны (geo json совместимо) */
+  geometry?: DeliveryZoneGeometryResponseDto;
+  /** Доп свойства для карты */
+  style?: DeliveryZoneResponseDtoStyle;
 }

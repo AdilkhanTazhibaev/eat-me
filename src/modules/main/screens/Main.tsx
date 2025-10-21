@@ -1,12 +1,13 @@
 import Menu from '@/assets/icons/_menu-03.svg?react'
 import Shopping from '@/assets/icons/_shopping-bag-02.svg?react'
-import { Grid } from '@/components/snippets'
+import { Grid, WrapBetween } from '@/components/snippets'
 import { BonusCard } from '@/modules/main/components/BonusCard.tsx'
 import { NavigationView } from '@/modules/navigation/views/NavigationView.tsx'
 import { Programs } from '@/modules/programs/components/Programs.tsx'
 import { ProgramsPopular } from '@/modules/programs/components/ProgramsPopular.tsx'
 import { useScreenLayout } from '@/shared/hooks/useScreenLayout.tsx'
 import { BaseTopBar } from '@/shared/topbar/Base.tsx'
+import { OrderWidget } from '@/shared/widget/OrderWidget.tsx'
 import Drawer from '@ui/Drawer'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -40,6 +41,13 @@ export function Main() {
 
   return (
     <Grid $gap={12}>
+      <WrapBetween>
+        <OrderWidget
+          caption={'Ближайшая доставка'}
+          remainingDaysText={'Осталось 2 дня доставок питания'}
+          title={'30 сентября, 07:00 — 10:00'}
+        />
+      </WrapBetween>
       <BonusCard />
       <Programs />
       <ProgramsPopular />

@@ -6,6 +6,10 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   QueryFunction,
@@ -13,770 +17,717 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from '@tanstack/vue-query'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import type { MaybeRef } from 'vue'
-import { computed, unref } from 'vue'
+import {
+  computed,
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   ApiError,
   BusinessUnitRequestDto,
   BusinessUnitResponseDto,
-  RoleListResponseDto,
-} from '.././model'
+  RoleListResponseDto
+} from '.././model';
 
-import { customAxios } from '../../custom-axios'
+import { customAxios } from '../../custom-axios';
+
+
+
 
 /**
  * @summary Получение бизнес юнита по идентификатору
  */
-export const getBusinessUnit = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
-
-  return customAxios<BusinessUnitResponseDto>({
-    url: `/api/v1/backoffice/business-units/${id}`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getGetBusinessUnitQueryKey = (id?: MaybeRef<number>) => {
-  return ['api', 'v1', 'backoffice', 'business-units', id] as const
-}
-
-export const getGetBusinessUnitQueryOptions = <
-  TData = Awaited<ReturnType<typeof getBusinessUnit>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getBusinessUnit>>, TError, TData> },
+export const getBusinessUnit = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      id = unref(id);
+      
+      return customAxios<BusinessUnitResponseDto>(
+      {url: `/api/v1/backoffice/business-units/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetBusinessUnitQueryKey(id)
+export const getGetBusinessUnitQueryKey = (id?: MaybeRef<number>,) => {
+    return ['api','v1','backoffice','business-units',id] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getBusinessUnit>>> = ({ signal }) =>
-    getBusinessUnit(id, signal)
+    
+export const getGetBusinessUnitQueryOptions = <TData = Awaited<ReturnType<typeof getBusinessUnit>>, TError = ApiError | ApiError | ApiError | ApiError>(id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBusinessUnit>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(id)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getBusinessUnit>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetBusinessUnitQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBusinessUnit>>> = ({ signal }) => getBusinessUnit(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(id))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBusinessUnit>>, TError, TData> 
 }
 
 export type GetBusinessUnitQueryResult = NonNullable<Awaited<ReturnType<typeof getBusinessUnit>>>
 export type GetBusinessUnitQueryError = ApiError | ApiError | ApiError | ApiError
 
+
 /**
  * @summary Получение бизнес юнита по идентификатору
  */
 
-export function useGetBusinessUnit<
-  TData = Awaited<ReturnType<typeof getBusinessUnit>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getBusinessUnit>>, TError, TData> },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetBusinessUnitQueryOptions(id, options)
+export function useGetBusinessUnit<TData = Awaited<ReturnType<typeof getBusinessUnit>>, TError = ApiError | ApiError | ApiError | ApiError>(
+ id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBusinessUnit>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetBusinessUnitQueryOptions(id,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
 
 /**
  * @summary Редактирование бизнес юнита
  */
 export const editBusinessUnit = (
-  id: MaybeRef<number>,
-  businessUnitRequestDto: MaybeRef<BusinessUnitRequestDto>,
-) => {
-  id = unref(id)
-  businessUnitRequestDto = unref(businessUnitRequestDto)
+    id: MaybeRef<number>,
+    businessUnitRequestDto: MaybeRef<BusinessUnitRequestDto>,
+ ) => {
+      id = unref(id);
+businessUnitRequestDto = unref(businessUnitRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/business-units/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: businessUnitRequestDto
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/business-units/${id}`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: businessUnitRequestDto,
-  })
-}
 
-export const getEditBusinessUnitMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editBusinessUnit>>,
-    TError,
-    { id: number; data: BusinessUnitRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof editBusinessUnit>>,
-  TError,
-  { id: number; data: BusinessUnitRequestDto },
-  TContext
-> => {
-  const mutationKey = ['editBusinessUnit']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getEditBusinessUnitMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editBusinessUnit>>, TError,{id: number;data: BusinessUnitRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof editBusinessUnit>>, TError,{id: number;data: BusinessUnitRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof editBusinessUnit>>,
-    { id: number; data: BusinessUnitRequestDto }
-  > = (props) => {
-    const { id, data } = props ?? {}
+const mutationKey = ['editBusinessUnit'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return editBusinessUnit(id, data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type EditBusinessUnitMutationResult = NonNullable<
-  Awaited<ReturnType<typeof editBusinessUnit>>
->
-export type EditBusinessUnitMutationBody = BusinessUnitRequestDto
-export type EditBusinessUnitMutationError = ApiError | ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editBusinessUnit>>, {id: number;data: BusinessUnitRequestDto}> = (props) => {
+          const {id,data} = props ?? {};
 
-/**
+          return  editBusinessUnit(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EditBusinessUnitMutationResult = NonNullable<Awaited<ReturnType<typeof editBusinessUnit>>>
+    export type EditBusinessUnitMutationBody = BusinessUnitRequestDto
+    export type EditBusinessUnitMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Редактирование бизнес юнита
  */
-export const useEditBusinessUnit = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editBusinessUnit>>,
-    TError,
-    { id: number; data: BusinessUnitRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof editBusinessUnit>>,
-  TError,
-  { id: number; data: BusinessUnitRequestDto },
-  TContext
-> => {
-  const mutationOptions = getEditBusinessUnitMutationOptions(options)
+export const useEditBusinessUnit = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editBusinessUnit>>, TError,{id: number;data: BusinessUnitRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof editBusinessUnit>>,
+        TError,
+        {id: number;data: BusinessUnitRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getEditBusinessUnitMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Получение списка всех бизнес юнитов
  */
-export const getAllBusinessUnits = (signal?: AbortSignal) => {
-  return customAxios<RoleListResponseDto>({
-    url: `/api/v1/backoffice/business-units`,
-    method: 'GET',
-    signal,
-  })
-}
+export const getAllBusinessUnits = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<RoleListResponseDto>(
+      {url: `/api/v1/backoffice/business-units`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetAllBusinessUnitsQueryKey = () => {
-  return ['api', 'v1', 'backoffice', 'business-units'] as const
+    return ['api','v1','backoffice','business-units'] as const;
+    }
+
+    
+export const getGetAllBusinessUnitsQueryOptions = <TData = Awaited<ReturnType<typeof getAllBusinessUnits>>, TError = ApiError | ApiError>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAllBusinessUnits>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetAllBusinessUnitsQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllBusinessUnits>>> = ({ signal }) => getAllBusinessUnits(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAllBusinessUnits>>, TError, TData> 
 }
 
-export const getGetAllBusinessUnitsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllBusinessUnits>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getAllBusinessUnits>>, TError, TData>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = getGetAllBusinessUnitsQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllBusinessUnits>>> = ({ signal }) =>
-    getAllBusinessUnits(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllBusinessUnits>>,
-    TError,
-    TData
-  >
-}
-
-export type GetAllBusinessUnitsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getAllBusinessUnits>>
->
+export type GetAllBusinessUnitsQueryResult = NonNullable<Awaited<ReturnType<typeof getAllBusinessUnits>>>
 export type GetAllBusinessUnitsQueryError = ApiError | ApiError
+
 
 /**
  * @summary Получение списка всех бизнес юнитов
  */
 
-export function useGetAllBusinessUnits<
-  TData = Awaited<ReturnType<typeof getAllBusinessUnits>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getAllBusinessUnits>>, TError, TData>
-}): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+export function useGetAllBusinessUnits<TData = Awaited<ReturnType<typeof getAllBusinessUnits>>, TError = ApiError | ApiError>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAllBusinessUnits>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+
   const queryOptions = getGetAllBusinessUnitsQueryOptions(options)
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
 
-  return query
+  return query;
 }
+
+
 
 /**
  * @summary Создание бизнес юнита
  */
 export const createBusinessUnit = (
-  businessUnitRequestDto: MaybeRef<BusinessUnitRequestDto>,
-  signal?: AbortSignal,
+    businessUnitRequestDto: MaybeRef<BusinessUnitRequestDto>,
+ signal?: AbortSignal
 ) => {
-  businessUnitRequestDto = unref(businessUnitRequestDto)
+      businessUnitRequestDto = unref(businessUnitRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/business-units`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: businessUnitRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/business-units`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: businessUnitRequestDto,
-    signal,
-  })
-}
 
-export const getCreateBusinessUnitMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createBusinessUnit>>,
-    TError,
-    { data: BusinessUnitRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createBusinessUnit>>,
-  TError,
-  { data: BusinessUnitRequestDto },
-  TContext
-> => {
-  const mutationKey = ['createBusinessUnit']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getCreateBusinessUnitMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createBusinessUnit>>, TError,{data: BusinessUnitRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createBusinessUnit>>, TError,{data: BusinessUnitRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createBusinessUnit>>,
-    { data: BusinessUnitRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['createBusinessUnit'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return createBusinessUnit(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type CreateBusinessUnitMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createBusinessUnit>>
->
-export type CreateBusinessUnitMutationBody = BusinessUnitRequestDto
-export type CreateBusinessUnitMutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createBusinessUnit>>, {data: BusinessUnitRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  createBusinessUnit(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateBusinessUnitMutationResult = NonNullable<Awaited<ReturnType<typeof createBusinessUnit>>>
+    export type CreateBusinessUnitMutationBody = BusinessUnitRequestDto
+    export type CreateBusinessUnitMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Создание бизнес юнита
  */
-export const useCreateBusinessUnit = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createBusinessUnit>>,
-    TError,
-    { data: BusinessUnitRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createBusinessUnit>>,
-  TError,
-  { data: BusinessUnitRequestDto },
-  TContext
-> => {
-  const mutationOptions = getCreateBusinessUnitMutationOptions(options)
+export const useCreateBusinessUnit = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createBusinessUnit>>, TError,{data: BusinessUnitRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof createBusinessUnit>>,
+        TError,
+        {data: BusinessUnitRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getCreateBusinessUnitMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Переотправить приглашение руководителю бизнес-юнита
  */
-export const resendBusinessUnitCeoInvitation = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
+export const resendBusinessUnitCeoInvitation = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
+) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/business-units/${id}/invite`, method: 'POST', signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/business-units/${id}/invite`,
-    method: 'POST',
-    signal,
-  })
-}
 
-export const getResendBusinessUnitCeoInvitationMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof resendBusinessUnitCeoInvitation>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof resendBusinessUnitCeoInvitation>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['resendBusinessUnitCeoInvitation']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getResendBusinessUnitCeoInvitationMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resendBusinessUnitCeoInvitation>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof resendBusinessUnitCeoInvitation>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof resendBusinessUnitCeoInvitation>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
+const mutationKey = ['resendBusinessUnitCeoInvitation'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return resendBusinessUnitCeoInvitation(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type ResendBusinessUnitCeoInvitationMutationResult = NonNullable<
-  Awaited<ReturnType<typeof resendBusinessUnitCeoInvitation>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resendBusinessUnitCeoInvitation>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type ResendBusinessUnitCeoInvitationMutationError = ApiError | ApiError | ApiError | ApiError
+          return  resendBusinessUnitCeoInvitation(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ResendBusinessUnitCeoInvitationMutationResult = NonNullable<Awaited<ReturnType<typeof resendBusinessUnitCeoInvitation>>>
+    
+    export type ResendBusinessUnitCeoInvitationMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Переотправить приглашение руководителю бизнес-юнита
  */
-export const useResendBusinessUnitCeoInvitation = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof resendBusinessUnitCeoInvitation>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof resendBusinessUnitCeoInvitation>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getResendBusinessUnitCeoInvitationMutationOptions(options)
+export const useResendBusinessUnitCeoInvitation = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resendBusinessUnitCeoInvitation>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof resendBusinessUnitCeoInvitation>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getResendBusinessUnitCeoInvitationMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Деактивировать бизнес юнит
  */
-export const deactivateBusinessUnit = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const deactivateBusinessUnit = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/business-units/${id}/deactivate`, method: 'PATCH'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/business-units/${id}/deactivate`,
-    method: 'PATCH',
-  })
-}
 
-export const getDeactivateBusinessUnitMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deactivateBusinessUnit>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deactivateBusinessUnit>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['deactivateBusinessUnit']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getDeactivateBusinessUnitMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deactivateBusinessUnit>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deactivateBusinessUnit>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deactivateBusinessUnit>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
+const mutationKey = ['deactivateBusinessUnit'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return deactivateBusinessUnit(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type DeactivateBusinessUnitMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deactivateBusinessUnit>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deactivateBusinessUnit>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type DeactivateBusinessUnitMutationError = ApiError | ApiError | ApiError | ApiError
+          return  deactivateBusinessUnit(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeactivateBusinessUnitMutationResult = NonNullable<Awaited<ReturnType<typeof deactivateBusinessUnit>>>
+    
+    export type DeactivateBusinessUnitMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Деактивировать бизнес юнит
  */
-export const useDeactivateBusinessUnit = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deactivateBusinessUnit>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof deactivateBusinessUnit>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getDeactivateBusinessUnitMutationOptions(options)
+export const useDeactivateBusinessUnit = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deactivateBusinessUnit>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof deactivateBusinessUnit>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getDeactivateBusinessUnitMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Активировать бизнес юнит
  */
-export const activateBusinessUnit = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const activateBusinessUnit = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/business-units/${id}/activate`, method: 'PATCH'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/business-units/${id}/activate`,
-    method: 'PATCH',
-  })
-}
 
-export const getActivateBusinessUnitMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof activateBusinessUnit>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof activateBusinessUnit>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['activateBusinessUnit']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getActivateBusinessUnitMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof activateBusinessUnit>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof activateBusinessUnit>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof activateBusinessUnit>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
+const mutationKey = ['activateBusinessUnit'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return activateBusinessUnit(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type ActivateBusinessUnitMutationResult = NonNullable<
-  Awaited<ReturnType<typeof activateBusinessUnit>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof activateBusinessUnit>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type ActivateBusinessUnitMutationError = ApiError | ApiError | ApiError | ApiError
+          return  activateBusinessUnit(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ActivateBusinessUnitMutationResult = NonNullable<Awaited<ReturnType<typeof activateBusinessUnit>>>
+    
+    export type ActivateBusinessUnitMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Активировать бизнес юнит
  */
-export const useActivateBusinessUnit = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof activateBusinessUnit>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof activateBusinessUnit>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getActivateBusinessUnitMutationOptions(options)
+export const useActivateBusinessUnit = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof activateBusinessUnit>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof activateBusinessUnit>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getActivateBusinessUnitMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Получение своего бизнес юнит (для руководителя бизнес юнита)
  */
-export const getOwnBusinessUnit = (signal?: AbortSignal) => {
-  return customAxios<BusinessUnitResponseDto>({
-    url: `/api/v1/backoffice/business-units/own`,
-    method: 'GET',
-    signal,
-  })
-}
+export const getOwnBusinessUnit = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<BusinessUnitResponseDto>(
+      {url: `/api/v1/backoffice/business-units/own`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetOwnBusinessUnitQueryKey = () => {
-  return ['api', 'v1', 'backoffice', 'business-units', 'own'] as const
+    return ['api','v1','backoffice','business-units','own'] as const;
+    }
+
+    
+export const getGetOwnBusinessUnitQueryOptions = <TData = Awaited<ReturnType<typeof getOwnBusinessUnit>>, TError = ApiError | ApiError | ApiError | ApiError>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getOwnBusinessUnit>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetOwnBusinessUnitQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getOwnBusinessUnit>>> = ({ signal }) => getOwnBusinessUnit(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getOwnBusinessUnit>>, TError, TData> 
 }
 
-export const getGetOwnBusinessUnitQueryOptions = <
-  TData = Awaited<ReturnType<typeof getOwnBusinessUnit>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getOwnBusinessUnit>>, TError, TData>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = getGetOwnBusinessUnitQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getOwnBusinessUnit>>> = ({ signal }) =>
-    getOwnBusinessUnit(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getOwnBusinessUnit>>,
-    TError,
-    TData
-  >
-}
-
-export type GetOwnBusinessUnitQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getOwnBusinessUnit>>
->
+export type GetOwnBusinessUnitQueryResult = NonNullable<Awaited<ReturnType<typeof getOwnBusinessUnit>>>
 export type GetOwnBusinessUnitQueryError = ApiError | ApiError | ApiError | ApiError
+
 
 /**
  * @summary Получение своего бизнес юнит (для руководителя бизнес юнита)
  */
 
-export function useGetOwnBusinessUnit<
-  TData = Awaited<ReturnType<typeof getOwnBusinessUnit>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getOwnBusinessUnit>>, TError, TData>
-}): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+export function useGetOwnBusinessUnit<TData = Awaited<ReturnType<typeof getOwnBusinessUnit>>, TError = ApiError | ApiError | ApiError | ApiError>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getOwnBusinessUnit>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+
   const queryOptions = getGetOwnBusinessUnitQueryOptions(options)
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
 
-  return query
+  return query;
 }
+
+
 
 /**
  * @summary Получение списка неактивных бизнес юнитов
  */
-export const getInvitedBusinessUnits = (signal?: AbortSignal) => {
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/business-units/invited`,
-    method: 'GET',
-    signal,
-  })
-}
+export const getInvitedBusinessUnits = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/business-units/invited`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetInvitedBusinessUnitsQueryKey = () => {
-  return ['api', 'v1', 'backoffice', 'business-units', 'invited'] as const
+    return ['api','v1','backoffice','business-units','invited'] as const;
+    }
+
+    
+export const getGetInvitedBusinessUnitsQueryOptions = <TData = Awaited<ReturnType<typeof getInvitedBusinessUnits>>, TError = ApiError | ApiError>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInvitedBusinessUnits>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetInvitedBusinessUnitsQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInvitedBusinessUnits>>> = ({ signal }) => getInvitedBusinessUnits(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getInvitedBusinessUnits>>, TError, TData> 
 }
 
-export const getGetInvitedBusinessUnitsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getInvitedBusinessUnits>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getInvitedBusinessUnits>>, TError, TData>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = getGetInvitedBusinessUnitsQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getInvitedBusinessUnits>>> = ({
-    signal,
-  }) => getInvitedBusinessUnits(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getInvitedBusinessUnits>>,
-    TError,
-    TData
-  >
-}
-
-export type GetInvitedBusinessUnitsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getInvitedBusinessUnits>>
->
+export type GetInvitedBusinessUnitsQueryResult = NonNullable<Awaited<ReturnType<typeof getInvitedBusinessUnits>>>
 export type GetInvitedBusinessUnitsQueryError = ApiError | ApiError
 
+
 /**
  * @summary Получение списка неактивных бизнес юнитов
  */
 
-export function useGetInvitedBusinessUnits<
-  TData = Awaited<ReturnType<typeof getInvitedBusinessUnits>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getInvitedBusinessUnits>>, TError, TData>
-}): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+export function useGetInvitedBusinessUnits<TData = Awaited<ReturnType<typeof getInvitedBusinessUnits>>, TError = ApiError | ApiError>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInvitedBusinessUnits>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+
   const queryOptions = getGetInvitedBusinessUnitsQueryOptions(options)
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
 
-  return query
+  return query;
 }
+
+
 
 /**
  * @summary Получение списка неактивных бизнес юнитов
  */
-export const getInactiveBusinessUnits = (signal?: AbortSignal) => {
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/business-units/inactive`,
-    method: 'GET',
-    signal,
-  })
-}
+export const getInactiveBusinessUnits = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/business-units/inactive`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetInactiveBusinessUnitsQueryKey = () => {
-  return ['api', 'v1', 'backoffice', 'business-units', 'inactive'] as const
+    return ['api','v1','backoffice','business-units','inactive'] as const;
+    }
+
+    
+export const getGetInactiveBusinessUnitsQueryOptions = <TData = Awaited<ReturnType<typeof getInactiveBusinessUnits>>, TError = ApiError | ApiError>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInactiveBusinessUnits>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetInactiveBusinessUnitsQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInactiveBusinessUnits>>> = ({ signal }) => getInactiveBusinessUnits(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getInactiveBusinessUnits>>, TError, TData> 
 }
 
-export const getGetInactiveBusinessUnitsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getInactiveBusinessUnits>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getInactiveBusinessUnits>>, TError, TData>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = getGetInactiveBusinessUnitsQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getInactiveBusinessUnits>>> = ({
-    signal,
-  }) => getInactiveBusinessUnits(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getInactiveBusinessUnits>>,
-    TError,
-    TData
-  >
-}
-
-export type GetInactiveBusinessUnitsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getInactiveBusinessUnits>>
->
+export type GetInactiveBusinessUnitsQueryResult = NonNullable<Awaited<ReturnType<typeof getInactiveBusinessUnits>>>
 export type GetInactiveBusinessUnitsQueryError = ApiError | ApiError
+
 
 /**
  * @summary Получение списка неактивных бизнес юнитов
  */
 
-export function useGetInactiveBusinessUnits<
-  TData = Awaited<ReturnType<typeof getInactiveBusinessUnits>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getInactiveBusinessUnits>>, TError, TData>
-}): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+export function useGetInactiveBusinessUnits<TData = Awaited<ReturnType<typeof getInactiveBusinessUnits>>, TError = ApiError | ApiError>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInactiveBusinessUnits>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+
   const queryOptions = getGetInactiveBusinessUnitsQueryOptions(options)
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
 
-  return query
+  return query;
 }
+
+
 
 /**
  * @summary Получение списка активных бизнес юнитов
  */
-export const getActiveBusinessUnits = (signal?: AbortSignal) => {
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/business-units/active`,
-    method: 'GET',
-    signal,
-  })
-}
+export const getActiveBusinessUnits = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/business-units/active`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetActiveBusinessUnitsQueryKey = () => {
-  return ['api', 'v1', 'backoffice', 'business-units', 'active'] as const
+    return ['api','v1','backoffice','business-units','active'] as const;
+    }
+
+    
+export const getGetActiveBusinessUnitsQueryOptions = <TData = Awaited<ReturnType<typeof getActiveBusinessUnits>>, TError = ApiError | ApiError>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getActiveBusinessUnits>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetActiveBusinessUnitsQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActiveBusinessUnits>>> = ({ signal }) => getActiveBusinessUnits(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getActiveBusinessUnits>>, TError, TData> 
 }
 
-export const getGetActiveBusinessUnitsQueryOptions = <
-  TData = Awaited<ReturnType<typeof getActiveBusinessUnits>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getActiveBusinessUnits>>, TError, TData>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = getGetActiveBusinessUnitsQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getActiveBusinessUnits>>> = ({ signal }) =>
-    getActiveBusinessUnits(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getActiveBusinessUnits>>,
-    TError,
-    TData
-  >
-}
-
-export type GetActiveBusinessUnitsQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getActiveBusinessUnits>>
->
+export type GetActiveBusinessUnitsQueryResult = NonNullable<Awaited<ReturnType<typeof getActiveBusinessUnits>>>
 export type GetActiveBusinessUnitsQueryError = ApiError | ApiError
+
 
 /**
  * @summary Получение списка активных бизнес юнитов
  */
 
-export function useGetActiveBusinessUnits<
-  TData = Awaited<ReturnType<typeof getActiveBusinessUnits>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getActiveBusinessUnits>>, TError, TData>
-}): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+export function useGetActiveBusinessUnits<TData = Awaited<ReturnType<typeof getActiveBusinessUnits>>, TError = ApiError | ApiError>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getActiveBusinessUnits>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+
   const queryOptions = getGetActiveBusinessUnitsQueryOptions(options)
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
 
-  return query
+  return query;
 }
+
+
+

@@ -10,8 +10,8 @@
 /**
  * Валюта филиала
  */
-export type BranchRequestDtoCurrency =
-  (typeof BranchRequestDtoCurrency)[keyof typeof BranchRequestDtoCurrency]
+export type BranchRequestDtoCurrency = typeof BranchRequestDtoCurrency[keyof typeof BranchRequestDtoCurrency];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BranchRequestDtoCurrency = {
@@ -19,4 +19,4 @@ export const BranchRequestDtoCurrency = {
   UZS: 'UZS',
   AED: 'AED',
   USD: 'USD',
-} as const
+} as const;

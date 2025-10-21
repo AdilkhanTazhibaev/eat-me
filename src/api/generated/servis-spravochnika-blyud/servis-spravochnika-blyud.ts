@@ -6,6 +6,10 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   QueryFunction,
@@ -13,12 +17,16 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from '@tanstack/vue-query'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import type { MaybeRef } from 'vue'
-import { computed, unref } from 'vue'
+import {
+  computed,
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   ApiError,
@@ -26,439 +34,392 @@ import type {
   DishInfoListResponseDto,
   DishRequestDto,
   DishResponseDto,
-  FilterRequestDto,
-} from '.././model'
+  DishStatusResponseDto,
+  FilterRequestDto
+} from '.././model';
 
-import { customAxios } from '../../custom-axios'
+import { customAxios } from '../../custom-axios';
+
+
+
 
 /**
  * @summary Получение блюда
  */
-export const getDish = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
-
-  return customAxios<DishDetailedResponseDto>({
-    url: `/api/v1/backoffice/kitchen/dishes/${id}`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getGetDishQueryKey = (id?: MaybeRef<number>) => {
-  return ['api', 'v1', 'backoffice', 'kitchen', 'dishes', id] as const
-}
-
-export const getGetDishQueryOptions = <
-  TData = Awaited<ReturnType<typeof getDish>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getDish>>, TError, TData> },
+export const getDish = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      id = unref(id);
+      
+      return customAxios<DishDetailedResponseDto>(
+      {url: `/api/v1/backoffice/kitchen/dishes/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetDishQueryKey(id)
+export const getGetDishQueryKey = (id?: MaybeRef<number>,) => {
+    return ['api','v1','backoffice','kitchen','dishes',id] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getDish>>> = ({ signal }) =>
-    getDish(id, signal)
+    
+export const getGetDishQueryOptions = <TData = Awaited<ReturnType<typeof getDish>>, TError = ApiError | ApiError | ApiError | ApiError>(id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDish>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(id)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getDish>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetDishQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getDish>>> = ({ signal }) => getDish(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(id))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getDish>>, TError, TData> 
 }
 
 export type GetDishQueryResult = NonNullable<Awaited<ReturnType<typeof getDish>>>
 export type GetDishQueryError = ApiError | ApiError | ApiError | ApiError
 
+
 /**
  * @summary Получение блюда
  */
 
-export function useGetDish<
-  TData = Awaited<ReturnType<typeof getDish>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getDish>>, TError, TData> },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetDishQueryOptions(id, options)
+export function useGetDish<TData = Awaited<ReturnType<typeof getDish>>, TError = ApiError | ApiError | ApiError | ApiError>(
+ id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getDish>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetDishQueryOptions(id,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
 
 /**
  * @summary Редактирование блюда
  */
-export const editDish = (id: MaybeRef<number>, dishRequestDto: MaybeRef<DishRequestDto>) => {
-  id = unref(id)
-  dishRequestDto = unref(dishRequestDto)
+export const editDish = (
+    id: MaybeRef<number>,
+    dishRequestDto: MaybeRef<DishRequestDto>,
+ ) => {
+      id = unref(id);
+dishRequestDto = unref(dishRequestDto);
+      
+      return customAxios<DishStatusResponseDto>(
+      {url: `/api/v1/backoffice/kitchen/dishes/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: dishRequestDto
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/kitchen/dishes/${id}`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: dishRequestDto,
-  })
-}
 
-export const getEditDishMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editDish>>,
-    TError,
-    { id: number; data: DishRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof editDish>>,
-  TError,
-  { id: number; data: DishRequestDto },
-  TContext
-> => {
-  const mutationKey = ['editDish']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getEditDishMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editDish>>, TError,{id: number;data: DishRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof editDish>>, TError,{id: number;data: DishRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof editDish>>,
-    { id: number; data: DishRequestDto }
-  > = (props) => {
-    const { id, data } = props ?? {}
+const mutationKey = ['editDish'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return editDish(id, data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type EditDishMutationResult = NonNullable<Awaited<ReturnType<typeof editDish>>>
-export type EditDishMutationBody = DishRequestDto
-export type EditDishMutationError = ApiError | ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editDish>>, {id: number;data: DishRequestDto}> = (props) => {
+          const {id,data} = props ?? {};
 
-/**
+          return  editDish(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EditDishMutationResult = NonNullable<Awaited<ReturnType<typeof editDish>>>
+    export type EditDishMutationBody = DishRequestDto
+    export type EditDishMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Редактирование блюда
  */
-export const useEditDish = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editDish>>,
-    TError,
-    { id: number; data: DishRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof editDish>>,
-  TError,
-  { id: number; data: DishRequestDto },
-  TContext
-> => {
-  const mutationOptions = getEditDishMutationOptions(options)
+export const useEditDish = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editDish>>, TError,{id: number;data: DishRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof editDish>>,
+        TError,
+        {id: number;data: DishRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getEditDishMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Удаление блюда
  */
-export const deleteDish = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const deleteDish = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/kitchen/dishes/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({ url: `/api/v1/backoffice/kitchen/dishes/${id}`, method: 'DELETE' })
-}
 
-export const getDeleteDishMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteDish>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteDish>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['deleteDish']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getDeleteDishMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDish>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteDish>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteDish>>, { id: number }> = (
-    props,
-  ) => {
-    const { id } = props ?? {}
+const mutationKey = ['deleteDish'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return deleteDish(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type DeleteDishMutationResult = NonNullable<Awaited<ReturnType<typeof deleteDish>>>
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteDish>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type DeleteDishMutationError = ApiError | ApiError | ApiError | ApiError
+          return  deleteDish(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteDishMutationResult = NonNullable<Awaited<ReturnType<typeof deleteDish>>>
+    
+    export type DeleteDishMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Удаление блюда
  */
-export const useDeleteDish = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteDish>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof deleteDish>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getDeleteDishMutationOptions(options)
+export const useDeleteDish = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteDish>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof deleteDish>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getDeleteDishMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Создание блюда
  */
-export const createDish = (dishRequestDto: MaybeRef<DishRequestDto>, signal?: AbortSignal) => {
-  dishRequestDto = unref(dishRequestDto)
+export const createDish = (
+    dishRequestDto: MaybeRef<DishRequestDto>,
+ signal?: AbortSignal
+) => {
+      dishRequestDto = unref(dishRequestDto);
+      
+      return customAxios<DishStatusResponseDto>(
+      {url: `/api/v1/backoffice/kitchen/dishes`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: dishRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/kitchen/dishes`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: dishRequestDto,
-    signal,
-  })
-}
 
-export const getCreateDishMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createDish>>,
-    TError,
-    { data: DishRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createDish>>,
-  TError,
-  { data: DishRequestDto },
-  TContext
-> => {
-  const mutationKey = ['createDish']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getCreateDishMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDish>>, TError,{data: DishRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createDish>>, TError,{data: DishRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createDish>>,
-    { data: DishRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['createDish'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return createDish(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type CreateDishMutationResult = NonNullable<Awaited<ReturnType<typeof createDish>>>
-export type CreateDishMutationBody = DishRequestDto
-export type CreateDishMutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDish>>, {data: DishRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  createDish(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateDishMutationResult = NonNullable<Awaited<ReturnType<typeof createDish>>>
+    export type CreateDishMutationBody = DishRequestDto
+    export type CreateDishMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Создание блюда
  */
-export const useCreateDish = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createDish>>,
-    TError,
-    { data: DishRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createDish>>,
-  TError,
-  { data: DishRequestDto },
-  TContext
-> => {
-  const mutationOptions = getCreateDishMutationOptions(options)
+export const useCreateDish = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDish>>, TError,{data: DishRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof createDish>>,
+        TError,
+        {data: DishRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getCreateDishMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Получение списка блюд по статусу
  */
-export const getDishes = (filterRequestDto: MaybeRef<FilterRequestDto>, signal?: AbortSignal) => {
-  filterRequestDto = unref(filterRequestDto)
+export const getDishes = (
+    filterRequestDto: MaybeRef<FilterRequestDto>,
+ signal?: AbortSignal
+) => {
+      filterRequestDto = unref(filterRequestDto);
+      
+      return customAxios<DishResponseDto>(
+      {url: `/api/v1/backoffice/kitchen/dishes/filter`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filterRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<DishResponseDto>({
-    url: `/api/v1/backoffice/kitchen/dishes/filter`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: filterRequestDto,
-    signal,
-  })
-}
 
-export const getGetDishesMutationOptions = <
-  TError = ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof getDishes>>,
-    TError,
-    { data: FilterRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof getDishes>>,
-  TError,
-  { data: FilterRequestDto },
-  TContext
-> => {
-  const mutationKey = ['getDishes']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getGetDishesMutationOptions = <TError = ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getDishes>>, TError,{data: FilterRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof getDishes>>, TError,{data: FilterRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof getDishes>>,
-    { data: FilterRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['getDishes'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return getDishes(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type GetDishesMutationResult = NonNullable<Awaited<ReturnType<typeof getDishes>>>
-export type GetDishesMutationBody = FilterRequestDto
-export type GetDishesMutationError = ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof getDishes>>, {data: FilterRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  getDishes(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GetDishesMutationResult = NonNullable<Awaited<ReturnType<typeof getDishes>>>
+    export type GetDishesMutationBody = FilterRequestDto
+    export type GetDishesMutationError = ApiError | ApiError
+
+    /**
  * @summary Получение списка блюд по статусу
  */
-export const useGetDishes = <TError = ApiError | ApiError, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof getDishes>>,
-    TError,
-    { data: FilterRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof getDishes>>,
-  TError,
-  { data: FilterRequestDto },
-  TContext
-> => {
-  const mutationOptions = getGetDishesMutationOptions(options)
+export const useGetDishes = <TError = ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getDishes>>, TError,{data: FilterRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof getDishes>>,
+        TError,
+        {data: FilterRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getGetDishesMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Получение списка опубликованных блюд по идентификатору типа приема пищи
  */
 export const getPublishedDishesByMealType = (
-  mealTypeId: MaybeRef<number>,
-  signal?: AbortSignal,
+    mealTypeId: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  mealTypeId = unref(mealTypeId)
+      mealTypeId = unref(mealTypeId);
+      
+      return customAxios<DishInfoListResponseDto>(
+      {url: `/api/v1/backoffice/kitchen/dishes/meal-type/${mealTypeId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return customAxios<DishInfoListResponseDto>({
-    url: `/api/v1/backoffice/kitchen/dishes/meal-type/${mealTypeId}`,
-    method: 'GET',
-    signal,
-  })
-}
+export const getGetPublishedDishesByMealTypeQueryKey = (mealTypeId?: MaybeRef<number>,) => {
+    return ['api','v1','backoffice','kitchen','dishes','meal-type',mealTypeId] as const;
+    }
 
-export const getGetPublishedDishesByMealTypeQueryKey = (mealTypeId?: MaybeRef<number>) => {
-  return ['api', 'v1', 'backoffice', 'kitchen', 'dishes', 'meal-type', mealTypeId] as const
-}
-
-export const getGetPublishedDishesByMealTypeQueryOptions = <
-  TData = Awaited<ReturnType<typeof getPublishedDishesByMealType>>,
-  TError = ApiError | ApiError,
->(
-  mealTypeId: MaybeRef<number>,
-  options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getPublishedDishesByMealType>>, TError, TData>
-  },
+    
+export const getGetPublishedDishesByMealTypeQueryOptions = <TData = Awaited<ReturnType<typeof getPublishedDishesByMealType>>, TError = ApiError | ApiError>(mealTypeId: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPublishedDishesByMealType>>, TError, TData>, }
 ) => {
-  const { query: queryOptions } = options ?? {}
 
-  const queryKey = getGetPublishedDishesByMealTypeQueryKey(mealTypeId)
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getPublishedDishesByMealType>>> = ({
-    signal,
-  }) => getPublishedDishesByMealType(mealTypeId, signal)
+  const queryKey =  getGetPublishedDishesByMealTypeQueryKey(mealTypeId);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(mealTypeId)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getPublishedDishesByMealType>>, TError, TData>
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPublishedDishesByMealType>>> = ({ signal }) => getPublishedDishesByMealType(mealTypeId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(mealTypeId))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPublishedDishesByMealType>>, TError, TData> 
 }
 
-export type GetPublishedDishesByMealTypeQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getPublishedDishesByMealType>>
->
+export type GetPublishedDishesByMealTypeQueryResult = NonNullable<Awaited<ReturnType<typeof getPublishedDishesByMealType>>>
 export type GetPublishedDishesByMealTypeQueryError = ApiError | ApiError
+
 
 /**
  * @summary Получение списка опубликованных блюд по идентификатору типа приема пищи
  */
 
-export function useGetPublishedDishesByMealType<
-  TData = Awaited<ReturnType<typeof getPublishedDishesByMealType>>,
-  TError = ApiError | ApiError,
->(
-  mealTypeId: MaybeRef<number>,
-  options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getPublishedDishesByMealType>>, TError, TData>
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetPublishedDishesByMealTypeQueryOptions(mealTypeId, options)
+export function useGetPublishedDishesByMealType<TData = Awaited<ReturnType<typeof getPublishedDishesByMealType>>, TError = ApiError | ApiError>(
+ mealTypeId: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPublishedDishesByMealType>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetPublishedDishesByMealTypeQueryOptions(mealTypeId,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
+

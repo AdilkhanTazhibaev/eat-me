@@ -6,24 +6,26 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { MealEntryInfoResponseDto } from './mealEntryInfoResponseDto'
+import type { MealEntryInfoResponseDto } from './mealEntryInfoResponseDto';
 
 /**
  * Модель ответа для плана питания на определнную дату
  */
 export interface DailyMealPlanResponseDto {
   /** Идентификатор плана питания на определенную дату */
-  id?: number
+  id?: number;
   /** Наименование программы питания (kk) */
-  nameKk?: string
+  nameKk?: string;
   /** Наименование программы питания (en) */
-  nameEn?: string
+  nameEn?: string;
   /** Наименование программы питания (uz) */
-  nameUz?: string
+  nameUz?: string;
   /** Наименование программы питания (ru) */
-  nameRu?: string
+  nameRu?: string;
   /** Дата плана питания */
-  date?: string
+  date?: string;
+  /** Признак запланированного плана питания на дату */
+  isPlanned?: boolean;
   /** Пара значений: прием пищи - блюдо */
-  entries?: MealEntryInfoResponseDto[]
+  entries?: MealEntryInfoResponseDto[];
 }

@@ -16,11 +16,11 @@ export interface LoginBackofficeRequestDto {
    * @minLength 1
    * @maxLength 256
    */
-  email: string
+  email: string;
   /**
    * Пароль пользователя
    * @minLength 1
    * @maxLength 64
    */
-  password: string
+  password: string;
 }

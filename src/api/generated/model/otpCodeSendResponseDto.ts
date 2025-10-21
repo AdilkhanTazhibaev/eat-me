@@ -12,5 +12,5 @@
  */
 export interface OtpCodeSendResponseDto {
   /** Время жизни otp кода (миллисекунды) */
-  expires?: number
+  expires?: number;
 }

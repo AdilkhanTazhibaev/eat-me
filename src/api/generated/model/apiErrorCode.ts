@@ -10,7 +10,8 @@
 /**
  * Код ошибки
  */
-export type ApiErrorCode = (typeof ApiErrorCode)[keyof typeof ApiErrorCode]
+export type ApiErrorCode = typeof ApiErrorCode[keyof typeof ApiErrorCode];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ApiErrorCode = {
@@ -33,4 +34,4 @@ export const ApiErrorCode = {
   AUTHORIZATION_DENIED: 'AUTHORIZATION_DENIED',
   MULTIPART_ERROR: 'MULTIPART_ERROR',
   HTTP_MESSAGE_NOT_READABLE: 'HTTP_MESSAGE_NOT_READABLE',
-} as const
+} as const;

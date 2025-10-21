@@ -6,6 +6,10 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   QueryFunction,
@@ -13,548 +17,469 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from '@tanstack/vue-query'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import type { MaybeRef } from 'vue'
-import { computed, unref } from 'vue'
+import {
+  computed,
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   ApiError,
+  PromoCodeDetailedResponseDto,
   PromoCodeListResponseDto,
   PromoCodeRequestDto,
-  PromoCodeResponseDto,
-  PromoCodeSuspendRequestDto,
-} from '.././model'
+  PromoCodeSuspendRequestDto
+} from '.././model';
 
-import { customAxios } from '../../custom-axios'
+import { customAxios } from '../../custom-axios';
+
+
+
 
 /**
  * @summary Получение промокода по идентификатору
  */
-export const getPromoCode = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
-
-  return customAxios<PromoCodeResponseDto>({
-    url: `/api/v1/backoffice/promo-codes/${id}`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getGetPromoCodeQueryKey = (id?: MaybeRef<number>) => {
-  return ['api', 'v1', 'backoffice', 'promo-codes', id] as const
-}
-
-export const getGetPromoCodeQueryOptions = <
-  TData = Awaited<ReturnType<typeof getPromoCode>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getPromoCode>>, TError, TData> },
+export const getPromoCode = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      id = unref(id);
+      
+      return customAxios<PromoCodeDetailedResponseDto>(
+      {url: `/api/v1/backoffice/promo-codes/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetPromoCodeQueryKey(id)
+export const getGetPromoCodeQueryKey = (id?: MaybeRef<number>,) => {
+    return ['api','v1','backoffice','promo-codes',id] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getPromoCode>>> = ({ signal }) =>
-    getPromoCode(id, signal)
+    
+export const getGetPromoCodeQueryOptions = <TData = Awaited<ReturnType<typeof getPromoCode>>, TError = ApiError | ApiError | ApiError | ApiError>(id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPromoCode>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(id)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getPromoCode>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetPromoCodeQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPromoCode>>> = ({ signal }) => getPromoCode(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(id))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPromoCode>>, TError, TData> 
 }
 
 export type GetPromoCodeQueryResult = NonNullable<Awaited<ReturnType<typeof getPromoCode>>>
 export type GetPromoCodeQueryError = ApiError | ApiError | ApiError | ApiError
 
+
 /**
  * @summary Получение промокода по идентификатору
  */
 
-export function useGetPromoCode<
-  TData = Awaited<ReturnType<typeof getPromoCode>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getPromoCode>>, TError, TData> },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetPromoCodeQueryOptions(id, options)
+export function useGetPromoCode<TData = Awaited<ReturnType<typeof getPromoCode>>, TError = ApiError | ApiError | ApiError | ApiError>(
+ id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPromoCode>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetPromoCodeQueryOptions(id,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
 
 /**
  * @summary Редактирование промокода
  */
 export const editPromoCode = (
-  id: MaybeRef<number>,
-  promoCodeRequestDto: MaybeRef<PromoCodeRequestDto>,
-) => {
-  id = unref(id)
-  promoCodeRequestDto = unref(promoCodeRequestDto)
+    id: MaybeRef<number>,
+    promoCodeRequestDto: MaybeRef<PromoCodeRequestDto>,
+ ) => {
+      id = unref(id);
+promoCodeRequestDto = unref(promoCodeRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/promo-codes/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: promoCodeRequestDto
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/promo-codes/${id}`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: promoCodeRequestDto,
-  })
-}
 
-export const getEditPromoCodeMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editPromoCode>>,
-    TError,
-    { id: number; data: PromoCodeRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof editPromoCode>>,
-  TError,
-  { id: number; data: PromoCodeRequestDto },
-  TContext
-> => {
-  const mutationKey = ['editPromoCode']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getEditPromoCodeMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editPromoCode>>, TError,{id: number;data: PromoCodeRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof editPromoCode>>, TError,{id: number;data: PromoCodeRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof editPromoCode>>,
-    { id: number; data: PromoCodeRequestDto }
-  > = (props) => {
-    const { id, data } = props ?? {}
+const mutationKey = ['editPromoCode'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return editPromoCode(id, data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type EditPromoCodeMutationResult = NonNullable<Awaited<ReturnType<typeof editPromoCode>>>
-export type EditPromoCodeMutationBody = PromoCodeRequestDto
-export type EditPromoCodeMutationError = ApiError | ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editPromoCode>>, {id: number;data: PromoCodeRequestDto}> = (props) => {
+          const {id,data} = props ?? {};
 
-/**
+          return  editPromoCode(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EditPromoCodeMutationResult = NonNullable<Awaited<ReturnType<typeof editPromoCode>>>
+    export type EditPromoCodeMutationBody = PromoCodeRequestDto
+    export type EditPromoCodeMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Редактирование промокода
  */
-export const useEditPromoCode = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editPromoCode>>,
-    TError,
-    { id: number; data: PromoCodeRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof editPromoCode>>,
-  TError,
-  { id: number; data: PromoCodeRequestDto },
-  TContext
-> => {
-  const mutationOptions = getEditPromoCodeMutationOptions(options)
+export const useEditPromoCode = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editPromoCode>>, TError,{id: number;data: PromoCodeRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof editPromoCode>>,
+        TError,
+        {id: number;data: PromoCodeRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getEditPromoCodeMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Создание промокода
  */
 export const createPromoCode = (
-  promoCodeRequestDto: MaybeRef<PromoCodeRequestDto>,
-  signal?: AbortSignal,
+    promoCodeRequestDto: MaybeRef<PromoCodeRequestDto>,
+ signal?: AbortSignal
 ) => {
-  promoCodeRequestDto = unref(promoCodeRequestDto)
+      promoCodeRequestDto = unref(promoCodeRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/promo-codes`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: promoCodeRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/promo-codes`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: promoCodeRequestDto,
-    signal,
-  })
-}
 
-export const getCreatePromoCodeMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createPromoCode>>,
-    TError,
-    { data: PromoCodeRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createPromoCode>>,
-  TError,
-  { data: PromoCodeRequestDto },
-  TContext
-> => {
-  const mutationKey = ['createPromoCode']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getCreatePromoCodeMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPromoCode>>, TError,{data: PromoCodeRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createPromoCode>>, TError,{data: PromoCodeRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createPromoCode>>,
-    { data: PromoCodeRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['createPromoCode'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return createPromoCode(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type CreatePromoCodeMutationResult = NonNullable<Awaited<ReturnType<typeof createPromoCode>>>
-export type CreatePromoCodeMutationBody = PromoCodeRequestDto
-export type CreatePromoCodeMutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createPromoCode>>, {data: PromoCodeRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  createPromoCode(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreatePromoCodeMutationResult = NonNullable<Awaited<ReturnType<typeof createPromoCode>>>
+    export type CreatePromoCodeMutationBody = PromoCodeRequestDto
+    export type CreatePromoCodeMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Создание промокода
  */
-export const useCreatePromoCode = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createPromoCode>>,
-    TError,
-    { data: PromoCodeRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createPromoCode>>,
-  TError,
-  { data: PromoCodeRequestDto },
-  TContext
-> => {
-  const mutationOptions = getCreatePromoCodeMutationOptions(options)
+export const useCreatePromoCode = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createPromoCode>>, TError,{data: PromoCodeRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof createPromoCode>>,
+        TError,
+        {data: PromoCodeRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getCreatePromoCodeMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Приостановление промокода
  */
 export const suspendPromoCode = (
-  id: MaybeRef<number>,
-  promoCodeSuspendRequestDto: MaybeRef<PromoCodeSuspendRequestDto>,
-) => {
-  id = unref(id)
-  promoCodeSuspendRequestDto = unref(promoCodeSuspendRequestDto)
+    id: MaybeRef<number>,
+    promoCodeSuspendRequestDto: MaybeRef<PromoCodeSuspendRequestDto>,
+ ) => {
+      id = unref(id);
+promoCodeSuspendRequestDto = unref(promoCodeSuspendRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/promo-codes/${id}/suspend`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: promoCodeSuspendRequestDto
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/promo-codes/${id}/suspend`,
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-    data: promoCodeSuspendRequestDto,
-  })
-}
 
-export const getSuspendPromoCodeMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof suspendPromoCode>>,
-    TError,
-    { id: number; data: PromoCodeSuspendRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof suspendPromoCode>>,
-  TError,
-  { id: number; data: PromoCodeSuspendRequestDto },
-  TContext
-> => {
-  const mutationKey = ['suspendPromoCode']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getSuspendPromoCodeMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof suspendPromoCode>>, TError,{id: number;data: PromoCodeSuspendRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof suspendPromoCode>>, TError,{id: number;data: PromoCodeSuspendRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof suspendPromoCode>>,
-    { id: number; data: PromoCodeSuspendRequestDto }
-  > = (props) => {
-    const { id, data } = props ?? {}
+const mutationKey = ['suspendPromoCode'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return suspendPromoCode(id, data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type SuspendPromoCodeMutationResult = NonNullable<
-  Awaited<ReturnType<typeof suspendPromoCode>>
->
-export type SuspendPromoCodeMutationBody = PromoCodeSuspendRequestDto
-export type SuspendPromoCodeMutationError = ApiError | ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof suspendPromoCode>>, {id: number;data: PromoCodeSuspendRequestDto}> = (props) => {
+          const {id,data} = props ?? {};
 
-/**
+          return  suspendPromoCode(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SuspendPromoCodeMutationResult = NonNullable<Awaited<ReturnType<typeof suspendPromoCode>>>
+    export type SuspendPromoCodeMutationBody = PromoCodeSuspendRequestDto
+    export type SuspendPromoCodeMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Приостановление промокода
  */
-export const useSuspendPromoCode = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof suspendPromoCode>>,
-    TError,
-    { id: number; data: PromoCodeSuspendRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof suspendPromoCode>>,
-  TError,
-  { id: number; data: PromoCodeSuspendRequestDto },
-  TContext
-> => {
-  const mutationOptions = getSuspendPromoCodeMutationOptions(options)
+export const useSuspendPromoCode = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof suspendPromoCode>>, TError,{id: number;data: PromoCodeSuspendRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof suspendPromoCode>>,
+        TError,
+        {id: number;data: PromoCodeSuspendRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getSuspendPromoCodeMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Восстановление промокода
  */
-export const restorePromoCode = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const restorePromoCode = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/promo-codes/${id}/restore`, method: 'PATCH'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/promo-codes/${id}/restore`,
-    method: 'PATCH',
-  })
-}
 
-export const getRestorePromoCodeMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof restorePromoCode>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof restorePromoCode>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['restorePromoCode']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getRestorePromoCodeMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof restorePromoCode>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof restorePromoCode>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof restorePromoCode>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
+const mutationKey = ['restorePromoCode'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return restorePromoCode(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type RestorePromoCodeMutationResult = NonNullable<
-  Awaited<ReturnType<typeof restorePromoCode>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof restorePromoCode>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type RestorePromoCodeMutationError = ApiError | ApiError | ApiError | ApiError
+          return  restorePromoCode(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RestorePromoCodeMutationResult = NonNullable<Awaited<ReturnType<typeof restorePromoCode>>>
+    
+    export type RestorePromoCodeMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Восстановление промокода
  */
-export const useRestorePromoCode = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof restorePromoCode>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof restorePromoCode>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getRestorePromoCodeMutationOptions(options)
+export const useRestorePromoCode = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof restorePromoCode>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof restorePromoCode>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getRestorePromoCodeMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Архивирование промокода
  */
-export const archivePromoCode = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const archivePromoCode = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/promo-codes/${id}/archive`, method: 'PATCH'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/promo-codes/${id}/archive`,
-    method: 'PATCH',
-  })
-}
 
-export const getArchivePromoCodeMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof archivePromoCode>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof archivePromoCode>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['archivePromoCode']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getArchivePromoCodeMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof archivePromoCode>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof archivePromoCode>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof archivePromoCode>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
+const mutationKey = ['archivePromoCode'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return archivePromoCode(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type ArchivePromoCodeMutationResult = NonNullable<
-  Awaited<ReturnType<typeof archivePromoCode>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof archivePromoCode>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type ArchivePromoCodeMutationError = ApiError | ApiError | ApiError | ApiError
+          return  archivePromoCode(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ArchivePromoCodeMutationResult = NonNullable<Awaited<ReturnType<typeof archivePromoCode>>>
+    
+    export type ArchivePromoCodeMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Архивирование промокода
  */
-export const useArchivePromoCode = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof archivePromoCode>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof archivePromoCode>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getArchivePromoCodeMutationOptions(options)
+export const useArchivePromoCode = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof archivePromoCode>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof archivePromoCode>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getArchivePromoCodeMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Получение списка активных промокодов
  */
 export const getPromoCodesByStatus = (
-  status: MaybeRef<'ACTIVE' | 'PLANNED' | 'SUSPENDED' | 'ARCHIVED'>,
-  signal?: AbortSignal,
+    status: MaybeRef<'ACTIVE' | 'PLANNED' | 'SUSPENDED' | 'ARCHIVED'>,
+ signal?: AbortSignal
 ) => {
-  status = unref(status)
+      status = unref(status);
+      
+      return customAxios<PromoCodeListResponseDto>(
+      {url: `/api/v1/backoffice/promo-codes/status/${status}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  return customAxios<PromoCodeListResponseDto>({
-    url: `/api/v1/backoffice/promo-codes/status/${status}`,
-    method: 'GET',
-    signal,
-  })
+export const getGetPromoCodesByStatusQueryKey = (status?: MaybeRef<'ACTIVE' | 'PLANNED' | 'SUSPENDED' | 'ARCHIVED'>,) => {
+    return ['api','v1','backoffice','promo-codes','status',status] as const;
+    }
+
+    
+export const getGetPromoCodesByStatusQueryOptions = <TData = Awaited<ReturnType<typeof getPromoCodesByStatus>>, TError = ApiError | ApiError>(status: MaybeRef<'ACTIVE' | 'PLANNED' | 'SUSPENDED' | 'ARCHIVED'>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPromoCodesByStatus>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetPromoCodesByStatusQueryKey(status);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPromoCodesByStatus>>> = ({ signal }) => getPromoCodesByStatus(status, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(status))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPromoCodesByStatus>>, TError, TData> 
 }
 
-export const getGetPromoCodesByStatusQueryKey = (
-  status?: MaybeRef<'ACTIVE' | 'PLANNED' | 'SUSPENDED' | 'ARCHIVED'>,
-) => {
-  return ['api', 'v1', 'backoffice', 'promo-codes', 'status', status] as const
-}
-
-export const getGetPromoCodesByStatusQueryOptions = <
-  TData = Awaited<ReturnType<typeof getPromoCodesByStatus>>,
-  TError = ApiError | ApiError,
->(
-  status: MaybeRef<'ACTIVE' | 'PLANNED' | 'SUSPENDED' | 'ARCHIVED'>,
-  options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getPromoCodesByStatus>>, TError, TData>
-  },
-) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = getGetPromoCodesByStatusQueryKey(status)
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getPromoCodesByStatus>>> = ({ signal }) =>
-    getPromoCodesByStatus(status, signal)
-
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(status)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getPromoCodesByStatus>>, TError, TData>
-}
-
-export type GetPromoCodesByStatusQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getPromoCodesByStatus>>
->
+export type GetPromoCodesByStatusQueryResult = NonNullable<Awaited<ReturnType<typeof getPromoCodesByStatus>>>
 export type GetPromoCodesByStatusQueryError = ApiError | ApiError
+
 
 /**
  * @summary Получение списка активных промокодов
  */
 
-export function useGetPromoCodesByStatus<
-  TData = Awaited<ReturnType<typeof getPromoCodesByStatus>>,
-  TError = ApiError | ApiError,
->(
-  status: MaybeRef<'ACTIVE' | 'PLANNED' | 'SUSPENDED' | 'ARCHIVED'>,
-  options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getPromoCodesByStatus>>, TError, TData>
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetPromoCodesByStatusQueryOptions(status, options)
+export function useGetPromoCodesByStatus<TData = Awaited<ReturnType<typeof getPromoCodesByStatus>>, TError = ApiError | ApiError>(
+ status: MaybeRef<'ACTIVE' | 'PLANNED' | 'SUSPENDED' | 'ARCHIVED'>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getPromoCodesByStatus>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetPromoCodesByStatusQueryOptions(status,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
+

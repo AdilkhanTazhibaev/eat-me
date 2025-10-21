@@ -6,18 +6,18 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { BusinessUnitResponseDtoStatus } from './businessUnitResponseDtoStatus'
-import type { CeoResponseDto } from './ceoResponseDto'
-import type { CompanyResponseDto } from './companyResponseDto'
+import type { CompanyResponseDto } from './companyResponseDto';
+import type { CeoResponseDto } from './ceoResponseDto';
+import type { BusinessUnitResponseDtoStatus } from './businessUnitResponseDtoStatus';
 
 /**
  * Модель ответа для бизнес юнита
  */
 export interface BusinessUnitResponseDto {
   /** Компания */
-  company?: CompanyResponseDto
+  company?: CompanyResponseDto;
   /** Руководитель */
-  ceo?: CeoResponseDto
+  ceo?: CeoResponseDto;
   /** Статус бизнес юнита */
-  status?: BusinessUnitResponseDtoStatus
+  status?: BusinessUnitResponseDtoStatus;
 }

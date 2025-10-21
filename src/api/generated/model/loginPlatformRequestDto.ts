@@ -12,15 +12,15 @@
  */
 export interface LoginPlatformRequestDto {
   /**
-   * Номер телефон клиента
+   * Номер телефона клиента
    * @minLength 1
    * @maxLength 24
    */
-  phoneNumber: string
+  phoneNumber: string;
   /**
    * Пароль клиента
    * @minLength 1
    * @maxLength 4
    */
-  password: string
+  password: string;
 }

@@ -6,9 +6,9 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { StringFieldDto } from './stringFieldDto'
+import type { StringFieldDto } from './stringFieldDto';
 
 /**
  * Поля справочника
  */
-export type DictionaryEditRequestDtoProperties = { [key: string]: StringFieldDto }
+export type DictionaryEditRequestDtoProperties = {[key: string]: StringFieldDto};

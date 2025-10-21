@@ -10,8 +10,8 @@
 /**
  * Код валюты
  */
-export type PromoCodeResponseDtoCurrencyCode =
-  (typeof PromoCodeResponseDtoCurrencyCode)[keyof typeof PromoCodeResponseDtoCurrencyCode]
+export type PromoCodeResponseDtoCurrencyCode = typeof PromoCodeResponseDtoCurrencyCode[keyof typeof PromoCodeResponseDtoCurrencyCode];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PromoCodeResponseDtoCurrencyCode = {
@@ -19,4 +19,4 @@ export const PromoCodeResponseDtoCurrencyCode = {
   UZS: 'UZS',
   AED: 'AED',
   USD: 'USD',
-} as const
+} as const;

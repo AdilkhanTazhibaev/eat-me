@@ -16,5 +16,5 @@ export interface RefreshTokenRequestDto {
    * @minLength 1
    * @maxLength 1024
    */
-  refreshToken: string
+  refreshToken: string;
 }

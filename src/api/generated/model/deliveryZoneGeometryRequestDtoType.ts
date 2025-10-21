@@ -10,10 +10,10 @@
 /**
  * Тип геометрии
  */
-export type DeliveryZoneGeometryRequestDtoType =
-  (typeof DeliveryZoneGeometryRequestDtoType)[keyof typeof DeliveryZoneGeometryRequestDtoType]
+export type DeliveryZoneGeometryRequestDtoType = typeof DeliveryZoneGeometryRequestDtoType[keyof typeof DeliveryZoneGeometryRequestDtoType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const DeliveryZoneGeometryRequestDtoType = {
   Polygon: 'Polygon',
-} as const
+} as const;

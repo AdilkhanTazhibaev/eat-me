@@ -6,18 +6,13 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { DeliveryZoneResponseDto } from './deliveryZoneResponseDto'
 
 /**
- * Модель ответа для курьера
+ * Курьер
  */
 export interface DeliveryManResponseDto {
   /** Идентификатор курьера */
-  id?: number
+  id?: number;
   /** ФИО курьера */
-  fullName?: string
-  /** Номер телефона сотрудника */
-  phoneNumber?: string
-  /** Зоны доставки, к которым привязан курьер */
-  deliveryZones?: DeliveryZoneResponseDto[]
+  fullName?: string;
 }

@@ -6,15 +6,21 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   UseMutationOptions,
-  UseMutationReturnType,
-} from '@tanstack/vue-query'
-import { useMutation } from '@tanstack/vue-query'
+  UseMutationReturnType
+} from '@tanstack/vue-query';
 
-import type { MaybeRef } from 'vue'
-import { unref } from 'vue'
+import {
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   ApiError,
@@ -26,487 +32,396 @@ import type {
   OtpCodeValidationBackofficeRequestDto,
   OtpCodeValidationResponseDto,
   RefreshTokenRequestDto,
-  ResetPasswordBackofficeRequestDto,
-} from '.././model'
+  ResetPasswordBackofficeRequestDto
+} from '.././model';
 
-import { customAxios } from '../../custom-axios'
+import { customAxios } from '../../custom-axios';
+
+
+
 
 /**
  * @summary Авторизация сотрудника по почте и паролю
  */
 export const login1 = (
-  loginBackofficeRequestDto: MaybeRef<LoginBackofficeRequestDto>,
-  signal?: AbortSignal,
+    loginBackofficeRequestDto: MaybeRef<LoginBackofficeRequestDto>,
+ signal?: AbortSignal
 ) => {
-  loginBackofficeRequestDto = unref(loginBackofficeRequestDto)
+      loginBackofficeRequestDto = unref(loginBackofficeRequestDto);
+      
+      return customAxios<LoginResponseDto>(
+      {url: `/api/v1/backoffice/auth`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: loginBackofficeRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<LoginResponseDto>({
-    url: `/api/v1/backoffice/auth`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: loginBackofficeRequestDto,
-    signal,
-  })
-}
 
-export const getLogin1MutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof login1>>,
-    TError,
-    { data: LoginBackofficeRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof login1>>,
-  TError,
-  { data: LoginBackofficeRequestDto },
-  TContext
-> => {
-  const mutationKey = ['login1']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getLogin1MutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login1>>, TError,{data: LoginBackofficeRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof login1>>, TError,{data: LoginBackofficeRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof login1>>,
-    { data: LoginBackofficeRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['login1'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return login1(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type Login1MutationResult = NonNullable<Awaited<ReturnType<typeof login1>>>
-export type Login1MutationBody = LoginBackofficeRequestDto
-export type Login1MutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof login1>>, {data: LoginBackofficeRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  login1(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type Login1MutationResult = NonNullable<Awaited<ReturnType<typeof login1>>>
+    export type Login1MutationBody = LoginBackofficeRequestDto
+    export type Login1MutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Авторизация сотрудника по почте и паролю
  */
-export const useLogin1 = <TError = ApiError | ApiError | ApiError, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof login1>>,
-    TError,
-    { data: LoginBackofficeRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof login1>>,
-  TError,
-  { data: LoginBackofficeRequestDto },
-  TContext
-> => {
-  const mutationOptions = getLogin1MutationOptions(options)
+export const useLogin1 = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof login1>>, TError,{data: LoginBackofficeRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof login1>>,
+        TError,
+        {data: LoginBackofficeRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getLogin1MutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Проверка otp и выдача токена сброса пароля
  */
 export const validateOtpCode1 = (
-  otpCodeValidationBackofficeRequestDto: MaybeRef<OtpCodeValidationBackofficeRequestDto>,
-  signal?: AbortSignal,
+    otpCodeValidationBackofficeRequestDto: MaybeRef<OtpCodeValidationBackofficeRequestDto>,
+ signal?: AbortSignal
 ) => {
-  otpCodeValidationBackofficeRequestDto = unref(otpCodeValidationBackofficeRequestDto)
+      otpCodeValidationBackofficeRequestDto = unref(otpCodeValidationBackofficeRequestDto);
+      
+      return customAxios<OtpCodeValidationResponseDto>(
+      {url: `/api/v1/backoffice/auth/validate-otp-code`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: otpCodeValidationBackofficeRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<OtpCodeValidationResponseDto>({
-    url: `/api/v1/backoffice/auth/validate-otp-code`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: otpCodeValidationBackofficeRequestDto,
-    signal,
-  })
-}
 
-export const getValidateOtpCode1MutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof validateOtpCode1>>,
-    TError,
-    { data: OtpCodeValidationBackofficeRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof validateOtpCode1>>,
-  TError,
-  { data: OtpCodeValidationBackofficeRequestDto },
-  TContext
-> => {
-  const mutationKey = ['validateOtpCode1']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getValidateOtpCode1MutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof validateOtpCode1>>, TError,{data: OtpCodeValidationBackofficeRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof validateOtpCode1>>, TError,{data: OtpCodeValidationBackofficeRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof validateOtpCode1>>,
-    { data: OtpCodeValidationBackofficeRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['validateOtpCode1'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return validateOtpCode1(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type ValidateOtpCode1MutationResult = NonNullable<
-  Awaited<ReturnType<typeof validateOtpCode1>>
->
-export type ValidateOtpCode1MutationBody = OtpCodeValidationBackofficeRequestDto
-export type ValidateOtpCode1MutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof validateOtpCode1>>, {data: OtpCodeValidationBackofficeRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  validateOtpCode1(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ValidateOtpCode1MutationResult = NonNullable<Awaited<ReturnType<typeof validateOtpCode1>>>
+    export type ValidateOtpCode1MutationBody = OtpCodeValidationBackofficeRequestDto
+    export type ValidateOtpCode1MutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Проверка otp и выдача токена сброса пароля
  */
-export const useValidateOtpCode1 = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof validateOtpCode1>>,
-    TError,
-    { data: OtpCodeValidationBackofficeRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof validateOtpCode1>>,
-  TError,
-  { data: OtpCodeValidationBackofficeRequestDto },
-  TContext
-> => {
-  const mutationOptions = getValidateOtpCode1MutationOptions(options)
+export const useValidateOtpCode1 = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof validateOtpCode1>>, TError,{data: OtpCodeValidationBackofficeRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof validateOtpCode1>>,
+        TError,
+        {data: OtpCodeValidationBackofficeRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getValidateOtpCode1MutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Сброс пароля по токену
  */
 export const resetPassword1 = (
-  resetPasswordBackofficeRequestDto: MaybeRef<ResetPasswordBackofficeRequestDto>,
-  signal?: AbortSignal,
+    resetPasswordBackofficeRequestDto: MaybeRef<ResetPasswordBackofficeRequestDto>,
+ signal?: AbortSignal
 ) => {
-  resetPasswordBackofficeRequestDto = unref(resetPasswordBackofficeRequestDto)
+      resetPasswordBackofficeRequestDto = unref(resetPasswordBackofficeRequestDto);
+      
+      return customAxios<string>(
+      {url: `/api/v1/backoffice/auth/reset-password`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: resetPasswordBackofficeRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<string>({
-    url: `/api/v1/backoffice/auth/reset-password`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: resetPasswordBackofficeRequestDto,
-    signal,
-  })
-}
 
-export const getResetPassword1MutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof resetPassword1>>,
-    TError,
-    { data: ResetPasswordBackofficeRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof resetPassword1>>,
-  TError,
-  { data: ResetPasswordBackofficeRequestDto },
-  TContext
-> => {
-  const mutationKey = ['resetPassword1']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getResetPassword1MutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetPassword1>>, TError,{data: ResetPasswordBackofficeRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof resetPassword1>>, TError,{data: ResetPasswordBackofficeRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof resetPassword1>>,
-    { data: ResetPasswordBackofficeRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['resetPassword1'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return resetPassword1(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type ResetPassword1MutationResult = NonNullable<Awaited<ReturnType<typeof resetPassword1>>>
-export type ResetPassword1MutationBody = ResetPasswordBackofficeRequestDto
-export type ResetPassword1MutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetPassword1>>, {data: ResetPasswordBackofficeRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  resetPassword1(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ResetPassword1MutationResult = NonNullable<Awaited<ReturnType<typeof resetPassword1>>>
+    export type ResetPassword1MutationBody = ResetPasswordBackofficeRequestDto
+    export type ResetPassword1MutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Сброс пароля по токену
  */
-export const useResetPassword1 = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof resetPassword1>>,
-    TError,
-    { data: ResetPasswordBackofficeRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof resetPassword1>>,
-  TError,
-  { data: ResetPasswordBackofficeRequestDto },
-  TContext
-> => {
-  const mutationOptions = getResetPassword1MutationOptions(options)
+export const useResetPassword1 = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetPassword1>>, TError,{data: ResetPasswordBackofficeRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof resetPassword1>>,
+        TError,
+        {data: ResetPasswordBackofficeRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getResetPassword1MutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Обновление access token по refresh token
  */
 export const refreshToken1 = (
-  refreshTokenRequestDto: MaybeRef<RefreshTokenRequestDto>,
-  signal?: AbortSignal,
+    refreshTokenRequestDto: MaybeRef<RefreshTokenRequestDto>,
+ signal?: AbortSignal
 ) => {
-  refreshTokenRequestDto = unref(refreshTokenRequestDto)
+      refreshTokenRequestDto = unref(refreshTokenRequestDto);
+      
+      return customAxios<LoginResponseDto>(
+      {url: `/api/v1/backoffice/auth/refresh`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: refreshTokenRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<LoginResponseDto>({
-    url: `/api/v1/backoffice/auth/refresh`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: refreshTokenRequestDto,
-    signal,
-  })
-}
 
-export const getRefreshToken1MutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof refreshToken1>>,
-    TError,
-    { data: RefreshTokenRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof refreshToken1>>,
-  TError,
-  { data: RefreshTokenRequestDto },
-  TContext
-> => {
-  const mutationKey = ['refreshToken1']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getRefreshToken1MutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof refreshToken1>>, TError,{data: RefreshTokenRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof refreshToken1>>, TError,{data: RefreshTokenRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof refreshToken1>>,
-    { data: RefreshTokenRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['refreshToken1'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return refreshToken1(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type RefreshToken1MutationResult = NonNullable<Awaited<ReturnType<typeof refreshToken1>>>
-export type RefreshToken1MutationBody = RefreshTokenRequestDto
-export type RefreshToken1MutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof refreshToken1>>, {data: RefreshTokenRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  refreshToken1(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type RefreshToken1MutationResult = NonNullable<Awaited<ReturnType<typeof refreshToken1>>>
+    export type RefreshToken1MutationBody = RefreshTokenRequestDto
+    export type RefreshToken1MutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Обновление access token по refresh token
  */
-export const useRefreshToken1 = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof refreshToken1>>,
-    TError,
-    { data: RefreshTokenRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof refreshToken1>>,
-  TError,
-  { data: RefreshTokenRequestDto },
-  TContext
-> => {
-  const mutationOptions = getRefreshToken1MutationOptions(options)
+export const useRefreshToken1 = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof refreshToken1>>, TError,{data: RefreshTokenRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof refreshToken1>>,
+        TError,
+        {data: RefreshTokenRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getRefreshToken1MutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Забыли пароль: отправка otp на почту
  */
 export const forgotPassword1 = (
-  forgotPasswordBackofficeRequestDto: MaybeRef<ForgotPasswordBackofficeRequestDto>,
-  signal?: AbortSignal,
+    forgotPasswordBackofficeRequestDto: MaybeRef<ForgotPasswordBackofficeRequestDto>,
+ signal?: AbortSignal
 ) => {
-  forgotPasswordBackofficeRequestDto = unref(forgotPasswordBackofficeRequestDto)
+      forgotPasswordBackofficeRequestDto = unref(forgotPasswordBackofficeRequestDto);
+      
+      return customAxios<OtpCodeSendResponseDto>(
+      {url: `/api/v1/backoffice/auth/forgot-password`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: forgotPasswordBackofficeRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<OtpCodeSendResponseDto>({
-    url: `/api/v1/backoffice/auth/forgot-password`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: forgotPasswordBackofficeRequestDto,
-    signal,
-  })
-}
 
-export const getForgotPassword1MutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof forgotPassword1>>,
-    TError,
-    { data: ForgotPasswordBackofficeRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof forgotPassword1>>,
-  TError,
-  { data: ForgotPasswordBackofficeRequestDto },
-  TContext
-> => {
-  const mutationKey = ['forgotPassword1']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getForgotPassword1MutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof forgotPassword1>>, TError,{data: ForgotPasswordBackofficeRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof forgotPassword1>>, TError,{data: ForgotPasswordBackofficeRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof forgotPassword1>>,
-    { data: ForgotPasswordBackofficeRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['forgotPassword1'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return forgotPassword1(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type ForgotPassword1MutationResult = NonNullable<Awaited<ReturnType<typeof forgotPassword1>>>
-export type ForgotPassword1MutationBody = ForgotPasswordBackofficeRequestDto
-export type ForgotPassword1MutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof forgotPassword1>>, {data: ForgotPasswordBackofficeRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  forgotPassword1(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ForgotPassword1MutationResult = NonNullable<Awaited<ReturnType<typeof forgotPassword1>>>
+    export type ForgotPassword1MutationBody = ForgotPasswordBackofficeRequestDto
+    export type ForgotPassword1MutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Забыли пароль: отправка otp на почту
  */
-export const useForgotPassword1 = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof forgotPassword1>>,
-    TError,
-    { data: ForgotPasswordBackofficeRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof forgotPassword1>>,
-  TError,
-  { data: ForgotPasswordBackofficeRequestDto },
-  TContext
-> => {
-  const mutationOptions = getForgotPassword1MutationOptions(options)
+export const useForgotPassword1 = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof forgotPassword1>>, TError,{data: ForgotPasswordBackofficeRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof forgotPassword1>>,
+        TError,
+        {data: ForgotPasswordBackofficeRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getForgotPassword1MutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Смена пароля (аутентифицированный пользователь)
  */
 export const changePassword1 = (
-  changePasswordBackofficeRequestDto: MaybeRef<ChangePasswordBackofficeRequestDto>,
-  signal?: AbortSignal,
+    changePasswordBackofficeRequestDto: MaybeRef<ChangePasswordBackofficeRequestDto>,
+ signal?: AbortSignal
 ) => {
-  changePasswordBackofficeRequestDto = unref(changePasswordBackofficeRequestDto)
+      changePasswordBackofficeRequestDto = unref(changePasswordBackofficeRequestDto);
+      
+      return customAxios<string>(
+      {url: `/api/v1/backoffice/auth/change-password`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: changePasswordBackofficeRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<string>({
-    url: `/api/v1/backoffice/auth/change-password`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: changePasswordBackofficeRequestDto,
-    signal,
-  })
-}
 
-export const getChangePassword1MutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof changePassword1>>,
-    TError,
-    { data: ChangePasswordBackofficeRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof changePassword1>>,
-  TError,
-  { data: ChangePasswordBackofficeRequestDto },
-  TContext
-> => {
-  const mutationKey = ['changePassword1']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getChangePassword1MutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changePassword1>>, TError,{data: ChangePasswordBackofficeRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof changePassword1>>, TError,{data: ChangePasswordBackofficeRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof changePassword1>>,
-    { data: ChangePasswordBackofficeRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['changePassword1'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return changePassword1(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type ChangePassword1MutationResult = NonNullable<Awaited<ReturnType<typeof changePassword1>>>
-export type ChangePassword1MutationBody = ChangePasswordBackofficeRequestDto
-export type ChangePassword1MutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof changePassword1>>, {data: ChangePasswordBackofficeRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  changePassword1(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ChangePassword1MutationResult = NonNullable<Awaited<ReturnType<typeof changePassword1>>>
+    export type ChangePassword1MutationBody = ChangePasswordBackofficeRequestDto
+    export type ChangePassword1MutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Смена пароля (аутентифицированный пользователь)
  */
-export const useChangePassword1 = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof changePassword1>>,
-    TError,
-    { data: ChangePasswordBackofficeRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof changePassword1>>,
-  TError,
-  { data: ChangePasswordBackofficeRequestDto },
-  TContext
-> => {
-  const mutationOptions = getChangePassword1MutationOptions(options)
+export const useChangePassword1 = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof changePassword1>>, TError,{data: ChangePasswordBackofficeRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof changePassword1>>,
+        TError,
+        {data: ChangePasswordBackofficeRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
+      const mutationOptions = getChangePassword1MutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    

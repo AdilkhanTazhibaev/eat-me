@@ -6,6 +6,10 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   QueryFunction,
@@ -13,12 +17,16 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from '@tanstack/vue-query'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import type { MaybeRef } from 'vue'
-import { computed, unref } from 'vue'
+import {
+  computed,
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   ApiError,
@@ -26,369 +34,330 @@ import type {
   DictionaryDto,
   DictionaryEditRequestDto,
   DictionaryShortDto,
-  FilterRequestDto,
-} from '.././model'
+  FilterRequestDto
+} from '.././model';
 
-import { customAxios } from '../../custom-axios'
+import { customAxios } from '../../custom-axios';
+
+
+
 
 /**
  * @summary Получить справочник по идентификатору
  */
-export const getById = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
-
-  return customAxios<DictionaryDto>({ url: `/api/v1/dictionaries/${id}`, method: 'GET', signal })
-}
-
-export const getGetByIdQueryKey = (id?: MaybeRef<number>) => {
-  return ['api', 'v1', 'dictionaries', id] as const
-}
-
-export const getGetByIdQueryOptions = <
-  TData = Awaited<ReturnType<typeof getById>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData> },
+export const getById = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      id = unref(id);
+      
+      return customAxios<DictionaryDto>(
+      {url: `/api/v1/dictionaries/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetByIdQueryKey(id)
+export const getGetByIdQueryKey = (id?: MaybeRef<number>,) => {
+    return ['api','v1','dictionaries',id] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getById>>> = ({ signal }) =>
-    getById(id, signal)
+    
+export const getGetByIdQueryOptions = <TData = Awaited<ReturnType<typeof getById>>, TError = ApiError | ApiError | ApiError | ApiError>(id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(id)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetByIdQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getById>>> = ({ signal }) => getById(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(id))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData> 
 }
 
 export type GetByIdQueryResult = NonNullable<Awaited<ReturnType<typeof getById>>>
 export type GetByIdQueryError = ApiError | ApiError | ApiError | ApiError
 
+
 /**
  * @summary Получить справочник по идентификатору
  */
 
-export function useGetById<
-  TData = Awaited<ReturnType<typeof getById>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData> },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetByIdQueryOptions(id, options)
+export function useGetById<TData = Awaited<ReturnType<typeof getById>>, TError = ApiError | ApiError | ApiError | ApiError>(
+ id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getById>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetByIdQueryOptions(id,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
 
 /**
  * @summary Редактирование справочника
  */
 export const editDictionary = (
-  id: MaybeRef<number>,
-  dictionaryEditRequestDto: MaybeRef<DictionaryEditRequestDto>,
-) => {
-  id = unref(id)
-  dictionaryEditRequestDto = unref(dictionaryEditRequestDto)
+    id: MaybeRef<number>,
+    dictionaryEditRequestDto: MaybeRef<DictionaryEditRequestDto>,
+ ) => {
+      id = unref(id);
+dictionaryEditRequestDto = unref(dictionaryEditRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/dictionaries/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: dictionaryEditRequestDto
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/dictionaries/${id}`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: dictionaryEditRequestDto,
-  })
-}
 
-export const getEditDictionaryMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editDictionary>>,
-    TError,
-    { id: number; data: DictionaryEditRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof editDictionary>>,
-  TError,
-  { id: number; data: DictionaryEditRequestDto },
-  TContext
-> => {
-  const mutationKey = ['editDictionary']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getEditDictionaryMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editDictionary>>, TError,{id: number;data: DictionaryEditRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof editDictionary>>, TError,{id: number;data: DictionaryEditRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof editDictionary>>,
-    { id: number; data: DictionaryEditRequestDto }
-  > = (props) => {
-    const { id, data } = props ?? {}
+const mutationKey = ['editDictionary'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return editDictionary(id, data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type EditDictionaryMutationResult = NonNullable<Awaited<ReturnType<typeof editDictionary>>>
-export type EditDictionaryMutationBody = DictionaryEditRequestDto
-export type EditDictionaryMutationError = ApiError | ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editDictionary>>, {id: number;data: DictionaryEditRequestDto}> = (props) => {
+          const {id,data} = props ?? {};
 
-/**
+          return  editDictionary(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EditDictionaryMutationResult = NonNullable<Awaited<ReturnType<typeof editDictionary>>>
+    export type EditDictionaryMutationBody = DictionaryEditRequestDto
+    export type EditDictionaryMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Редактирование справочника
  */
-export const useEditDictionary = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editDictionary>>,
-    TError,
-    { id: number; data: DictionaryEditRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof editDictionary>>,
-  TError,
-  { id: number; data: DictionaryEditRequestDto },
-  TContext
-> => {
-  const mutationOptions = getEditDictionaryMutationOptions(options)
+export const useEditDictionary = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editDictionary>>, TError,{id: number;data: DictionaryEditRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof editDictionary>>,
+        TError,
+        {id: number;data: DictionaryEditRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getEditDictionaryMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Создание справочника
  */
 export const createDictionary = (
-  dictionaryCreateRequestDto: MaybeRef<DictionaryCreateRequestDto>,
-  signal?: AbortSignal,
+    dictionaryCreateRequestDto: MaybeRef<DictionaryCreateRequestDto>,
+ signal?: AbortSignal
 ) => {
-  dictionaryCreateRequestDto = unref(dictionaryCreateRequestDto)
+      dictionaryCreateRequestDto = unref(dictionaryCreateRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/dictionaries`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: dictionaryCreateRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/dictionaries`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: dictionaryCreateRequestDto,
-    signal,
-  })
-}
 
-export const getCreateDictionaryMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createDictionary>>,
-    TError,
-    { data: DictionaryCreateRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createDictionary>>,
-  TError,
-  { data: DictionaryCreateRequestDto },
-  TContext
-> => {
-  const mutationKey = ['createDictionary']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getCreateDictionaryMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDictionary>>, TError,{data: DictionaryCreateRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createDictionary>>, TError,{data: DictionaryCreateRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createDictionary>>,
-    { data: DictionaryCreateRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['createDictionary'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return createDictionary(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type CreateDictionaryMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createDictionary>>
->
-export type CreateDictionaryMutationBody = DictionaryCreateRequestDto
-export type CreateDictionaryMutationError = ApiError | ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createDictionary>>, {data: DictionaryCreateRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  createDictionary(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateDictionaryMutationResult = NonNullable<Awaited<ReturnType<typeof createDictionary>>>
+    export type CreateDictionaryMutationBody = DictionaryCreateRequestDto
+    export type CreateDictionaryMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Создание справочника
  */
-export const useCreateDictionary = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createDictionary>>,
-    TError,
-    { data: DictionaryCreateRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createDictionary>>,
-  TError,
-  { data: DictionaryCreateRequestDto },
-  TContext
-> => {
-  const mutationOptions = getCreateDictionaryMutationOptions(options)
+export const useCreateDictionary = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createDictionary>>, TError,{data: DictionaryCreateRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof createDictionary>>,
+        TError,
+        {data: DictionaryCreateRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getCreateDictionaryMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Поиск справочников с фильтрацией и пагинацией
  */
 export const getDictionaries = (
-  filterRequestDto: MaybeRef<FilterRequestDto>,
-  signal?: AbortSignal,
+    filterRequestDto: MaybeRef<FilterRequestDto>,
+ signal?: AbortSignal
 ) => {
-  filterRequestDto = unref(filterRequestDto)
+      filterRequestDto = unref(filterRequestDto);
+      
+      return customAxios<DictionaryShortDto>(
+      {url: `/api/v1/dictionaries/search`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filterRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<DictionaryShortDto>({
-    url: `/api/v1/dictionaries/search`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: filterRequestDto,
-    signal,
-  })
-}
 
-export const getGetDictionariesMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof getDictionaries>>,
-    TError,
-    { data: FilterRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof getDictionaries>>,
-  TError,
-  { data: FilterRequestDto },
-  TContext
-> => {
-  const mutationKey = ['getDictionaries']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getGetDictionariesMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getDictionaries>>, TError,{data: FilterRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof getDictionaries>>, TError,{data: FilterRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof getDictionaries>>,
-    { data: FilterRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['getDictionaries'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return getDictionaries(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type GetDictionariesMutationResult = NonNullable<Awaited<ReturnType<typeof getDictionaries>>>
-export type GetDictionariesMutationBody = FilterRequestDto
-export type GetDictionariesMutationError = ApiError | ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof getDictionaries>>, {data: FilterRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  getDictionaries(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GetDictionariesMutationResult = NonNullable<Awaited<ReturnType<typeof getDictionaries>>>
+    export type GetDictionariesMutationBody = FilterRequestDto
+    export type GetDictionariesMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Поиск справочников с фильтрацией и пагинацией
  */
-export const useGetDictionaries = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof getDictionaries>>,
-    TError,
-    { data: FilterRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof getDictionaries>>,
-  TError,
-  { data: FilterRequestDto },
-  TContext
-> => {
-  const mutationOptions = getGetDictionariesMutationOptions(options)
+export const useGetDictionaries = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getDictionaries>>, TError,{data: FilterRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof getDictionaries>>,
+        TError,
+        {data: FilterRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getGetDictionariesMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Получить справочник по коду
  */
-export const getByCode = (code: MaybeRef<string>, signal?: AbortSignal) => {
-  code = unref(code)
-
-  return customAxios<DictionaryDto>({
-    url: `/api/v1/dictionaries/by-code/${code}`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getGetByCodeQueryKey = (code?: MaybeRef<string>) => {
-  return ['api', 'v1', 'dictionaries', 'by-code', code] as const
-}
-
-export const getGetByCodeQueryOptions = <
-  TData = Awaited<ReturnType<typeof getByCode>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  code: MaybeRef<string>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getByCode>>, TError, TData> },
+export const getByCode = (
+    code: MaybeRef<string>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      code = unref(code);
+      
+      return customAxios<DictionaryDto>(
+      {url: `/api/v1/dictionaries/by-code/${code}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetByCodeQueryKey(code)
+export const getGetByCodeQueryKey = (code?: MaybeRef<string>,) => {
+    return ['api','v1','dictionaries','by-code',code] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getByCode>>> = ({ signal }) =>
-    getByCode(code, signal)
+    
+export const getGetByCodeQueryOptions = <TData = Awaited<ReturnType<typeof getByCode>>, TError = ApiError | ApiError | ApiError | ApiError>(code: MaybeRef<string>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getByCode>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(code)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getByCode>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetByCodeQueryKey(code);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getByCode>>> = ({ signal }) => getByCode(code, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(code))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getByCode>>, TError, TData> 
 }
 
 export type GetByCodeQueryResult = NonNullable<Awaited<ReturnType<typeof getByCode>>>
 export type GetByCodeQueryError = ApiError | ApiError | ApiError | ApiError
 
+
 /**
  * @summary Получить справочник по коду
  */
 
-export function useGetByCode<
-  TData = Awaited<ReturnType<typeof getByCode>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  code: MaybeRef<string>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getByCode>>, TError, TData> },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetByCodeQueryOptions(code, options)
+export function useGetByCode<TData = Awaited<ReturnType<typeof getByCode>>, TError = ApiError | ApiError | ApiError | ApiError>(
+ code: MaybeRef<string>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getByCode>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetByCodeQueryOptions(code,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
+

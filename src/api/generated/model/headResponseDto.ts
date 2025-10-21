@@ -6,20 +6,20 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { HeadResponseDtoLocale } from './headResponseDtoLocale'
+import type { HeadResponseDtoLocale } from './headResponseDtoLocale';
 
 /**
  * Руководитель
  */
 export interface HeadResponseDto {
   /** ФИО руководителя */
-  fullName?: string
+  fullName?: string;
   /** Номер телефона руководителя */
-  phoneNumber?: string
+  phoneNumber?: string;
   /** Электронная почта руководителя */
-  email?: string
+  email?: string;
   /** Язык интерфейса руководителя */
-  locale?: HeadResponseDtoLocale
+  locale?: HeadResponseDtoLocale;
   /** Статус верификации */
-  isVerified?: boolean
+  isVerified?: boolean;
 }

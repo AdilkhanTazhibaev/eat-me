@@ -6,14 +6,14 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { DictionaryItemCreateRequestDtoProperties } from './dictionaryItemCreateRequestDtoProperties'
+import type { DictionaryItemCreateRequestDtoProperties } from './dictionaryItemCreateRequestDtoProperties';
 
 /**
  * Запрос для создания справочных элементов
  */
 export interface DictionaryItemCreateRequestDto {
   /** Идентификатор справочника */
-  dictionaryId: number
+  dictionaryId: number;
   /** Поля справочного элемента */
-  properties: DictionaryItemCreateRequestDtoProperties
+  properties: DictionaryItemCreateRequestDtoProperties;
 }

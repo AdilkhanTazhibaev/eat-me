@@ -7,8 +7,8 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type CompanyResponseDtoCurrenciesItem =
-  (typeof CompanyResponseDtoCurrenciesItem)[keyof typeof CompanyResponseDtoCurrenciesItem]
+export type CompanyResponseDtoCurrenciesItem = typeof CompanyResponseDtoCurrenciesItem[keyof typeof CompanyResponseDtoCurrenciesItem];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CompanyResponseDtoCurrenciesItem = {
@@ -16,4 +16,4 @@ export const CompanyResponseDtoCurrenciesItem = {
   UZS: 'UZS',
   AED: 'AED',
   USD: 'USD',
-} as const
+} as const;

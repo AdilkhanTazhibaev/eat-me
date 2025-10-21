@@ -6,14 +6,14 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { ApiErrorCode } from './apiErrorCode'
+import type { ApiErrorCode } from './apiErrorCode';
 
 /**
  * Модель ошибки API
  */
 export interface ApiError {
   /** Код ошибки */
-  code?: ApiErrorCode
+  code?: ApiErrorCode;
   /** Сообщение об ошибке */
-  message?: string
+  message?: string;
 }

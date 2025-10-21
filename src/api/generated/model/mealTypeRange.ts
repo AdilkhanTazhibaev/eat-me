@@ -11,8 +11,18 @@
  * Период приема пищи
  */
 export interface MealTypeRange {
+  /** Идентификатор приема пищи */
+  id?: number;
+  /** Название приема пищи на казахском языке */
+  nameKk?: string;
+  /** Название приема пищи на английском языке */
+  nameEn?: string;
+  /** Название приема пищи на узбекском языке */
+  nameUz?: string;
+  /** Название приема пищи на русском языке */
+  nameRu?: string;
   /** Время начала приема пищи */
-  startTime?: string
+  startTime?: string;
   /** Время конца приема пищи */
-  endTime?: string
+  endTime?: string;
 }

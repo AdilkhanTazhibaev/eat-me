@@ -6,12 +6,12 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { DishInfoResponseDto } from './dishInfoResponseDto'
+import type { DishInfoResponseDto } from './dishInfoResponseDto';
 
 /**
  * Модель ответа для списка блюд c общей информации
  */
 export interface DishInfoListResponseDto {
   /** Список блюд */
-  dishes?: DishInfoResponseDto[]
+  dishes?: DishInfoResponseDto[];
 }

@@ -10,4 +10,4 @@
 /**
  * Метаданные справочника
  */
-export type DictionaryDtoMetadata = { [key: string]: unknown }
+export type DictionaryDtoMetadata = {[key: string]: unknown};

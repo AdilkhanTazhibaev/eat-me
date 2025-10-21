@@ -10,8 +10,8 @@
 /**
  * Локаль сотрудника
  */
-export type EmployeeResponseDtoLocale =
-  (typeof EmployeeResponseDtoLocale)[keyof typeof EmployeeResponseDtoLocale]
+export type EmployeeResponseDtoLocale = typeof EmployeeResponseDtoLocale[keyof typeof EmployeeResponseDtoLocale];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const EmployeeResponseDtoLocale = {
@@ -19,4 +19,4 @@ export const EmployeeResponseDtoLocale = {
   RU: 'RU',
   UZ: 'UZ',
   EN: 'EN',
-} as const
+} as const;

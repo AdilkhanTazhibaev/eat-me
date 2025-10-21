@@ -12,7 +12,7 @@
  */
 export interface OtpCodeValidationResponseDto {
   /** Токен для сброса пароля */
-  resetPasswordToken?: string
+  resetPasswordToken?: string;
   /** Время жизни otp кода (миллисекунды) */
-  expires?: number
+  expires?: number;
 }

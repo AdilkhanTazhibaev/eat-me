@@ -6,8 +6,8 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { FilterRequestDtoFilters } from './filterRequestDtoFilters'
-import type { Sort } from './sort'
+import type { Sort } from './sort';
+import type { FilterRequestDtoFilters } from './filterRequestDtoFilters';
 
 /**
  * Запрос на фильтрацию и пагинацию
@@ -17,17 +17,17 @@ export interface FilterRequestDto {
    * Номер страницы (начинается с 1)
    * @minimum 1
    */
-  page: number
+  page: number;
   /** Размер страницы (максимум 100) */
-  size: number
+  size: number;
   /** Сортировка */
-  sort?: Sort
+  sort?: Sort;
   /**
    * Текст для поиска
    * @minLength 0
    * @maxLength 256
    */
-  searchText?: string
+  searchText?: string;
   /** Фильтры в формате ключ-значение */
-  filters?: FilterRequestDtoFilters
+  filters?: FilterRequestDtoFilters;
 }

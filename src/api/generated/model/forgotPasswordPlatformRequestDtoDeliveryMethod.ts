@@ -10,12 +10,12 @@
 /**
  * Способ доставки кода подтверждения
  */
-export type ForgotPasswordPlatformRequestDtoDeliveryMethod =
-  (typeof ForgotPasswordPlatformRequestDtoDeliveryMethod)[keyof typeof ForgotPasswordPlatformRequestDtoDeliveryMethod]
+export type ForgotPasswordPlatformRequestDtoDeliveryMethod = typeof ForgotPasswordPlatformRequestDtoDeliveryMethod[keyof typeof ForgotPasswordPlatformRequestDtoDeliveryMethod];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const ForgotPasswordPlatformRequestDtoDeliveryMethod = {
   WHATSAPP: 'WHATSAPP',
   TELEGRAM: 'TELEGRAM',
   EMAIL: 'EMAIL',
-} as const
+} as const;

@@ -10,4 +10,4 @@
 /**
  * Дополнительные свойства справочника
  */
-export type DictionaryItemDtoProperties = { [key: string]: unknown }
+export type DictionaryItemDtoProperties = {[key: string]: unknown};

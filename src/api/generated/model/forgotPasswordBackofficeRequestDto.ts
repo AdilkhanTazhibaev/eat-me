@@ -16,5 +16,5 @@ export interface ForgotPasswordBackofficeRequestDto {
    * @minLength 1
    * @maxLength 256
    */
-  email: string
+  email: string;
 }

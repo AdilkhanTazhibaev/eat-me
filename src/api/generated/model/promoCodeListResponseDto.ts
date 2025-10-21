@@ -6,12 +6,12 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { PromoCodeResponseDto } from './promoCodeResponseDto'
+import type { PromoCodeResponseDto } from './promoCodeResponseDto';
 
 /**
  * Модель ответа для списка промокодов
  */
 export interface PromoCodeListResponseDto {
   /** Список промокодов */
-  promoCodes?: PromoCodeResponseDto[]
+  promoCodes?: PromoCodeResponseDto[];
 }

@@ -12,9 +12,9 @@
  */
 export interface FileResponseDto {
   /** Имя файла */
-  filename?: string
+  filename?: string;
   /** Исходное имя файла */
-  originalFilename?: string
+  originalFilename?: string;
   /** Расширение файла */
-  fileExtension?: string
+  fileExtension?: string;
 }

@@ -10,12 +10,12 @@
 /**
  * Статус бизнес юнита
  */
-export type BusinessUnitResponseDtoStatus =
-  (typeof BusinessUnitResponseDtoStatus)[keyof typeof BusinessUnitResponseDtoStatus]
+export type BusinessUnitResponseDtoStatus = typeof BusinessUnitResponseDtoStatus[keyof typeof BusinessUnitResponseDtoStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const BusinessUnitResponseDtoStatus = {
   ACTIVE: 'ACTIVE',
   INACTIVE: 'INACTIVE',
   INVITED: 'INVITED',
-} as const
+} as const;

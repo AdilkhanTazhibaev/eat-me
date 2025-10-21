@@ -16,11 +16,11 @@ export interface OtpCodeValidationBackofficeRequestDto {
    * @minLength 1
    * @maxLength 256
    */
-  email: string
+  email: string;
   /**
    * Otp код
    * @minLength 1
    * @maxLength 6
    */
-  code: string
+  code: string;
 }

@@ -10,12 +10,12 @@
 /**
  * Цель питания
  */
-export type CaloriesCalculationRequestDtoDietGoal =
-  (typeof CaloriesCalculationRequestDtoDietGoal)[keyof typeof CaloriesCalculationRequestDtoDietGoal]
+export type CaloriesCalculationRequestDtoDietGoal = typeof CaloriesCalculationRequestDtoDietGoal[keyof typeof CaloriesCalculationRequestDtoDietGoal];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CaloriesCalculationRequestDtoDietGoal = {
   MAINTAIN: 'MAINTAIN',
   LOSE: 'LOSE',
   GAIN: 'GAIN',
-} as const
+} as const;

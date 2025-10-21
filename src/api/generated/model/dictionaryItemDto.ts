@@ -6,22 +6,22 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { DictionaryItemDtoProperties } from './dictionaryItemDtoProperties'
+import type { DictionaryItemDtoProperties } from './dictionaryItemDtoProperties';
 
 /**
  * Информация о элементе справочника
  */
 export interface DictionaryItemDto {
   /** Идентификатор элемента справочника */
-  id?: number
+  id?: number;
   /** Идентификатор справочника, к которому относится элемент */
-  dictionaryId?: number
+  dictionaryId?: number;
   /** Дополнительные свойства справочника */
-  properties?: DictionaryItemDtoProperties
+  properties?: DictionaryItemDtoProperties;
   /** Время создания записи */
-  created?: number
+  created?: number;
   /** Время последнего обновления записи */
-  updated?: number
+  updated?: number;
   /** Время удаления записи */
-  deleted?: number
+  deleted?: number;
 }

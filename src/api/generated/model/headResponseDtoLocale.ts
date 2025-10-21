@@ -10,8 +10,8 @@
 /**
  * Язык интерфейса руководителя
  */
-export type HeadResponseDtoLocale =
-  (typeof HeadResponseDtoLocale)[keyof typeof HeadResponseDtoLocale]
+export type HeadResponseDtoLocale = typeof HeadResponseDtoLocale[keyof typeof HeadResponseDtoLocale];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const HeadResponseDtoLocale = {
@@ -19,4 +19,4 @@ export const HeadResponseDtoLocale = {
   RU: 'RU',
   UZ: 'UZ',
   EN: 'EN',
-} as const
+} as const;

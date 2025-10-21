@@ -10,10 +10,11 @@
 /**
  * Направление сортировки
  */
-export type SortDirection = (typeof SortDirection)[keyof typeof SortDirection]
+export type SortDirection = typeof SortDirection[keyof typeof SortDirection];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const SortDirection = {
   ASC: 'ASC',
   DESC: 'DESC',
-} as const
+} as const;

@@ -6,6 +6,10 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   QueryFunction,
@@ -13,697 +17,591 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from '@tanstack/vue-query'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import type { MaybeRef } from 'vue'
-import { computed, unref } from 'vue'
+import {
+  computed,
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   ApiError,
   EmployeeRequestDto,
   EmployeeResponseDto,
-  FilterRequestDto,
-} from '.././model'
+  FilterRequestDto
+} from '.././model';
 
-import { customAxios } from '../../custom-axios'
+import { customAxios } from '../../custom-axios';
+
+
+
 
 /**
  * @summary Получение сотрудника
  */
-export const getEmployee = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
-
-  return customAxios<EmployeeResponseDto>({
-    url: `/api/v1/backoffice/employees/${id}`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getGetEmployeeQueryKey = (id?: MaybeRef<number>) => {
-  return ['api', 'v1', 'backoffice', 'employees', id] as const
-}
-
-export const getGetEmployeeQueryOptions = <
-  TData = Awaited<ReturnType<typeof getEmployee>>,
-  TError = ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData> },
+export const getEmployee = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      id = unref(id);
+      
+      return customAxios<EmployeeResponseDto>(
+      {url: `/api/v1/backoffice/employees/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetEmployeeQueryKey(id)
+export const getGetEmployeeQueryKey = (id?: MaybeRef<number>,) => {
+    return ['api','v1','backoffice','employees',id] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployee>>> = ({ signal }) =>
-    getEmployee(id, signal)
+    
+export const getGetEmployeeQueryOptions = <TData = Awaited<ReturnType<typeof getEmployee>>, TError = ApiError | ApiError | ApiError>(id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(id)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetEmployeeQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEmployee>>> = ({ signal }) => getEmployee(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(id))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData> 
 }
 
 export type GetEmployeeQueryResult = NonNullable<Awaited<ReturnType<typeof getEmployee>>>
 export type GetEmployeeQueryError = ApiError | ApiError | ApiError
 
+
 /**
  * @summary Получение сотрудника
  */
 
-export function useGetEmployee<
-  TData = Awaited<ReturnType<typeof getEmployee>>,
-  TError = ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData> },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetEmployeeQueryOptions(id, options)
+export function useGetEmployee<TData = Awaited<ReturnType<typeof getEmployee>>, TError = ApiError | ApiError | ApiError>(
+ id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getEmployee>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetEmployeeQueryOptions(id,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
 
 /**
  * @summary Редактирование сотрудника
  */
 export const editEmployee = (
-  id: MaybeRef<number>,
-  employeeRequestDto: MaybeRef<EmployeeRequestDto>,
-) => {
-  id = unref(id)
-  employeeRequestDto = unref(employeeRequestDto)
+    id: MaybeRef<number>,
+    employeeRequestDto: MaybeRef<EmployeeRequestDto>,
+ ) => {
+      id = unref(id);
+employeeRequestDto = unref(employeeRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/employees/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: employeeRequestDto
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/employees/${id}`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: employeeRequestDto,
-  })
-}
 
-export const getEditEmployeeMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editEmployee>>,
-    TError,
-    { id: number; data: EmployeeRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof editEmployee>>,
-  TError,
-  { id: number; data: EmployeeRequestDto },
-  TContext
-> => {
-  const mutationKey = ['editEmployee']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getEditEmployeeMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editEmployee>>, TError,{id: number;data: EmployeeRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof editEmployee>>, TError,{id: number;data: EmployeeRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof editEmployee>>,
-    { id: number; data: EmployeeRequestDto }
-  > = (props) => {
-    const { id, data } = props ?? {}
+const mutationKey = ['editEmployee'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return editEmployee(id, data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type EditEmployeeMutationResult = NonNullable<Awaited<ReturnType<typeof editEmployee>>>
-export type EditEmployeeMutationBody = EmployeeRequestDto
-export type EditEmployeeMutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editEmployee>>, {id: number;data: EmployeeRequestDto}> = (props) => {
+          const {id,data} = props ?? {};
 
-/**
+          return  editEmployee(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EditEmployeeMutationResult = NonNullable<Awaited<ReturnType<typeof editEmployee>>>
+    export type EditEmployeeMutationBody = EmployeeRequestDto
+    export type EditEmployeeMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Редактирование сотрудника
  */
-export const useEditEmployee = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editEmployee>>,
-    TError,
-    { id: number; data: EmployeeRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof editEmployee>>,
-  TError,
-  { id: number; data: EmployeeRequestDto },
-  TContext
-> => {
-  const mutationOptions = getEditEmployeeMutationOptions(options)
+export const useEditEmployee = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editEmployee>>, TError,{id: number;data: EmployeeRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof editEmployee>>,
+        TError,
+        {id: number;data: EmployeeRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getEditEmployeeMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Удалить сотрудника
  */
-export const deleteEmployee = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const deleteEmployee = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/employees/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({ url: `/api/v1/backoffice/employees/${id}`, method: 'DELETE' })
-}
 
-export const getDeleteEmployeeMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteEmployee>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteEmployee>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['deleteEmployee']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getDeleteEmployeeMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteEmployee>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteEmployee>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteEmployee>>, { id: number }> = (
-    props,
-  ) => {
-    const { id } = props ?? {}
+const mutationKey = ['deleteEmployee'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return deleteEmployee(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type DeleteEmployeeMutationResult = NonNullable<Awaited<ReturnType<typeof deleteEmployee>>>
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteEmployee>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type DeleteEmployeeMutationError = ApiError | ApiError | ApiError
+          return  deleteEmployee(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteEmployeeMutationResult = NonNullable<Awaited<ReturnType<typeof deleteEmployee>>>
+    
+    export type DeleteEmployeeMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Удалить сотрудника
  */
-export const useDeleteEmployee = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteEmployee>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof deleteEmployee>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getDeleteEmployeeMutationOptions(options)
+export const useDeleteEmployee = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteEmployee>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof deleteEmployee>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getDeleteEmployeeMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Создание сотрудника
  */
 export const createEmployee = (
-  employeeRequestDto: MaybeRef<EmployeeRequestDto>,
-  signal?: AbortSignal,
+    employeeRequestDto: MaybeRef<EmployeeRequestDto>,
+ signal?: AbortSignal
 ) => {
-  employeeRequestDto = unref(employeeRequestDto)
+      employeeRequestDto = unref(employeeRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/employees`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: employeeRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/employees`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: employeeRequestDto,
-    signal,
-  })
-}
 
-export const getCreateEmployeeMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createEmployee>>,
-    TError,
-    { data: EmployeeRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createEmployee>>,
-  TError,
-  { data: EmployeeRequestDto },
-  TContext
-> => {
-  const mutationKey = ['createEmployee']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getCreateEmployeeMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createEmployee>>, TError,{data: EmployeeRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createEmployee>>, TError,{data: EmployeeRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createEmployee>>,
-    { data: EmployeeRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['createEmployee'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return createEmployee(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type CreateEmployeeMutationResult = NonNullable<Awaited<ReturnType<typeof createEmployee>>>
-export type CreateEmployeeMutationBody = EmployeeRequestDto
-export type CreateEmployeeMutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createEmployee>>, {data: EmployeeRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  createEmployee(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateEmployeeMutationResult = NonNullable<Awaited<ReturnType<typeof createEmployee>>>
+    export type CreateEmployeeMutationBody = EmployeeRequestDto
+    export type CreateEmployeeMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Создание сотрудника
  */
-export const useCreateEmployee = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createEmployee>>,
-    TError,
-    { data: EmployeeRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createEmployee>>,
-  TError,
-  { data: EmployeeRequestDto },
-  TContext
-> => {
-  const mutationOptions = getCreateEmployeeMutationOptions(options)
+export const useCreateEmployee = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createEmployee>>, TError,{data: EmployeeRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof createEmployee>>,
+        TError,
+        {data: EmployeeRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getCreateEmployeeMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Переотправить приглашение сотруднику
  */
-export const resendEmployeeInvitation = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
+export const resendEmployeeInvitation = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
+) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/employees/${id}/invite`, method: 'POST', signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/employees/${id}/invite`,
-    method: 'POST',
-    signal,
-  })
-}
 
-export const getResendEmployeeInvitationMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof resendEmployeeInvitation>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof resendEmployeeInvitation>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['resendEmployeeInvitation']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getResendEmployeeInvitationMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resendEmployeeInvitation>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof resendEmployeeInvitation>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof resendEmployeeInvitation>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
+const mutationKey = ['resendEmployeeInvitation'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return resendEmployeeInvitation(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type ResendEmployeeInvitationMutationResult = NonNullable<
-  Awaited<ReturnType<typeof resendEmployeeInvitation>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resendEmployeeInvitation>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type ResendEmployeeInvitationMutationError = ApiError | ApiError | ApiError | ApiError
+          return  resendEmployeeInvitation(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ResendEmployeeInvitationMutationResult = NonNullable<Awaited<ReturnType<typeof resendEmployeeInvitation>>>
+    
+    export type ResendEmployeeInvitationMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Переотправить приглашение сотруднику
  */
-export const useResendEmployeeInvitation = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof resendEmployeeInvitation>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof resendEmployeeInvitation>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getResendEmployeeInvitationMutationOptions(options)
+export const useResendEmployeeInvitation = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resendEmployeeInvitation>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof resendEmployeeInvitation>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getResendEmployeeInvitationMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Получение сотрудников с возможностью фильтрации и пагинации
  */
 export const getEmployees = (
-  filterRequestDto: MaybeRef<FilterRequestDto>,
-  signal?: AbortSignal,
+    filterRequestDto: MaybeRef<FilterRequestDto>,
+ signal?: AbortSignal
 ) => {
-  filterRequestDto = unref(filterRequestDto)
+      filterRequestDto = unref(filterRequestDto);
+      
+      return customAxios<EmployeeResponseDto>(
+      {url: `/api/v1/backoffice/employees/filter`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filterRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<EmployeeResponseDto>({
-    url: `/api/v1/backoffice/employees/filter`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: filterRequestDto,
-    signal,
-  })
-}
 
-export const getGetEmployeesMutationOptions = <
-  TError = ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof getEmployees>>,
-    TError,
-    { data: FilterRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof getEmployees>>,
-  TError,
-  { data: FilterRequestDto },
-  TContext
-> => {
-  const mutationKey = ['getEmployees']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getGetEmployeesMutationOptions = <TError = ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getEmployees>>, TError,{data: FilterRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof getEmployees>>, TError,{data: FilterRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof getEmployees>>,
-    { data: FilterRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['getEmployees'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return getEmployees(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type GetEmployeesMutationResult = NonNullable<Awaited<ReturnType<typeof getEmployees>>>
-export type GetEmployeesMutationBody = FilterRequestDto
-export type GetEmployeesMutationError = ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof getEmployees>>, {data: FilterRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  getEmployees(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GetEmployeesMutationResult = NonNullable<Awaited<ReturnType<typeof getEmployees>>>
+    export type GetEmployeesMutationBody = FilterRequestDto
+    export type GetEmployeesMutationError = ApiError | ApiError
+
+    /**
  * @summary Получение сотрудников с возможностью фильтрации и пагинации
  */
-export const useGetEmployees = <TError = ApiError | ApiError, TContext = unknown>(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof getEmployees>>,
-    TError,
-    { data: FilterRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof getEmployees>>,
-  TError,
-  { data: FilterRequestDto },
-  TContext
-> => {
-  const mutationOptions = getGetEmployeesMutationOptions(options)
+export const useGetEmployees = <TError = ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getEmployees>>, TError,{data: FilterRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof getEmployees>>,
+        TError,
+        {data: FilterRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getGetEmployeesMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Деактивировать сотрудника
  */
-export const deactivateEmployee = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const deactivateEmployee = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/employees/${id}/deactivate`, method: 'PATCH'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/employees/${id}/deactivate`,
-    method: 'PATCH',
-  })
-}
 
-export const getDeactivateEmployeeMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deactivateEmployee>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deactivateEmployee>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['deactivateEmployee']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getDeactivateEmployeeMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deactivateEmployee>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deactivateEmployee>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deactivateEmployee>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
+const mutationKey = ['deactivateEmployee'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return deactivateEmployee(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type DeactivateEmployeeMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deactivateEmployee>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deactivateEmployee>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type DeactivateEmployeeMutationError = ApiError | ApiError | ApiError
+          return  deactivateEmployee(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeactivateEmployeeMutationResult = NonNullable<Awaited<ReturnType<typeof deactivateEmployee>>>
+    
+    export type DeactivateEmployeeMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Деактивировать сотрудника
  */
-export const useDeactivateEmployee = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deactivateEmployee>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof deactivateEmployee>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getDeactivateEmployeeMutationOptions(options)
+export const useDeactivateEmployee = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deactivateEmployee>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof deactivateEmployee>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getDeactivateEmployeeMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Активировать сотрудника
  */
-export const activateEmployee = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const activateEmployee = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/employees/${id}/activate`, method: 'PATCH'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/employees/${id}/activate`,
-    method: 'PATCH',
-  })
-}
 
-export const getActivateEmployeeMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof activateEmployee>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof activateEmployee>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['activateEmployee']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getActivateEmployeeMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof activateEmployee>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof activateEmployee>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof activateEmployee>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
+const mutationKey = ['activateEmployee'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return activateEmployee(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type ActivateEmployeeMutationResult = NonNullable<
-  Awaited<ReturnType<typeof activateEmployee>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof activateEmployee>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type ActivateEmployeeMutationError = ApiError | ApiError | ApiError
+          return  activateEmployee(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ActivateEmployeeMutationResult = NonNullable<Awaited<ReturnType<typeof activateEmployee>>>
+    
+    export type ActivateEmployeeMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Активировать сотрудника
  */
-export const useActivateEmployee = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof activateEmployee>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof activateEmployee>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getActivateEmployeeMutationOptions(options)
+export const useActivateEmployee = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof activateEmployee>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof activateEmployee>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getActivateEmployeeMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Привязать сотрудника к филиалу
  */
 export const assignEmployeeToBranch = (
-  employeeId: MaybeRef<number>,
-  branchId: MaybeRef<number>,
-) => {
-  employeeId = unref(employeeId)
-  branchId = unref(branchId)
+    employeeId: MaybeRef<number>,
+    branchId: MaybeRef<number>,
+ ) => {
+      employeeId = unref(employeeId);
+branchId = unref(branchId);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/employees/${employeeId}/assign-branch/${branchId}`, method: 'PATCH'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/employees/${employeeId}/assign-branch/${branchId}`,
-    method: 'PATCH',
-  })
-}
 
-export const getAssignEmployeeToBranchMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof assignEmployeeToBranch>>,
-    TError,
-    { employeeId: number; branchId: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof assignEmployeeToBranch>>,
-  TError,
-  { employeeId: number; branchId: number },
-  TContext
-> => {
-  const mutationKey = ['assignEmployeeToBranch']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getAssignEmployeeToBranchMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignEmployeeToBranch>>, TError,{employeeId: number;branchId: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof assignEmployeeToBranch>>, TError,{employeeId: number;branchId: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof assignEmployeeToBranch>>,
-    { employeeId: number; branchId: number }
-  > = (props) => {
-    const { employeeId, branchId } = props ?? {}
+const mutationKey = ['assignEmployeeToBranch'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return assignEmployeeToBranch(employeeId, branchId)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type AssignEmployeeToBranchMutationResult = NonNullable<
-  Awaited<ReturnType<typeof assignEmployeeToBranch>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof assignEmployeeToBranch>>, {employeeId: number;branchId: number}> = (props) => {
+          const {employeeId,branchId} = props ?? {};
 
-export type AssignEmployeeToBranchMutationError = ApiError | ApiError | ApiError
+          return  assignEmployeeToBranch(employeeId,branchId,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AssignEmployeeToBranchMutationResult = NonNullable<Awaited<ReturnType<typeof assignEmployeeToBranch>>>
+    
+    export type AssignEmployeeToBranchMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Привязать сотрудника к филиалу
  */
-export const useAssignEmployeeToBranch = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof assignEmployeeToBranch>>,
-    TError,
-    { employeeId: number; branchId: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof assignEmployeeToBranch>>,
-  TError,
-  { employeeId: number; branchId: number },
-  TContext
-> => {
-  const mutationOptions = getAssignEmployeeToBranchMutationOptions(options)
+export const useAssignEmployeeToBranch = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignEmployeeToBranch>>, TError,{employeeId: number;branchId: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof assignEmployeeToBranch>>,
+        TError,
+        {employeeId: number;branchId: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
+      const mutationOptions = getAssignEmployeeToBranchMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    

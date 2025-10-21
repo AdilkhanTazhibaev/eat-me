@@ -10,11 +10,11 @@
 /**
  * Тип скидки (PERCENT или AMOUNT)
  */
-export type PromoCodeResponseDtoDiscountType =
-  (typeof PromoCodeResponseDtoDiscountType)[keyof typeof PromoCodeResponseDtoDiscountType]
+export type PromoCodeResponseDtoDiscountType = typeof PromoCodeResponseDtoDiscountType[keyof typeof PromoCodeResponseDtoDiscountType];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PromoCodeResponseDtoDiscountType = {
   PERCENT: 'PERCENT',
   AMOUNT: 'AMOUNT',
-} as const
+} as const;

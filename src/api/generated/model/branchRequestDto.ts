@@ -6,11 +6,11 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { BranchDetailsDto } from './branchDetailsDto'
-import type { BranchRequestDtoCurrency } from './branchRequestDtoCurrency'
-import type { BranchRequestDtoLocalesItem } from './branchRequestDtoLocalesItem'
-import type { BranchRequestDtoPhoneNumberCode } from './branchRequestDtoPhoneNumberCode'
-import type { HeadRequestDto } from './headRequestDto'
+import type { BranchRequestDtoLocalesItem } from './branchRequestDtoLocalesItem';
+import type { BranchRequestDtoCurrency } from './branchRequestDtoCurrency';
+import type { BranchRequestDtoPhoneNumberCode } from './branchRequestDtoPhoneNumberCode';
+import type { BranchDetailsDto } from './branchDetailsDto';
+import type { HeadRequestDto } from './headRequestDto';
 
 /**
  * Запрос для создания филиала
@@ -21,35 +21,35 @@ export interface BranchRequestDto {
    * @minLength 0
    * @maxLength 255
    */
-  nameKk?: string
+  nameKk?: string;
   /**
    * Наименование (en)
    * @minLength 0
    * @maxLength 255
    */
-  nameEn?: string
+  nameEn?: string;
   /**
    * Наименование (uz)
    * @minLength 0
    * @maxLength 255
    */
-  nameUz?: string
+  nameUz?: string;
   /**
    * Наименование (ru)
    * @minLength 0
    * @maxLength 255
    */
-  nameRu: string
+  nameRu: string;
   /** Поддерживаемые языки интерфейса филиала */
-  locales: BranchRequestDtoLocalesItem[]
+  locales: BranchRequestDtoLocalesItem[];
   /** Валюта филиала */
-  currency: BranchRequestDtoCurrency
+  currency: BranchRequestDtoCurrency;
   /** Код телефонного номера филиала */
-  phoneNumberCode: BranchRequestDtoPhoneNumberCode
+  phoneNumberCode: BranchRequestDtoPhoneNumberCode;
   /** Детали филиала */
-  details: BranchDetailsDto
+  details: BranchDetailsDto;
   /** Руководитель */
-  head?: HeadRequestDto
+  head?: HeadRequestDto;
   /** Назначить себя руководителем филиала */
-  isHeadMe?: boolean
+  isHeadMe?: boolean;
 }

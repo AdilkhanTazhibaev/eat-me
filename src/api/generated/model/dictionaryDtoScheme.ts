@@ -10,4 +10,4 @@
 /**
  * JSON схема справочника
  */
-export type DictionaryDtoScheme = { [key: string]: unknown }
+export type DictionaryDtoScheme = {[key: string]: unknown};

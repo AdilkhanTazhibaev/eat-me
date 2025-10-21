@@ -16,13 +16,13 @@ export interface DeliveryManRequestDto {
    * @minLength 1
    * @maxLength 256
    */
-  fullName: string
+  fullName: string;
   /**
    * Номер телефона курьера
    * @minLength 1
    * @maxLength 24
    */
-  phoneNumber: string
+  phoneNumber: string;
   /** Идентификаторы зон доставки, к которым будет привязан курьер */
-  deliveryZoneIds?: number[]
+  deliveryZoneIds?: number[];
 }

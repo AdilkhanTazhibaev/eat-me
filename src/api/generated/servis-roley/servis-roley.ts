@@ -6,69 +6,90 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   QueryFunction,
   QueryKey,
   UseQueryOptions,
-  UseQueryReturnType,
-} from '@tanstack/vue-query'
-import { useQuery } from '@tanstack/vue-query'
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import { unref } from 'vue'
+import {
+  unref
+} from 'vue';
 
-import type { ApiError, RoleListResponseDto } from '.././model'
+import type {
+  ApiError,
+  RoleListResponseDto
+} from '.././model';
 
-import { customAxios } from '../../custom-axios'
+import { customAxios } from '../../custom-axios';
+
+
+
 
 /**
  * @summary Получение списка ролей
  */
-export const getRoles = (signal?: AbortSignal) => {
-  return customAxios<RoleListResponseDto>({ url: `/api/v1/users/roles`, method: 'GET', signal })
-}
+export const getRoles = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<RoleListResponseDto>(
+      {url: `/api/v1/users/roles`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetRolesQueryKey = () => {
-  return ['api', 'v1', 'users', 'roles'] as const
-}
+    return ['api','v1','users','roles'] as const;
+    }
 
-export const getGetRolesQueryOptions = <
-  TData = Awaited<ReturnType<typeof getRoles>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getRoles>>, TError, TData>
-}) => {
-  const { query: queryOptions } = options ?? {}
+    
+export const getGetRolesQueryOptions = <TData = Awaited<ReturnType<typeof getRoles>>, TError = ApiError | ApiError>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRoles>>, TError, TData>, }
+) => {
 
-  const queryKey = getGetRolesQueryKey()
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoles>>> = ({ signal }) =>
-    getRoles(signal)
+  const queryKey =  getGetRolesQueryKey();
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getRoles>>,
-    TError,
-    TData
-  >
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRoles>>> = ({ signal }) => getRoles(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRoles>>, TError, TData> 
 }
 
 export type GetRolesQueryResult = NonNullable<Awaited<ReturnType<typeof getRoles>>>
 export type GetRolesQueryError = ApiError | ApiError
 
+
 /**
  * @summary Получение списка ролей
  */
 
-export function useGetRoles<
-  TData = Awaited<ReturnType<typeof getRoles>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getRoles>>, TError, TData>
-}): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+export function useGetRoles<TData = Awaited<ReturnType<typeof getRoles>>, TError = ApiError | ApiError>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getRoles>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+
   const queryOptions = getGetRolesQueryOptions(options)
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
 
-  return query
+  return query;
 }
+
+
+

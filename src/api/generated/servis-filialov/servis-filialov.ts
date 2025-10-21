@@ -6,6 +6,10 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   QueryFunction,
@@ -13,863 +17,783 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from '@tanstack/vue-query'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import type { MaybeRef } from 'vue'
-import { computed, unref } from 'vue'
+import {
+  computed,
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   ApiError,
   BranchContactsRequestDto,
   BranchListResponseDto,
   BranchRequestDto,
-  BranchResponseDto,
-} from '.././model'
+  BranchResponseDto
+} from '.././model';
 
-import { customAxios } from '../../custom-axios'
+import { customAxios } from '../../custom-axios';
+
+
+
 
 /**
  * @summary Получение филиала по идентификатору
  */
-export const getBranch = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
-
-  return customAxios<BranchResponseDto>({
-    url: `/api/v1/backoffice/branches/${id}`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getGetBranchQueryKey = (id?: MaybeRef<number>) => {
-  return ['api', 'v1', 'backoffice', 'branches', id] as const
-}
-
-export const getGetBranchQueryOptions = <
-  TData = Awaited<ReturnType<typeof getBranch>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData> },
+export const getBranch = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      id = unref(id);
+      
+      return customAxios<BranchResponseDto>(
+      {url: `/api/v1/backoffice/branches/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetBranchQueryKey(id)
+export const getGetBranchQueryKey = (id?: MaybeRef<number>,) => {
+    return ['api','v1','backoffice','branches',id] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getBranch>>> = ({ signal }) =>
-    getBranch(id, signal)
+    
+export const getGetBranchQueryOptions = <TData = Awaited<ReturnType<typeof getBranch>>, TError = ApiError | ApiError | ApiError | ApiError>(id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(id)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetBranchQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getBranch>>> = ({ signal }) => getBranch(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(id))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData> 
 }
 
 export type GetBranchQueryResult = NonNullable<Awaited<ReturnType<typeof getBranch>>>
 export type GetBranchQueryError = ApiError | ApiError | ApiError | ApiError
 
+
 /**
  * @summary Получение филиала по идентификатору
  */
 
-export function useGetBranch<
-  TData = Awaited<ReturnType<typeof getBranch>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData> },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetBranchQueryOptions(id, options)
+export function useGetBranch<TData = Awaited<ReturnType<typeof getBranch>>, TError = ApiError | ApiError | ApiError | ApiError>(
+ id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getBranch>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetBranchQueryOptions(id,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
 
 /**
  * @summary Редактирование филиала
  */
-export const editBranch = (id: MaybeRef<number>, branchRequestDto: MaybeRef<BranchRequestDto>) => {
-  id = unref(id)
-  branchRequestDto = unref(branchRequestDto)
+export const editBranch = (
+    id: MaybeRef<number>,
+    branchRequestDto: MaybeRef<BranchRequestDto>,
+ ) => {
+      id = unref(id);
+branchRequestDto = unref(branchRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/branches/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: branchRequestDto
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/branches/${id}`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: branchRequestDto,
-  })
-}
 
-export const getEditBranchMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editBranch>>,
-    TError,
-    { id: number; data: BranchRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof editBranch>>,
-  TError,
-  { id: number; data: BranchRequestDto },
-  TContext
-> => {
-  const mutationKey = ['editBranch']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getEditBranchMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editBranch>>, TError,{id: number;data: BranchRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof editBranch>>, TError,{id: number;data: BranchRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof editBranch>>,
-    { id: number; data: BranchRequestDto }
-  > = (props) => {
-    const { id, data } = props ?? {}
+const mutationKey = ['editBranch'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return editBranch(id, data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type EditBranchMutationResult = NonNullable<Awaited<ReturnType<typeof editBranch>>>
-export type EditBranchMutationBody = BranchRequestDto
-export type EditBranchMutationError = ApiError | ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editBranch>>, {id: number;data: BranchRequestDto}> = (props) => {
+          const {id,data} = props ?? {};
 
-/**
+          return  editBranch(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EditBranchMutationResult = NonNullable<Awaited<ReturnType<typeof editBranch>>>
+    export type EditBranchMutationBody = BranchRequestDto
+    export type EditBranchMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Редактирование филиала
  */
-export const useEditBranch = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editBranch>>,
-    TError,
-    { id: number; data: BranchRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof editBranch>>,
-  TError,
-  { id: number; data: BranchRequestDto },
-  TContext
-> => {
-  const mutationOptions = getEditBranchMutationOptions(options)
+export const useEditBranch = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editBranch>>, TError,{id: number;data: BranchRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof editBranch>>,
+        TError,
+        {id: number;data: BranchRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getEditBranchMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Редактирование контактных данных филиала
  */
 export const editBranchContacts = (
-  id: MaybeRef<number>,
-  branchContactsRequestDto: MaybeRef<BranchContactsRequestDto>,
-) => {
-  id = unref(id)
-  branchContactsRequestDto = unref(branchContactsRequestDto)
+    id: MaybeRef<number>,
+    branchContactsRequestDto: MaybeRef<BranchContactsRequestDto>,
+ ) => {
+      id = unref(id);
+branchContactsRequestDto = unref(branchContactsRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/branches/${id}/contacts`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: branchContactsRequestDto
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/branches/${id}/contacts`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: branchContactsRequestDto,
-  })
-}
 
-export const getEditBranchContactsMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editBranchContacts>>,
-    TError,
-    { id: number; data: BranchContactsRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof editBranchContacts>>,
-  TError,
-  { id: number; data: BranchContactsRequestDto },
-  TContext
-> => {
-  const mutationKey = ['editBranchContacts']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getEditBranchContactsMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editBranchContacts>>, TError,{id: number;data: BranchContactsRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof editBranchContacts>>, TError,{id: number;data: BranchContactsRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof editBranchContacts>>,
-    { id: number; data: BranchContactsRequestDto }
-  > = (props) => {
-    const { id, data } = props ?? {}
+const mutationKey = ['editBranchContacts'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return editBranchContacts(id, data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type EditBranchContactsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof editBranchContacts>>
->
-export type EditBranchContactsMutationBody = BranchContactsRequestDto
-export type EditBranchContactsMutationError = ApiError | ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editBranchContacts>>, {id: number;data: BranchContactsRequestDto}> = (props) => {
+          const {id,data} = props ?? {};
 
-/**
+          return  editBranchContacts(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EditBranchContactsMutationResult = NonNullable<Awaited<ReturnType<typeof editBranchContacts>>>
+    export type EditBranchContactsMutationBody = BranchContactsRequestDto
+    export type EditBranchContactsMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Редактирование контактных данных филиала
  */
-export const useEditBranchContacts = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editBranchContacts>>,
-    TError,
-    { id: number; data: BranchContactsRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof editBranchContacts>>,
-  TError,
-  { id: number; data: BranchContactsRequestDto },
-  TContext
-> => {
-  const mutationOptions = getEditBranchContactsMutationOptions(options)
+export const useEditBranchContacts = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editBranchContacts>>, TError,{id: number;data: BranchContactsRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof editBranchContacts>>,
+        TError,
+        {id: number;data: BranchContactsRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getEditBranchContactsMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Получение списка всех филиалов
  */
-export const getAllBranches = (signal?: AbortSignal) => {
-  return customAxios<BranchListResponseDto>({
-    url: `/api/v1/backoffice/branches`,
-    method: 'GET',
-    signal,
-  })
-}
+export const getAllBranches = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<BranchListResponseDto>(
+      {url: `/api/v1/backoffice/branches`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetAllBranchesQueryKey = () => {
-  return ['api', 'v1', 'backoffice', 'branches'] as const
-}
+    return ['api','v1','backoffice','branches'] as const;
+    }
 
-export const getGetAllBranchesQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllBranches>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getAllBranches>>, TError, TData>
-}) => {
-  const { query: queryOptions } = options ?? {}
+    
+export const getGetAllBranchesQueryOptions = <TData = Awaited<ReturnType<typeof getAllBranches>>, TError = ApiError | ApiError>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAllBranches>>, TError, TData>, }
+) => {
 
-  const queryKey = getGetAllBranchesQueryKey()
+const {query: queryOptions} = options ?? {};
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllBranches>>> = ({ signal }) =>
-    getAllBranches(signal)
+  const queryKey =  getGetAllBranchesQueryKey();
 
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllBranches>>,
-    TError,
-    TData
-  >
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllBranches>>> = ({ signal }) => getAllBranches(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAllBranches>>, TError, TData> 
 }
 
 export type GetAllBranchesQueryResult = NonNullable<Awaited<ReturnType<typeof getAllBranches>>>
 export type GetAllBranchesQueryError = ApiError | ApiError
 
+
 /**
  * @summary Получение списка всех филиалов
  */
 
-export function useGetAllBranches<
-  TData = Awaited<ReturnType<typeof getAllBranches>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getAllBranches>>, TError, TData>
-}): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+export function useGetAllBranches<TData = Awaited<ReturnType<typeof getAllBranches>>, TError = ApiError | ApiError>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getAllBranches>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+
   const queryOptions = getGetAllBranchesQueryOptions(options)
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
 
-  return query
+  return query;
 }
+
+
 
 /**
  * @summary Создание филиала
  */
 export const createBranch = (
-  branchRequestDto: MaybeRef<BranchRequestDto>,
-  signal?: AbortSignal,
+    branchRequestDto: MaybeRef<BranchRequestDto>,
+ signal?: AbortSignal
 ) => {
-  branchRequestDto = unref(branchRequestDto)
+      branchRequestDto = unref(branchRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/branches`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: branchRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/branches`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: branchRequestDto,
-    signal,
-  })
-}
 
-export const getCreateBranchMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createBranch>>,
-    TError,
-    { data: BranchRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createBranch>>,
-  TError,
-  { data: BranchRequestDto },
-  TContext
-> => {
-  const mutationKey = ['createBranch']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getCreateBranchMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createBranch>>, TError,{data: BranchRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createBranch>>, TError,{data: BranchRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createBranch>>,
-    { data: BranchRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['createBranch'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return createBranch(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type CreateBranchMutationResult = NonNullable<Awaited<ReturnType<typeof createBranch>>>
-export type CreateBranchMutationBody = BranchRequestDto
-export type CreateBranchMutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createBranch>>, {data: BranchRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  createBranch(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateBranchMutationResult = NonNullable<Awaited<ReturnType<typeof createBranch>>>
+    export type CreateBranchMutationBody = BranchRequestDto
+    export type CreateBranchMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Создание филиала
  */
-export const useCreateBranch = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createBranch>>,
-    TError,
-    { data: BranchRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createBranch>>,
-  TError,
-  { data: BranchRequestDto },
-  TContext
-> => {
-  const mutationOptions = getCreateBranchMutationOptions(options)
+export const useCreateBranch = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createBranch>>, TError,{data: BranchRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof createBranch>>,
+        TError,
+        {data: BranchRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getCreateBranchMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Пере отправить приглашение администратору филиала
  */
-export const resendBranchAdministratorInvitation = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
+export const resendBranchAdministratorInvitation = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
+) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/branches/${id}/invite`, method: 'POST', signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/branches/${id}/invite`,
-    method: 'POST',
-    signal,
-  })
-}
 
-export const getResendBranchAdministratorInvitationMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof resendBranchAdministratorInvitation>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof resendBranchAdministratorInvitation>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['resendBranchAdministratorInvitation']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getResendBranchAdministratorInvitationMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resendBranchAdministratorInvitation>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof resendBranchAdministratorInvitation>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof resendBranchAdministratorInvitation>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
+const mutationKey = ['resendBranchAdministratorInvitation'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return resendBranchAdministratorInvitation(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type ResendBranchAdministratorInvitationMutationResult = NonNullable<
-  Awaited<ReturnType<typeof resendBranchAdministratorInvitation>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resendBranchAdministratorInvitation>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type ResendBranchAdministratorInvitationMutationError =
-  | ApiError
-  | ApiError
-  | ApiError
-  | ApiError
+          return  resendBranchAdministratorInvitation(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ResendBranchAdministratorInvitationMutationResult = NonNullable<Awaited<ReturnType<typeof resendBranchAdministratorInvitation>>>
+    
+    export type ResendBranchAdministratorInvitationMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Пере отправить приглашение администратору филиала
  */
-export const useResendBranchAdministratorInvitation = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof resendBranchAdministratorInvitation>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof resendBranchAdministratorInvitation>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getResendBranchAdministratorInvitationMutationOptions(options)
+export const useResendBranchAdministratorInvitation = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resendBranchAdministratorInvitation>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof resendBranchAdministratorInvitation>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getResendBranchAdministratorInvitationMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Деактивировать филиал
  */
-export const deactivateBranch = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const deactivateBranch = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/branches/${id}/deactivate`, method: 'PATCH'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/branches/${id}/deactivate`,
-    method: 'PATCH',
-  })
-}
 
-export const getDeactivateBranchMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deactivateBranch>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deactivateBranch>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['deactivateBranch']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getDeactivateBranchMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deactivateBranch>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deactivateBranch>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof deactivateBranch>>,
-    { id: number }
-  > = (props) => {
-    const { id } = props ?? {}
+const mutationKey = ['deactivateBranch'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return deactivateBranch(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type DeactivateBranchMutationResult = NonNullable<
-  Awaited<ReturnType<typeof deactivateBranch>>
->
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deactivateBranch>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type DeactivateBranchMutationError = ApiError | ApiError | ApiError | ApiError
+          return  deactivateBranch(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeactivateBranchMutationResult = NonNullable<Awaited<ReturnType<typeof deactivateBranch>>>
+    
+    export type DeactivateBranchMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Деактивировать филиал
  */
-export const useDeactivateBranch = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deactivateBranch>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof deactivateBranch>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getDeactivateBranchMutationOptions(options)
+export const useDeactivateBranch = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deactivateBranch>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof deactivateBranch>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getDeactivateBranchMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Активировать филиал
  */
-export const activateBranch = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const activateBranch = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/branches/${id}/activate`, method: 'PATCH'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/branches/${id}/activate`,
-    method: 'PATCH',
-  })
-}
 
-export const getActivateBranchMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof activateBranch>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof activateBranch>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['activateBranch']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getActivateBranchMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof activateBranch>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof activateBranch>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof activateBranch>>, { id: number }> = (
-    props,
-  ) => {
-    const { id } = props ?? {}
+const mutationKey = ['activateBranch'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return activateBranch(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type ActivateBranchMutationResult = NonNullable<Awaited<ReturnType<typeof activateBranch>>>
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof activateBranch>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type ActivateBranchMutationError = ApiError | ApiError | ApiError | ApiError
+          return  activateBranch(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ActivateBranchMutationResult = NonNullable<Awaited<ReturnType<typeof activateBranch>>>
+    
+    export type ActivateBranchMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Активировать филиал
  */
-export const useActivateBranch = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof activateBranch>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof activateBranch>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getActivateBranchMutationOptions(options)
+export const useActivateBranch = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof activateBranch>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof activateBranch>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getActivateBranchMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Получение списка неактивных филиалов
  */
-export const getInactiveBranches = (signal?: AbortSignal) => {
-  return customAxios<BranchListResponseDto>({
-    url: `/api/v1/backoffice/branches/inactive`,
-    method: 'GET',
-    signal,
-  })
-}
+export const getInactiveBranches = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<BranchListResponseDto>(
+      {url: `/api/v1/backoffice/branches/inactive`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetInactiveBranchesQueryKey = () => {
-  return ['api', 'v1', 'backoffice', 'branches', 'inactive'] as const
+    return ['api','v1','backoffice','branches','inactive'] as const;
+    }
+
+    
+export const getGetInactiveBranchesQueryOptions = <TData = Awaited<ReturnType<typeof getInactiveBranches>>, TError = ApiError | ApiError>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInactiveBranches>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetInactiveBranchesQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInactiveBranches>>> = ({ signal }) => getInactiveBranches(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getInactiveBranches>>, TError, TData> 
 }
 
-export const getGetInactiveBranchesQueryOptions = <
-  TData = Awaited<ReturnType<typeof getInactiveBranches>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getInactiveBranches>>, TError, TData>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = getGetInactiveBranchesQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getInactiveBranches>>> = ({ signal }) =>
-    getInactiveBranches(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getInactiveBranches>>,
-    TError,
-    TData
-  >
-}
-
-export type GetInactiveBranchesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getInactiveBranches>>
->
+export type GetInactiveBranchesQueryResult = NonNullable<Awaited<ReturnType<typeof getInactiveBranches>>>
 export type GetInactiveBranchesQueryError = ApiError | ApiError
+
 
 /**
  * @summary Получение списка неактивных филиалов
  */
 
-export function useGetInactiveBranches<
-  TData = Awaited<ReturnType<typeof getInactiveBranches>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getInactiveBranches>>, TError, TData>
-}): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+export function useGetInactiveBranches<TData = Awaited<ReturnType<typeof getInactiveBranches>>, TError = ApiError | ApiError>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInactiveBranches>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+
   const queryOptions = getGetInactiveBranchesQueryOptions(options)
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
 
-  return query
+  return query;
 }
+
+
 
 /**
  * @summary Получение списка неактивных филиалов по компании
  */
-export const getInactiveBranchesByCompany = (companyId: MaybeRef<number>, signal?: AbortSignal) => {
-  companyId = unref(companyId)
-
-  return customAxios<BranchListResponseDto>({
-    url: `/api/v1/backoffice/branches/inactive/company/${companyId}`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getGetInactiveBranchesByCompanyQueryKey = (companyId?: MaybeRef<number>) => {
-  return ['api', 'v1', 'backoffice', 'branches', 'inactive', 'company', companyId] as const
-}
-
-export const getGetInactiveBranchesByCompanyQueryOptions = <
-  TData = Awaited<ReturnType<typeof getInactiveBranchesByCompany>>,
-  TError = ApiError | ApiError,
->(
-  companyId: MaybeRef<number>,
-  options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getInactiveBranchesByCompany>>, TError, TData>
-  },
+export const getInactiveBranchesByCompany = (
+    companyId: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      companyId = unref(companyId);
+      
+      return customAxios<BranchListResponseDto>(
+      {url: `/api/v1/backoffice/branches/inactive/company/${companyId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetInactiveBranchesByCompanyQueryKey(companyId)
+export const getGetInactiveBranchesByCompanyQueryKey = (companyId?: MaybeRef<number>,) => {
+    return ['api','v1','backoffice','branches','inactive','company',companyId] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getInactiveBranchesByCompany>>> = ({
-    signal,
-  }) => getInactiveBranchesByCompany(companyId, signal)
+    
+export const getGetInactiveBranchesByCompanyQueryOptions = <TData = Awaited<ReturnType<typeof getInactiveBranchesByCompany>>, TError = ApiError | ApiError>(companyId: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInactiveBranchesByCompany>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(companyId)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getInactiveBranchesByCompany>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetInactiveBranchesByCompanyQueryKey(companyId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getInactiveBranchesByCompany>>> = ({ signal }) => getInactiveBranchesByCompany(companyId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(companyId))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getInactiveBranchesByCompany>>, TError, TData> 
 }
 
-export type GetInactiveBranchesByCompanyQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getInactiveBranchesByCompany>>
->
+export type GetInactiveBranchesByCompanyQueryResult = NonNullable<Awaited<ReturnType<typeof getInactiveBranchesByCompany>>>
 export type GetInactiveBranchesByCompanyQueryError = ApiError | ApiError
 
+
 /**
  * @summary Получение списка неактивных филиалов по компании
  */
 
-export function useGetInactiveBranchesByCompany<
-  TData = Awaited<ReturnType<typeof getInactiveBranchesByCompany>>,
-  TError = ApiError | ApiError,
->(
-  companyId: MaybeRef<number>,
-  options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getInactiveBranchesByCompany>>, TError, TData>
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetInactiveBranchesByCompanyQueryOptions(companyId, options)
+export function useGetInactiveBranchesByCompany<TData = Awaited<ReturnType<typeof getInactiveBranchesByCompany>>, TError = ApiError | ApiError>(
+ companyId: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getInactiveBranchesByCompany>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetInactiveBranchesByCompanyQueryOptions(companyId,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
 
 /**
  * @summary Получение списка активных филиалов
  */
-export const getActiveBranches = (signal?: AbortSignal) => {
-  return customAxios<BranchListResponseDto>({
-    url: `/api/v1/backoffice/branches/active`,
-    method: 'GET',
-    signal,
-  })
-}
+export const getActiveBranches = (
+    
+ signal?: AbortSignal
+) => {
+      
+      
+      return customAxios<BranchListResponseDto>(
+      {url: `/api/v1/backoffice/branches/active`, method: 'GET', signal
+    },
+      );
+    }
+  
 
 export const getGetActiveBranchesQueryKey = () => {
-  return ['api', 'v1', 'backoffice', 'branches', 'active'] as const
+    return ['api','v1','backoffice','branches','active'] as const;
+    }
+
+    
+export const getGetActiveBranchesQueryOptions = <TData = Awaited<ReturnType<typeof getActiveBranches>>, TError = ApiError | ApiError>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getActiveBranches>>, TError, TData>, }
+) => {
+
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetActiveBranchesQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActiveBranches>>> = ({ signal }) => getActiveBranches(signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getActiveBranches>>, TError, TData> 
 }
 
-export const getGetActiveBranchesQueryOptions = <
-  TData = Awaited<ReturnType<typeof getActiveBranches>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getActiveBranches>>, TError, TData>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = getGetActiveBranchesQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getActiveBranches>>> = ({ signal }) =>
-    getActiveBranches(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getActiveBranches>>,
-    TError,
-    TData
-  >
-}
-
-export type GetActiveBranchesQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getActiveBranches>>
->
+export type GetActiveBranchesQueryResult = NonNullable<Awaited<ReturnType<typeof getActiveBranches>>>
 export type GetActiveBranchesQueryError = ApiError | ApiError
+
 
 /**
  * @summary Получение списка активных филиалов
  */
 
-export function useGetActiveBranches<
-  TData = Awaited<ReturnType<typeof getActiveBranches>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getActiveBranches>>, TError, TData>
-}): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+export function useGetActiveBranches<TData = Awaited<ReturnType<typeof getActiveBranches>>, TError = ApiError | ApiError>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getActiveBranches>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
+
   const queryOptions = getGetActiveBranchesQueryOptions(options)
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
 
-  return query
+  return query;
 }
+
+
 
 /**
  * @summary Получение списка активных филиалов по компании
  */
-export const getActiveBranchesByCompany = (companyId: MaybeRef<number>, signal?: AbortSignal) => {
-  companyId = unref(companyId)
-
-  return customAxios<BranchListResponseDto>({
-    url: `/api/v1/backoffice/branches/active/company/${companyId}`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getGetActiveBranchesByCompanyQueryKey = (companyId?: MaybeRef<number>) => {
-  return ['api', 'v1', 'backoffice', 'branches', 'active', 'company', companyId] as const
-}
-
-export const getGetActiveBranchesByCompanyQueryOptions = <
-  TData = Awaited<ReturnType<typeof getActiveBranchesByCompany>>,
-  TError = ApiError | ApiError,
->(
-  companyId: MaybeRef<number>,
-  options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getActiveBranchesByCompany>>, TError, TData>
-  },
+export const getActiveBranchesByCompany = (
+    companyId: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      companyId = unref(companyId);
+      
+      return customAxios<BranchListResponseDto>(
+      {url: `/api/v1/backoffice/branches/active/company/${companyId}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetActiveBranchesByCompanyQueryKey(companyId)
+export const getGetActiveBranchesByCompanyQueryKey = (companyId?: MaybeRef<number>,) => {
+    return ['api','v1','backoffice','branches','active','company',companyId] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getActiveBranchesByCompany>>> = ({
-    signal,
-  }) => getActiveBranchesByCompany(companyId, signal)
+    
+export const getGetActiveBranchesByCompanyQueryOptions = <TData = Awaited<ReturnType<typeof getActiveBranchesByCompany>>, TError = ApiError | ApiError>(companyId: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getActiveBranchesByCompany>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(companyId)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getActiveBranchesByCompany>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetActiveBranchesByCompanyQueryKey(companyId);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActiveBranchesByCompany>>> = ({ signal }) => getActiveBranchesByCompany(companyId, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(companyId))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getActiveBranchesByCompany>>, TError, TData> 
 }
 
-export type GetActiveBranchesByCompanyQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getActiveBranchesByCompany>>
->
+export type GetActiveBranchesByCompanyQueryResult = NonNullable<Awaited<ReturnType<typeof getActiveBranchesByCompany>>>
 export type GetActiveBranchesByCompanyQueryError = ApiError | ApiError
 
+
 /**
  * @summary Получение списка активных филиалов по компании
  */
 
-export function useGetActiveBranchesByCompany<
-  TData = Awaited<ReturnType<typeof getActiveBranchesByCompany>>,
-  TError = ApiError | ApiError,
->(
-  companyId: MaybeRef<number>,
-  options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getActiveBranchesByCompany>>, TError, TData>
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetActiveBranchesByCompanyQueryOptions(companyId, options)
+export function useGetActiveBranchesByCompany<TData = Awaited<ReturnType<typeof getActiveBranchesByCompany>>, TError = ApiError | ApiError>(
+ companyId: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getActiveBranchesByCompany>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetActiveBranchesByCompanyQueryOptions(companyId,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
+

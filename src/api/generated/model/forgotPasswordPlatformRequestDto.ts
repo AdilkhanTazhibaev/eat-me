@@ -6,18 +6,18 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { ForgotPasswordPlatformRequestDtoDeliveryMethod } from './forgotPasswordPlatformRequestDtoDeliveryMethod'
+import type { ForgotPasswordPlatformRequestDtoDeliveryMethod } from './forgotPasswordPlatformRequestDtoDeliveryMethod';
 
 /**
  * Запрос для восстановления пароля клиента
  */
 export interface ForgotPasswordPlatformRequestDto {
   /**
-   * Номер телефон клиента
+   * Номер телефона клиента
    * @minLength 1
    * @maxLength 24
    */
-  phoneNumber: string
+  phoneNumber: string;
   /** Способ доставки кода подтверждения */
-  deliveryMethod: ForgotPasswordPlatformRequestDtoDeliveryMethod
+  deliveryMethod: ForgotPasswordPlatformRequestDtoDeliveryMethod;
 }

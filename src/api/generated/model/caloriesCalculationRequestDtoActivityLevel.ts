@@ -10,8 +10,8 @@
 /**
  * Уровень активности
  */
-export type CaloriesCalculationRequestDtoActivityLevel =
-  (typeof CaloriesCalculationRequestDtoActivityLevel)[keyof typeof CaloriesCalculationRequestDtoActivityLevel]
+export type CaloriesCalculationRequestDtoActivityLevel = typeof CaloriesCalculationRequestDtoActivityLevel[keyof typeof CaloriesCalculationRequestDtoActivityLevel];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CaloriesCalculationRequestDtoActivityLevel = {
@@ -20,4 +20,4 @@ export const CaloriesCalculationRequestDtoActivityLevel = {
   MEDIUM: 'MEDIUM',
   HIGH: 'HIGH',
   VERY_HIGH: 'VERY_HIGH',
-} as const
+} as const;

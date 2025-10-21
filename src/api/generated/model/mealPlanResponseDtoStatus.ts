@@ -10,12 +10,13 @@
 /**
  * Статус планирования программы питания
  */
-export type MealPlanResponseDtoStatus =
-  (typeof MealPlanResponseDtoStatus)[keyof typeof MealPlanResponseDtoStatus]
+export type MealPlanResponseDtoStatus = typeof MealPlanResponseDtoStatus[keyof typeof MealPlanResponseDtoStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const MealPlanResponseDtoStatus = {
   NOT_PLANNED: 'NOT_PLANNED',
+  PLANNED: 'PLANNED',
   ACTIVE: 'ACTIVE',
-  SUSPENDED: 'SUSPENDED',
-} as const
+  EXPIRED: 'EXPIRED',
+} as const;

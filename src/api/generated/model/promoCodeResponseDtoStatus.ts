@@ -10,8 +10,8 @@
 /**
  * Статус промокода
  */
-export type PromoCodeResponseDtoStatus =
-  (typeof PromoCodeResponseDtoStatus)[keyof typeof PromoCodeResponseDtoStatus]
+export type PromoCodeResponseDtoStatus = typeof PromoCodeResponseDtoStatus[keyof typeof PromoCodeResponseDtoStatus];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const PromoCodeResponseDtoStatus = {
@@ -19,4 +19,4 @@ export const PromoCodeResponseDtoStatus = {
   PLANNED: 'PLANNED',
   SUSPENDED: 'SUSPENDED',
   ARCHIVED: 'ARCHIVED',
-} as const
+} as const;

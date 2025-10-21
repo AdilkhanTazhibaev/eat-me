@@ -12,9 +12,9 @@
  */
 export interface ExistenceCheckRequestDto {
   /**
-   * Номер телефон клиента
+   * Номер телефона клиента
    * @minLength 1
    * @maxLength 24
    */
-  phoneNumber: string
+  phoneNumber: string;
 }

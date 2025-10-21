@@ -8,12 +8,12 @@
  */
 
 export type GetByDictionaryCodeAndItemIdParams = {
-  /**
-   * Код справочника
-   */
-  dictionaryCode: string
-  /**
-   * Идентификатор элемента
-   */
-  id: number
-}
+/**
+ * Код справочника
+ */
+dictionaryCode: string;
+/**
+ * Идентификатор элемента
+ */
+id: number;
+};

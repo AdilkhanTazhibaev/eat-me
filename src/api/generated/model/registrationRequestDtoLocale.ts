@@ -10,8 +10,8 @@
 /**
  * Язык интерфейса клиента
  */
-export type RegistrationRequestDtoLocale =
-  (typeof RegistrationRequestDtoLocale)[keyof typeof RegistrationRequestDtoLocale]
+export type RegistrationRequestDtoLocale = typeof RegistrationRequestDtoLocale[keyof typeof RegistrationRequestDtoLocale];
+
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const RegistrationRequestDtoLocale = {
@@ -19,4 +19,4 @@ export const RegistrationRequestDtoLocale = {
   RU: 'RU',
   UZ: 'UZ',
   EN: 'EN',
-} as const
+} as const;

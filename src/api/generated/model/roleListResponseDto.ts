@@ -6,12 +6,12 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { RoleResponseDto } from './roleResponseDto'
+import type { RoleResponseDto } from './roleResponseDto';
 
 /**
  * Модель ответа для списка ролей
  */
 export interface RoleListResponseDto {
   /** Список ролей */
-  roles?: RoleResponseDto[]
+  roles?: RoleResponseDto[];
 }

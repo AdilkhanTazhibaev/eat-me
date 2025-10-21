@@ -6,6 +6,10 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   QueryFunction,
@@ -13,333 +17,284 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from '@tanstack/vue-query'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import type { MaybeRef } from 'vue'
-import { computed, unref } from 'vue'
+import {
+  computed,
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   ApiError,
   FilterRequestDto,
+  NutritionProgramDetailedResponseDto,
   NutritionProgramRequestDto,
-  NutritionProgramResponseDto,
-} from '.././model'
+  NutritionProgramResponseDto
+} from '.././model';
 
-import { customAxios } from '../../custom-axios'
+import { customAxios } from '../../custom-axios';
+
+
+
 
 /**
  * @summary Получение программы питания
  */
-export const getNutritionProgram = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
-
-  return customAxios<NutritionProgramResponseDto>({
-    url: `/api/v1/backoffice/kitchen/nutrition-programs/${id}`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getGetNutritionProgramQueryKey = (id?: MaybeRef<number>) => {
-  return ['api', 'v1', 'backoffice', 'kitchen', 'nutrition-programs', id] as const
-}
-
-export const getGetNutritionProgramQueryOptions = <
-  TData = Awaited<ReturnType<typeof getNutritionProgram>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getNutritionProgram>>, TError, TData>
-  },
+export const getNutritionProgram = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      id = unref(id);
+      
+      return customAxios<NutritionProgramDetailedResponseDto>(
+      {url: `/api/v1/backoffice/kitchen/nutrition-programs/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetNutritionProgramQueryKey(id)
+export const getGetNutritionProgramQueryKey = (id?: MaybeRef<number>,) => {
+    return ['api','v1','backoffice','kitchen','nutrition-programs',id] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getNutritionProgram>>> = ({ signal }) =>
-    getNutritionProgram(id, signal)
+    
+export const getGetNutritionProgramQueryOptions = <TData = Awaited<ReturnType<typeof getNutritionProgram>>, TError = ApiError | ApiError | ApiError | ApiError>(id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getNutritionProgram>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(id)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getNutritionProgram>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetNutritionProgramQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getNutritionProgram>>> = ({ signal }) => getNutritionProgram(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(id))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getNutritionProgram>>, TError, TData> 
 }
 
-export type GetNutritionProgramQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getNutritionProgram>>
->
+export type GetNutritionProgramQueryResult = NonNullable<Awaited<ReturnType<typeof getNutritionProgram>>>
 export type GetNutritionProgramQueryError = ApiError | ApiError | ApiError | ApiError
 
+
 /**
  * @summary Получение программы питания
  */
 
-export function useGetNutritionProgram<
-  TData = Awaited<ReturnType<typeof getNutritionProgram>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: {
-    query?: UseQueryOptions<Awaited<ReturnType<typeof getNutritionProgram>>, TError, TData>
-  },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetNutritionProgramQueryOptions(id, options)
+export function useGetNutritionProgram<TData = Awaited<ReturnType<typeof getNutritionProgram>>, TError = ApiError | ApiError | ApiError | ApiError>(
+ id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getNutritionProgram>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetNutritionProgramQueryOptions(id,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
 
 /**
  * @summary Редактирование программы питания
  */
 export const editNutritionProgram = (
-  id: MaybeRef<number>,
-  nutritionProgramRequestDto: MaybeRef<NutritionProgramRequestDto>,
-) => {
-  id = unref(id)
-  nutritionProgramRequestDto = unref(nutritionProgramRequestDto)
+    id: MaybeRef<number>,
+    nutritionProgramRequestDto: MaybeRef<NutritionProgramRequestDto>,
+ ) => {
+      id = unref(id);
+nutritionProgramRequestDto = unref(nutritionProgramRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/kitchen/nutrition-programs/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: nutritionProgramRequestDto
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/kitchen/nutrition-programs/${id}`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: nutritionProgramRequestDto,
-  })
-}
 
-export const getEditNutritionProgramMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editNutritionProgram>>,
-    TError,
-    { id: number; data: NutritionProgramRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof editNutritionProgram>>,
-  TError,
-  { id: number; data: NutritionProgramRequestDto },
-  TContext
-> => {
-  const mutationKey = ['editNutritionProgram']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getEditNutritionProgramMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editNutritionProgram>>, TError,{id: number;data: NutritionProgramRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof editNutritionProgram>>, TError,{id: number;data: NutritionProgramRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof editNutritionProgram>>,
-    { id: number; data: NutritionProgramRequestDto }
-  > = (props) => {
-    const { id, data } = props ?? {}
+const mutationKey = ['editNutritionProgram'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return editNutritionProgram(id, data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type EditNutritionProgramMutationResult = NonNullable<
-  Awaited<ReturnType<typeof editNutritionProgram>>
->
-export type EditNutritionProgramMutationBody = NutritionProgramRequestDto
-export type EditNutritionProgramMutationError = ApiError | ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editNutritionProgram>>, {id: number;data: NutritionProgramRequestDto}> = (props) => {
+          const {id,data} = props ?? {};
 
-/**
+          return  editNutritionProgram(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EditNutritionProgramMutationResult = NonNullable<Awaited<ReturnType<typeof editNutritionProgram>>>
+    export type EditNutritionProgramMutationBody = NutritionProgramRequestDto
+    export type EditNutritionProgramMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Редактирование программы питания
  */
-export const useEditNutritionProgram = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editNutritionProgram>>,
-    TError,
-    { id: number; data: NutritionProgramRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof editNutritionProgram>>,
-  TError,
-  { id: number; data: NutritionProgramRequestDto },
-  TContext
-> => {
-  const mutationOptions = getEditNutritionProgramMutationOptions(options)
+export const useEditNutritionProgram = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editNutritionProgram>>, TError,{id: number;data: NutritionProgramRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof editNutritionProgram>>,
+        TError,
+        {id: number;data: NutritionProgramRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getEditNutritionProgramMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Создание программы питания
  */
 export const createNutritionProgram = (
-  nutritionProgramRequestDto: MaybeRef<NutritionProgramRequestDto>,
-  signal?: AbortSignal,
+    nutritionProgramRequestDto: MaybeRef<NutritionProgramRequestDto>,
+ signal?: AbortSignal
 ) => {
-  nutritionProgramRequestDto = unref(nutritionProgramRequestDto)
+      nutritionProgramRequestDto = unref(nutritionProgramRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/kitchen/nutrition-programs`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: nutritionProgramRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/kitchen/nutrition-programs`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: nutritionProgramRequestDto,
-    signal,
-  })
-}
 
-export const getCreateNutritionProgramMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createNutritionProgram>>,
-    TError,
-    { data: NutritionProgramRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createNutritionProgram>>,
-  TError,
-  { data: NutritionProgramRequestDto },
-  TContext
-> => {
-  const mutationKey = ['createNutritionProgram']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getCreateNutritionProgramMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createNutritionProgram>>, TError,{data: NutritionProgramRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createNutritionProgram>>, TError,{data: NutritionProgramRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createNutritionProgram>>,
-    { data: NutritionProgramRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['createNutritionProgram'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return createNutritionProgram(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type CreateNutritionProgramMutationResult = NonNullable<
-  Awaited<ReturnType<typeof createNutritionProgram>>
->
-export type CreateNutritionProgramMutationBody = NutritionProgramRequestDto
-export type CreateNutritionProgramMutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createNutritionProgram>>, {data: NutritionProgramRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  createNutritionProgram(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateNutritionProgramMutationResult = NonNullable<Awaited<ReturnType<typeof createNutritionProgram>>>
+    export type CreateNutritionProgramMutationBody = NutritionProgramRequestDto
+    export type CreateNutritionProgramMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Создание программы питания
  */
-export const useCreateNutritionProgram = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createNutritionProgram>>,
-    TError,
-    { data: NutritionProgramRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createNutritionProgram>>,
-  TError,
-  { data: NutritionProgramRequestDto },
-  TContext
-> => {
-  const mutationOptions = getCreateNutritionProgramMutationOptions(options)
+export const useCreateNutritionProgram = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createNutritionProgram>>, TError,{data: NutritionProgramRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof createNutritionProgram>>,
+        TError,
+        {data: NutritionProgramRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getCreateNutritionProgramMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Получение списка программ питания
  */
-export const getNutritionPrograms = (
-  filterRequestDto: MaybeRef<FilterRequestDto>,
-  signal?: AbortSignal,
+export const getNutritionPrograms1 = (
+    filterRequestDto: MaybeRef<FilterRequestDto>,
+ signal?: AbortSignal
 ) => {
-  filterRequestDto = unref(filterRequestDto)
+      filterRequestDto = unref(filterRequestDto);
+      
+      return customAxios<NutritionProgramResponseDto>(
+      {url: `/api/v1/backoffice/kitchen/nutrition-programs/filter`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filterRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<NutritionProgramResponseDto>({
-    url: `/api/v1/backoffice/kitchen/nutrition-programs/filter`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: filterRequestDto,
-    signal,
-  })
-}
 
-export const getGetNutritionProgramsMutationOptions = <
-  TError = ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof getNutritionPrograms>>,
-    TError,
-    { data: FilterRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof getNutritionPrograms>>,
-  TError,
-  { data: FilterRequestDto },
-  TContext
-> => {
-  const mutationKey = ['getNutritionPrograms']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getGetNutritionPrograms1MutationOptions = <TError = ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getNutritionPrograms1>>, TError,{data: FilterRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof getNutritionPrograms1>>, TError,{data: FilterRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof getNutritionPrograms>>,
-    { data: FilterRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['getNutritionPrograms1'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return getNutritionPrograms(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type GetNutritionProgramsMutationResult = NonNullable<
-  Awaited<ReturnType<typeof getNutritionPrograms>>
->
-export type GetNutritionProgramsMutationBody = FilterRequestDto
-export type GetNutritionProgramsMutationError = ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof getNutritionPrograms1>>, {data: FilterRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  getNutritionPrograms1(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GetNutritionPrograms1MutationResult = NonNullable<Awaited<ReturnType<typeof getNutritionPrograms1>>>
+    export type GetNutritionPrograms1MutationBody = FilterRequestDto
+    export type GetNutritionPrograms1MutationError = ApiError | ApiError
+
+    /**
  * @summary Получение списка программ питания
  */
-export const useGetNutritionPrograms = <
-  TError = ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof getNutritionPrograms>>,
-    TError,
-    { data: FilterRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof getNutritionPrograms>>,
-  TError,
-  { data: FilterRequestDto },
-  TContext
-> => {
-  const mutationOptions = getGetNutritionProgramsMutationOptions(options)
+export const useGetNutritionPrograms1 = <TError = ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getNutritionPrograms1>>, TError,{data: FilterRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof getNutritionPrograms1>>,
+        TError,
+        {data: FilterRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
+      const mutationOptions = getGetNutritionPrograms1MutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    

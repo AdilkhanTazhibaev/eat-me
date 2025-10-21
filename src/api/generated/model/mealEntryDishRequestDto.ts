@@ -12,7 +12,11 @@
  */
 export interface MealEntryDishRequestDto {
   /** Дата планирования приема пищи */
-  date: string
+  date: string;
   /** Идентификатор блюда */
-  dishId: number
+  dishId: number;
+  /** Идентификатор плана питания */
+  mealPlanId: number;
+  /** Идентификатор пары: тип приема пищи - блюдо */
+  mealEntryId: number;
 }

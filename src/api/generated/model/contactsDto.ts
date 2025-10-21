@@ -12,13 +12,13 @@
  */
 export interface ContactsDto {
   /** Номер службы поддержки */
-  support?: string
+  support?: string;
   /** Номер WhatsApp */
-  whatsApp?: string
+  whatsApp?: string;
   /** Номер Telegram */
-  telegram?: string
+  telegram?: string;
   /** Ссылка на Instagram */
-  instagram?: string
+  instagram?: string;
   /** Ссылка на TikTok */
-  tikTok?: string
+  tikTok?: string;
 }

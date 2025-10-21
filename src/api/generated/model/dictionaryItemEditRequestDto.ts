@@ -6,12 +6,12 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { DictionaryItemEditRequestDtoProperties } from './dictionaryItemEditRequestDtoProperties'
+import type { DictionaryItemEditRequestDtoProperties } from './dictionaryItemEditRequestDtoProperties';
 
 /**
  * Запрос для обновления справочных элементов
  */
 export interface DictionaryItemEditRequestDto {
   /** Поля справочного элемента */
-  properties: DictionaryItemEditRequestDtoProperties
+  properties: DictionaryItemEditRequestDtoProperties;
 }

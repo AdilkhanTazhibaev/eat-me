@@ -6,7 +6,7 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { EmployeeRequestDtoLocale } from './employeeRequestDtoLocale'
+import type { EmployeeRequestDtoLocale } from './employeeRequestDtoLocale';
 
 /**
  * Запрос для создания сотрудника
@@ -17,21 +17,21 @@ export interface EmployeeRequestDto {
    * @minLength 1
    * @maxLength 256
    */
-  email: string
+  email: string;
   /**
    * ФИО сотрудника
    * @minLength 1
    * @maxLength 256
    */
-  fullName: string
+  fullName: string;
   /**
    * Номер телефона сотрудника
    * @minLength 1
    * @maxLength 24
    */
-  phoneNumber: string
+  phoneNumber: string;
   /** Локаль сотрудника */
-  locale: EmployeeRequestDtoLocale
+  locale: EmployeeRequestDtoLocale;
   /** Идентификатор роли */
-  roleId: number
+  roleId: number;
 }

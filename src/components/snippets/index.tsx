@@ -5,8 +5,8 @@ export const HeadingWrapper = styled.div`
   flex-direction: column;
   gap: 16px;
 `
-export const Container = styled.div<{ $bg?: number }>`
-  background: ${({ $bg, theme }) => theme.raw.colors.neutral[$bg]};
+export const Container = styled.div<{ $bg?: number; $colorKey?: string }>`
+  background: ${({ $bg, theme, $colorKey }) => theme.raw.colors[$colorKey || 'neutral'][$bg]};
 `
 
 export const FlexWrap = styled.div<{ $gap?: number }>`

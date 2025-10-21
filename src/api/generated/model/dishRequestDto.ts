@@ -16,75 +16,75 @@ export interface DishRequestDto {
    * @minLength 0
    * @maxLength 60
    */
-  nameKk?: string
+  nameKk?: string;
   /**
    * Наименование (en)
    * @minLength 0
    * @maxLength 60
    */
-  nameEn?: string
+  nameEn?: string;
   /**
    * Наименование (uz)
    * @minLength 0
    * @maxLength 60
    */
-  nameUz?: string
+  nameUz?: string;
   /**
    * Наименование (ru)
    * @minLength 0
    * @maxLength 60
    */
-  nameRu: string
+  nameRu: string;
   /**
    * Описание (kk)
    * @minLength 0
    * @maxLength 255
    */
-  descriptionKk?: string
+  descriptionKk?: string;
   /**
    * Описание (en)
    * @minLength 0
    * @maxLength 255
    */
-  descriptionEn?: string
+  descriptionEn?: string;
   /**
    * Описание (uz)
    * @minLength 0
    * @maxLength 255
    */
-  descriptionUz?: string
+  descriptionUz?: string;
   /**
    * Описание (ru)
    * @minLength 0
    * @maxLength 255
    */
-  descriptionRu?: string
+  descriptionRu?: string;
   /**
    * Количество калорий
    * @minimum 0
    * @maximum 1000
    */
-  calories?: number
+  calories?: number;
   /**
    * Количество белков
    * @minimum 0
    * @maximum 100
    */
-  proteins?: number
+  proteins?: number;
   /**
    * Количество жиров
    * @minimum 0
    * @maximum 100
    */
-  fats?: number
+  fats?: number;
   /**
    * Количество углеводов
    * @minimum 0
    * @maximum 100
    */
-  carbohydrates?: number
+  carbohydrates?: number;
   /** Id типов приёмов пищи */
-  mealTypeIds?: number[]
+  mealTypeIds?: number[];
   /** Ссылка на изображение для обложки программы питания */
-  fileId?: string
+  fileId?: string;
 }

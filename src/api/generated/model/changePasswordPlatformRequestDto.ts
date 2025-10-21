@@ -16,17 +16,17 @@ export interface ChangePasswordPlatformRequestDto {
    * @minLength 1
    * @maxLength 4
    */
-  oldPassword: string
+  oldPassword: string;
   /**
    * Новый пароль клиента
    * @minLength 1
    * @maxLength 4
    */
-  newPassword: string
+  newPassword: string;
   /**
    * Повтор нового пароля клиента
    * @minLength 1
    * @maxLength 4
    */
-  repeatPassword: string
+  repeatPassword: string;
 }

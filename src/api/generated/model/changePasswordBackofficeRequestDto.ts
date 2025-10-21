@@ -16,17 +16,17 @@ export interface ChangePasswordBackofficeRequestDto {
    * @minLength 1
    * @maxLength 64
    */
-  oldPassword: string
+  oldPassword: string;
   /**
    * Новый пароль сотрудника
    * @minLength 1
    * @maxLength 64
    */
-  newPassword: string
+  newPassword: string;
   /**
    * Повтор нового пароля сотрудника
    * @minLength 1
    * @maxLength 64
    */
-  repeatPassword: string
+  repeatPassword: string;
 }

@@ -6,9 +6,9 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { CaloriesCalculationRequestDtoActivityLevel } from './caloriesCalculationRequestDtoActivityLevel'
-import type { CaloriesCalculationRequestDtoDietGoal } from './caloriesCalculationRequestDtoDietGoal'
-import type { CaloriesCalculationRequestDtoGender } from './caloriesCalculationRequestDtoGender'
+import type { CaloriesCalculationRequestDtoDietGoal } from './caloriesCalculationRequestDtoDietGoal';
+import type { CaloriesCalculationRequestDtoActivityLevel } from './caloriesCalculationRequestDtoActivityLevel';
+import type { CaloriesCalculationRequestDtoGender } from './caloriesCalculationRequestDtoGender';
 
 /**
  * Данные пользователя для расчёта суточной калорийности
@@ -19,23 +19,23 @@ export interface CaloriesCalculationRequestDto {
    * @minimum 1
    * @maximum 120
    */
-  age: number
+  age: number;
   /**
    * Рост в сантиметрах
    * @minimum 50
    * @maximum 250
    */
-  height: number
+  height: number;
   /**
    * Вес в килограммах
    * @minimum 10
    * @maximum 500
    */
-  weight: number
+  weight: number;
   /** Цель питания */
-  dietGoal: CaloriesCalculationRequestDtoDietGoal
+  dietGoal: CaloriesCalculationRequestDtoDietGoal;
   /** Уровень активности */
-  activityLevel: CaloriesCalculationRequestDtoActivityLevel
+  activityLevel: CaloriesCalculationRequestDtoActivityLevel;
   /** Пол */
-  gender: CaloriesCalculationRequestDtoGender
+  gender: CaloriesCalculationRequestDtoGender;
 }

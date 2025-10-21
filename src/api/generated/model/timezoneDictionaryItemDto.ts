@@ -12,15 +12,15 @@
  */
 export interface TimezoneDictionaryItemDto {
   /** Идентификатор */
-  id?: number
+  id?: number;
   /** Код */
-  code?: string
+  code?: string;
   /** Наименование (kk) */
-  nameKk?: string
+  nameKk?: string;
   /** Наименование (en) */
-  nameEn?: string
+  nameEn?: string;
   /** Наименование (uz) */
-  nameUz?: string
+  nameUz?: string;
   /** Наименование (ru) */
-  nameRu?: string
+  nameRu?: string;
 }

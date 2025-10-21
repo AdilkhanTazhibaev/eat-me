@@ -6,6 +6,7 @@ import { CommentModule } from '@/modules/comments'
 import { DeliveryModule } from '@/modules/delivery'
 import { MainModule } from '@/modules/main'
 import { NutritionPricingModule } from '@/modules/nutritionPricing'
+import { OrderModule } from '@/modules/order'
 import { ProgramsModule } from '@/modules/programs'
 import { PromocodeModule } from '@/modules/promocodes'
 import { CartsModule } from '@/modules/сarts'
@@ -27,3 +28,4 @@ bootstrapService.register(AddressModule)
 bootstrapService.register(CommentModule)
 bootstrapService.register(PromocodeModule)
 bootstrapService.register(DeliveryModule)
+bootstrapService.register(OrderModule)

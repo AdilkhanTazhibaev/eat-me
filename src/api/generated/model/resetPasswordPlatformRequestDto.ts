@@ -16,17 +16,17 @@ export interface ResetPasswordPlatformRequestDto {
    * @minLength 1
    * @maxLength 64
    */
-  resetToken: string
+  resetToken: string;
   /**
    * Новый пароль
    * @minLength 1
    * @maxLength 4
    */
-  newPassword: string
+  newPassword: string;
   /**
    * Повтор нового пароля
    * @minLength 1
    * @maxLength 4
    */
-  repeatPassword: string
+  repeatPassword: string;
 }

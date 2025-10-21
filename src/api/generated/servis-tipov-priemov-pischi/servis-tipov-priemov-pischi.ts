@@ -6,6 +6,10 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
+import {
+  useMutation,
+  useQuery
+} from '@tanstack/vue-query';
 import type {
   MutationFunction,
   QueryFunction,
@@ -13,372 +17,345 @@ import type {
   UseMutationOptions,
   UseMutationReturnType,
   UseQueryOptions,
-  UseQueryReturnType,
-} from '@tanstack/vue-query'
-import { useMutation, useQuery } from '@tanstack/vue-query'
+  UseQueryReturnType
+} from '@tanstack/vue-query';
 
-import type { MaybeRef } from 'vue'
-import { computed, unref } from 'vue'
+import {
+  computed,
+  unref
+} from 'vue';
+import type {
+  MaybeRef
+} from 'vue';
 
 import type {
   ApiError,
+  FilterRequestDto,
   MealTypeListRequestDto,
-  MealTypeListResponseDto,
   MealTypeRequestDto,
-  MealTypeResponseDto,
-} from '.././model'
+  MealTypeResponseDto
+} from '.././model';
 
-import { customAxios } from '../../custom-axios'
+import { customAxios } from '../../custom-axios';
+
+
+
 
 /**
  * @summary Получение типа приема пищи
  */
-export const getMealType = (id: MaybeRef<number>, signal?: AbortSignal) => {
-  id = unref(id)
-
-  return customAxios<MealTypeResponseDto>({
-    url: `/api/v1/backoffice/kitchen/meal-types/${id}`,
-    method: 'GET',
-    signal,
-  })
-}
-
-export const getGetMealTypeQueryKey = (id?: MaybeRef<number>) => {
-  return ['api', 'v1', 'backoffice', 'kitchen', 'meal-types', id] as const
-}
-
-export const getGetMealTypeQueryOptions = <
-  TData = Awaited<ReturnType<typeof getMealType>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getMealType>>, TError, TData> },
+export const getMealType = (
+    id: MaybeRef<number>,
+ signal?: AbortSignal
 ) => {
-  const { query: queryOptions } = options ?? {}
+      id = unref(id);
+      
+      return customAxios<MealTypeResponseDto>(
+      {url: `/api/v1/backoffice/kitchen/meal-types/${id}`, method: 'GET', signal
+    },
+      );
+    }
+  
 
-  const queryKey = getGetMealTypeQueryKey(id)
+export const getGetMealTypeQueryKey = (id?: MaybeRef<number>,) => {
+    return ['api','v1','backoffice','kitchen','meal-types',id] as const;
+    }
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getMealType>>> = ({ signal }) =>
-    getMealType(id, signal)
+    
+export const getGetMealTypeQueryOptions = <TData = Awaited<ReturnType<typeof getMealType>>, TError = ApiError | ApiError | ApiError | ApiError>(id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMealType>>, TError, TData>, }
+) => {
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: computed(() => !!unref(id)),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getMealType>>, TError, TData>
+const {query: queryOptions} = options ?? {};
+
+  const queryKey =  getGetMealTypeQueryKey(id);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getMealType>>> = ({ signal }) => getMealType(id, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: computed(() => !!(unref(id))), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getMealType>>, TError, TData> 
 }
 
 export type GetMealTypeQueryResult = NonNullable<Awaited<ReturnType<typeof getMealType>>>
 export type GetMealTypeQueryError = ApiError | ApiError | ApiError | ApiError
 
+
 /**
  * @summary Получение типа приема пищи
  */
 
-export function useGetMealType<
-  TData = Awaited<ReturnType<typeof getMealType>>,
-  TError = ApiError | ApiError | ApiError | ApiError,
->(
-  id: MaybeRef<number>,
-  options?: { query?: UseQueryOptions<Awaited<ReturnType<typeof getMealType>>, TError, TData> },
-): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetMealTypeQueryOptions(id, options)
+export function useGetMealType<TData = Awaited<ReturnType<typeof getMealType>>, TError = ApiError | ApiError | ApiError | ApiError>(
+ id: MaybeRef<number>, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getMealType>>, TError, TData>, }
+  
+ ): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
 
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
+  const queryOptions = getGetMealTypeQueryOptions(id,options)
 
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
+  const query = useQuery(queryOptions ) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey };
 
-  return query
+  query.queryKey = unref(queryOptions).queryKey as QueryKey;
+
+  return query;
 }
+
+
 
 /**
  * @summary Редактирование типа приема пищи
  */
 export const editMealType = (
-  id: MaybeRef<number>,
-  mealTypeRequestDto: MaybeRef<MealTypeRequestDto>,
-) => {
-  id = unref(id)
-  mealTypeRequestDto = unref(mealTypeRequestDto)
+    id: MaybeRef<number>,
+    mealTypeRequestDto: MaybeRef<MealTypeRequestDto>,
+ ) => {
+      id = unref(id);
+mealTypeRequestDto = unref(mealTypeRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/kitchen/meal-types/${id}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: mealTypeRequestDto
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/kitchen/meal-types/${id}`,
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    data: mealTypeRequestDto,
-  })
-}
 
-export const getEditMealTypeMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editMealType>>,
-    TError,
-    { id: number; data: MealTypeRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof editMealType>>,
-  TError,
-  { id: number; data: MealTypeRequestDto },
-  TContext
-> => {
-  const mutationKey = ['editMealType']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getEditMealTypeMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editMealType>>, TError,{id: number;data: MealTypeRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof editMealType>>, TError,{id: number;data: MealTypeRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof editMealType>>,
-    { id: number; data: MealTypeRequestDto }
-  > = (props) => {
-    const { id, data } = props ?? {}
+const mutationKey = ['editMealType'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return editMealType(id, data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type EditMealTypeMutationResult = NonNullable<Awaited<ReturnType<typeof editMealType>>>
-export type EditMealTypeMutationBody = MealTypeRequestDto
-export type EditMealTypeMutationError = ApiError | ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof editMealType>>, {id: number;data: MealTypeRequestDto}> = (props) => {
+          const {id,data} = props ?? {};
 
-/**
+          return  editMealType(id,data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type EditMealTypeMutationResult = NonNullable<Awaited<ReturnType<typeof editMealType>>>
+    export type EditMealTypeMutationBody = MealTypeRequestDto
+    export type EditMealTypeMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Редактирование типа приема пищи
  */
-export const useEditMealType = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof editMealType>>,
-    TError,
-    { id: number; data: MealTypeRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof editMealType>>,
-  TError,
-  { id: number; data: MealTypeRequestDto },
-  TContext
-> => {
-  const mutationOptions = getEditMealTypeMutationOptions(options)
+export const useEditMealType = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof editMealType>>, TError,{id: number;data: MealTypeRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof editMealType>>,
+        TError,
+        {id: number;data: MealTypeRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
+      const mutationOptions = getEditMealTypeMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Удаление типа приема пищи
  */
-export const deleteMealType = (id: MaybeRef<number>) => {
-  id = unref(id)
+export const deleteMealType = (
+    id: MaybeRef<number>,
+ ) => {
+      id = unref(id);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/kitchen/meal-types/${id}`, method: 'DELETE'
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/kitchen/meal-types/${id}`,
-    method: 'DELETE',
-  })
-}
 
-export const getDeleteMealTypeMutationOptions = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteMealType>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof deleteMealType>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationKey = ['deleteMealType']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getDeleteMealTypeMutationOptions = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteMealType>>, TError,{id: number}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof deleteMealType>>, TError,{id: number}, TContext> => {
 
-  const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteMealType>>, { id: number }> = (
-    props,
-  ) => {
-    const { id } = props ?? {}
+const mutationKey = ['deleteMealType'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return deleteMealType(id)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type DeleteMealTypeMutationResult = NonNullable<Awaited<ReturnType<typeof deleteMealType>>>
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteMealType>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
 
-export type DeleteMealTypeMutationError = ApiError | ApiError | ApiError | ApiError
+          return  deleteMealType(id,)
+        }
 
-/**
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteMealTypeMutationResult = NonNullable<Awaited<ReturnType<typeof deleteMealType>>>
+    
+    export type DeleteMealTypeMutationError = ApiError | ApiError | ApiError | ApiError
+
+    /**
  * @summary Удаление типа приема пищи
  */
-export const useDeleteMealType = <
-  TError = ApiError | ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof deleteMealType>>,
-    TError,
-    { id: number },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof deleteMealType>>,
-  TError,
-  { id: number },
-  TContext
-> => {
-  const mutationOptions = getDeleteMealTypeMutationOptions(options)
+export const useDeleteMealType = <TError = ApiError | ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteMealType>>, TError,{id: number}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof deleteMealType>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
-/**
- * @summary Получение списка типов приемов пищи
- */
-export const getAllMealTypes = (signal?: AbortSignal) => {
-  return customAxios<MealTypeListResponseDto>({
-    url: `/api/v1/backoffice/kitchen/meal-types`,
-    method: 'GET',
-    signal,
-  })
-}
+      const mutationOptions = getDeleteMealTypeMutationOptions(options);
 
-export const getGetAllMealTypesQueryKey = () => {
-  return ['api', 'v1', 'backoffice', 'kitchen', 'meal-types'] as const
-}
-
-export const getGetAllMealTypesQueryOptions = <
-  TData = Awaited<ReturnType<typeof getAllMealTypes>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getAllMealTypes>>, TError, TData>
-}) => {
-  const { query: queryOptions } = options ?? {}
-
-  const queryKey = getGetAllMealTypesQueryKey()
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllMealTypes>>> = ({ signal }) =>
-    getAllMealTypes(signal)
-
-  return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
-    Awaited<ReturnType<typeof getAllMealTypes>>,
-    TError,
-    TData
-  >
-}
-
-export type GetAllMealTypesQueryResult = NonNullable<Awaited<ReturnType<typeof getAllMealTypes>>>
-export type GetAllMealTypesQueryError = ApiError | ApiError
-
-/**
- * @summary Получение списка типов приемов пищи
- */
-
-export function useGetAllMealTypes<
-  TData = Awaited<ReturnType<typeof getAllMealTypes>>,
-  TError = ApiError | ApiError,
->(options?: {
-  query?: UseQueryOptions<Awaited<ReturnType<typeof getAllMealTypes>>, TError, TData>
-}): UseQueryReturnType<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetAllMealTypesQueryOptions(options)
-
-  const query = useQuery(queryOptions) as UseQueryReturnType<TData, TError> & { queryKey: QueryKey }
-
-  query.queryKey = unref(queryOptions).queryKey as QueryKey
-
-  return query
-}
-
-/**
+      return useMutation(mutationOptions );
+    }
+    /**
  * @summary Создание типов пиемов пищи
  */
 export const createMealTypes = (
-  mealTypeListRequestDto: MaybeRef<MealTypeListRequestDto>,
-  signal?: AbortSignal,
+    mealTypeListRequestDto: MaybeRef<MealTypeListRequestDto>,
+ signal?: AbortSignal
 ) => {
-  mealTypeListRequestDto = unref(mealTypeListRequestDto)
+      mealTypeListRequestDto = unref(mealTypeListRequestDto);
+      
+      return customAxios<unknown>(
+      {url: `/api/v1/backoffice/kitchen/meal-types`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: mealTypeListRequestDto, signal
+    },
+      );
+    }
+  
 
-  return customAxios<unknown>({
-    url: `/api/v1/backoffice/kitchen/meal-types`,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: mealTypeListRequestDto,
-    signal,
-  })
-}
 
-export const getCreateMealTypesMutationOptions = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createMealTypes>>,
-    TError,
-    { data: MealTypeListRequestDto },
-    TContext
-  >
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof createMealTypes>>,
-  TError,
-  { data: MealTypeListRequestDto },
-  TContext
-> => {
-  const mutationKey = ['createMealTypes']
-  const { mutation: mutationOptions } = options
-    ? options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey } }
+export const getCreateMealTypesMutationOptions = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMealTypes>>, TError,{data: MealTypeListRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof createMealTypes>>, TError,{data: MealTypeListRequestDto}, TContext> => {
 
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof createMealTypes>>,
-    { data: MealTypeListRequestDto }
-  > = (props) => {
-    const { data } = props ?? {}
+const mutationKey = ['createMealTypes'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
 
-    return createMealTypes(data)
-  }
+      
 
-  return { mutationFn, ...mutationOptions }
-}
 
-export type CreateMealTypesMutationResult = NonNullable<Awaited<ReturnType<typeof createMealTypes>>>
-export type CreateMealTypesMutationBody = MealTypeListRequestDto
-export type CreateMealTypesMutationError = ApiError | ApiError | ApiError
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createMealTypes>>, {data: MealTypeListRequestDto}> = (props) => {
+          const {data} = props ?? {};
 
-/**
+          return  createMealTypes(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateMealTypesMutationResult = NonNullable<Awaited<ReturnType<typeof createMealTypes>>>
+    export type CreateMealTypesMutationBody = MealTypeListRequestDto
+    export type CreateMealTypesMutationError = ApiError | ApiError | ApiError
+
+    /**
  * @summary Создание типов пиемов пищи
  */
-export const useCreateMealTypes = <
-  TError = ApiError | ApiError | ApiError,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof createMealTypes>>,
-    TError,
-    { data: MealTypeListRequestDto },
-    TContext
-  >
-}): UseMutationReturnType<
-  Awaited<ReturnType<typeof createMealTypes>>,
-  TError,
-  { data: MealTypeListRequestDto },
-  TContext
-> => {
-  const mutationOptions = getCreateMealTypesMutationOptions(options)
+export const useCreateMealTypes = <TError = ApiError | ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createMealTypes>>, TError,{data: MealTypeListRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof createMealTypes>>,
+        TError,
+        {data: MealTypeListRequestDto},
+        TContext
+      > => {
 
-  return useMutation(mutationOptions)
-}
+      const mutationOptions = getCreateMealTypesMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    /**
+ * @summary Получение списка типов приемов пищи
+ */
+export const getAllMealTypes = (
+    filterRequestDto: MaybeRef<FilterRequestDto>,
+ signal?: AbortSignal
+) => {
+      filterRequestDto = unref(filterRequestDto);
+      
+      return customAxios<MealTypeResponseDto>(
+      {url: `/api/v1/backoffice/kitchen/meal-types/all`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: filterRequestDto, signal
+    },
+      );
+    }
+  
+
+
+export const getGetAllMealTypesMutationOptions = <TError = ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAllMealTypes>>, TError,{data: FilterRequestDto}, TContext>, }
+): UseMutationOptions<Awaited<ReturnType<typeof getAllMealTypes>>, TError,{data: FilterRequestDto}, TContext> => {
+
+const mutationKey = ['getAllMealTypes'];
+const {mutation: mutationOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof getAllMealTypes>>, {data: FilterRequestDto}> = (props) => {
+          const {data} = props ?? {};
+
+          return  getAllMealTypes(data,)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type GetAllMealTypesMutationResult = NonNullable<Awaited<ReturnType<typeof getAllMealTypes>>>
+    export type GetAllMealTypesMutationBody = FilterRequestDto
+    export type GetAllMealTypesMutationError = ApiError | ApiError
+
+    /**
+ * @summary Получение списка типов приемов пищи
+ */
+export const useGetAllMealTypes = <TError = ApiError | ApiError,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof getAllMealTypes>>, TError,{data: FilterRequestDto}, TContext>, }
+ ): UseMutationReturnType<
+        Awaited<ReturnType<typeof getAllMealTypes>>,
+        TError,
+        {data: FilterRequestDto},
+        TContext
+      > => {
+
+      const mutationOptions = getGetAllMealTypesMutationOptions(options);
+
+      return useMutation(mutationOptions );
+    }
+    

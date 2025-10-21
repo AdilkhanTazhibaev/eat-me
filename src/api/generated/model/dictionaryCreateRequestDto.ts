@@ -6,8 +6,8 @@
  * Eat me swagger documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { DictionaryCreateRequestDtoMetadata } from './dictionaryCreateRequestDtoMetadata'
-import type { DictionaryCreateRequestDtoProperties } from './dictionaryCreateRequestDtoProperties'
+import type { DictionaryCreateRequestDtoMetadata } from './dictionaryCreateRequestDtoMetadata';
+import type { DictionaryCreateRequestDtoProperties } from './dictionaryCreateRequestDtoProperties';
 
 /**
  * Запрос для создания справочника
@@ -18,9 +18,9 @@ export interface DictionaryCreateRequestDto {
    * @minLength 1
    * @maxLength 100
    */
-  code: string
+  code: string;
   /** Метаданные справочника */
-  metadata: DictionaryCreateRequestDtoMetadata
+  metadata: DictionaryCreateRequestDtoMetadata;
   /** Поля справочника */
-  properties: DictionaryCreateRequestDtoProperties
+  properties: DictionaryCreateRequestDtoProperties;
 }
